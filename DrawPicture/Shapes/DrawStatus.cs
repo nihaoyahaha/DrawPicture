@@ -24,8 +24,14 @@ namespace DrawPicture.Shapes
 		CannotMovedOrAdjusted,
 
 		/// <summary>
-		/// 完了
+		/// 描画中
 		/// </summary>
-		Complete
+		Creating,
+
+		/// <summary>
+		/// スタイルの調整
+		/// </summary>
+		AdjustTheStyle
+
 	}
 }

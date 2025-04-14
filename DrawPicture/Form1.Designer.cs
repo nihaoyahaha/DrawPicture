@@ -140,6 +140,7 @@
 			this.btn_Erase.Size = new System.Drawing.Size(36, 53);
 			this.btn_Erase.Text = "消去";
 			this.btn_Erase.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.btn_Erase.Click += new System.EventHandler(this.btn_Erase_Click);
 			// 
 			// cmb_size
 			// 
@@ -290,35 +291,35 @@
 			// btn_BlackColor
 			// 
 			this.btn_BlackColor.Name = "btn_BlackColor";
-			this.btn_BlackColor.Size = new System.Drawing.Size(180, 22);
+			this.btn_BlackColor.Size = new System.Drawing.Size(130, 22);
 			this.btn_BlackColor.Text = "黑色";
 			this.btn_BlackColor.Click += new System.EventHandler(this.btn_BlackColor_Click);
 			// 
 			// btn_greyColor
 			// 
 			this.btn_greyColor.Name = "btn_greyColor";
-			this.btn_greyColor.Size = new System.Drawing.Size(180, 22);
+			this.btn_greyColor.Size = new System.Drawing.Size(130, 22);
 			this.btn_greyColor.Text = "灰色-50%";
 			this.btn_greyColor.Click += new System.EventHandler(this.btn_greyColor_Click);
 			// 
 			// btn_darkRedColor
 			// 
 			this.btn_darkRedColor.Name = "btn_darkRedColor";
-			this.btn_darkRedColor.Size = new System.Drawing.Size(180, 22);
+			this.btn_darkRedColor.Size = new System.Drawing.Size(130, 22);
 			this.btn_darkRedColor.Text = "深红色";
 			this.btn_darkRedColor.Click += new System.EventHandler(this.btn_darkRedColor_Click);
 			// 
 			// btn_RedColor
 			// 
 			this.btn_RedColor.Name = "btn_RedColor";
-			this.btn_RedColor.Size = new System.Drawing.Size(180, 22);
+			this.btn_RedColor.Size = new System.Drawing.Size(130, 22);
 			this.btn_RedColor.Text = "红色";
 			this.btn_RedColor.Click += new System.EventHandler(this.btn_RedColor_Click);
 			// 
 			// btn_OrangeColor
 			// 
 			this.btn_OrangeColor.Name = "btn_OrangeColor";
-			this.btn_OrangeColor.Size = new System.Drawing.Size(180, 22);
+			this.btn_OrangeColor.Size = new System.Drawing.Size(130, 22);
 			this.btn_OrangeColor.Text = "橙色";
 			this.btn_OrangeColor.Click += new System.EventHandler(this.btn_OrangeColor_Click);
 			// 

@@ -55,6 +55,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Shapes\DrawStatus.cs" />
+    <Compile Include="Shapes\Eraser.cs" />
     <Compile Include="Shapes\Line.cs" />
     <Compile Include="Shapes\MouseStatus.cs" />
     <Compile Include="Shapes\Shape.cs" />
