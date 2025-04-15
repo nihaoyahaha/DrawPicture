@@ -29,6 +29,14 @@ namespace DrawPicture.Shapes
 		//描画中
 		public abstract void InPainting(Graphics graphics);
 
+		/// <summary>
+		/// 点が直線上にあるかどうかを判断する
+		/// </summary>
+		/// <param name="pf"></param>
+		/// <param name="p1"></param>
+		/// <param name="p2"></param>
+		/// <param name="range"></param>
+		/// <returns></returns>
 		public bool GetPointIsInLine(Point pf, Point p1, Point p2, double range)
 		{
 			pf = new Point (int.Parse(Math.Round((double)pf.X / 1, 0).ToString()), int.Parse(Math.Round((double)pf.Y / 1, 0).ToString()));

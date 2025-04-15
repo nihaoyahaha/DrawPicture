@@ -23,7 +23,7 @@ namespace DrawPicture
 		{
 			InitializeComponent();
 			InitializeCanvas(panel_main.Width,panel_main.Height);
-			_shape = new Eraser(_canvas, this.panel_main);
+			_shape = new RectangularSelection(_canvas, this.panel_main);
 		}
 
 		private void Form1_Load(object sender, EventArgs e)
@@ -57,13 +57,26 @@ namespace DrawPicture
 		}
 		private void btn_Line_Click(object sender, EventArgs e)
 		{
-			_shape = new Line(_canvas, panel_main);
-			_shape.ForeColor = btn_showColor.ForeColor;
-			_shape.Size = float.Parse(cmb_size.Text.Substring(0, 1));
+			_shape = new Line(_canvas, panel_main)
+			{
+				ForeColor = btn_showColor.BackColor,
+				Size = float.Parse(cmb_size.Text.Substring(0, 1))
+			};
 		}
 		private void btn_Erase_Click(object sender, EventArgs e)
 		{
-			_shape = new Eraser(_canvas,panel_main);
+			_shape = new Eraser(_canvas, panel_main)
+			{
+				ForeColor = btn_showColor.BackColor,
+				Size = float.Parse(cmb_size.Text.Substring(0, 1))
+			};
+		}
+		private void btn_select_Click(object sender, EventArgs e)
+		{
+			_shape = new RectangularSelection(_canvas, panel_main)
+			{
+				ForeColor = btn_showColor.BackColor
+			};
 		}
 		private void Form1_Resize(object sender, EventArgs e)
 		{
@@ -199,42 +212,40 @@ namespace DrawPicture
 		//黑色
 		private void btn_BlackColor_Click(object sender, EventArgs e)
 		{
-			btn_showColor.BackColor = Color.Black;
-			_shape.ForeColor = Color.Black;
-			_shape.drawStatus = DrawStatus.AdjustTheStyle;
-			panel_main.Refresh();
+			SetShapeForeColor(Color.Black);
 		}
 
 		//灰色50%
 		private void btn_greyColor_Click(object sender, EventArgs e)
 		{
-			btn_showColor.BackColor = Color.FromArgb(128, 128, 128, 128);
-			_shape.ForeColor = Color.FromArgb(128, 128, 128, 128);
-			_shape.drawStatus = DrawStatus.AdjustTheStyle;
-			panel_main.Refresh();
+			SetShapeForeColor(Color.FromArgb(128, 128, 128, 128));
 		}
 
 		//深红色
 		private void btn_darkRedColor_Click(object sender, EventArgs e)
 		{
-			btn_showColor.BackColor = ColorTranslator.FromHtml("#8B0000");
-			_shape.ForeColor = ColorTranslator.FromHtml("#8B0000");
-			_shape.drawStatus = DrawStatus.AdjustTheStyle;
-			panel_main.Refresh();
+			SetShapeForeColor(ColorTranslator.FromHtml("#8B0000"));
 		}
 		//红色
 		private void btn_RedColor_Click(object sender, EventArgs e)
 		{
-			btn_showColor.BackColor = Color.Red;
-			_shape.ForeColor = Color.Red;
-			_shape.drawStatus = DrawStatus.AdjustTheStyle;
-			panel_main.Refresh();
+			SetShapeForeColor(Color.Red);
 		}
 
 		private void btn_OrangeColor_Click(object sender, EventArgs e)
 		{
-			btn_showColor.BackColor = Color.Orange;
-			_shape.ForeColor = Color.Orange;
+			SetShapeForeColor(Color.Orange);
+		}
+
+		private void btn_WhileColor_Click(object sender, EventArgs e)
+		{
+			SetShapeForeColor(Color.White);
+		}
+
+		private void SetShapeForeColor(Color color)
+		{
+			btn_showColor.BackColor = color;
+			_shape.ForeColor = color;
 			_shape.drawStatus = DrawStatus.AdjustTheStyle;
 			panel_main.Refresh();
 		}

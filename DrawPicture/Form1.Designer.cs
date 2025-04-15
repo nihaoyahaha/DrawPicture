@@ -61,6 +61,7 @@
 			this.lb_Penposition = new System.Windows.Forms.ToolStripLabel();
 			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripComboBox1 = new System.Windows.Forms.ToolStripComboBox();
+			this.btn_WhileColor = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStrip1.SuspendLayout();
 			this.toolStrip2.SuspendLayout();
 			this.SuspendLayout();
@@ -110,6 +111,7 @@
 			this.btn_select.Text = "せんたく";
 			this.btn_select.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
 			this.btn_select.ToolTipText = "せんたく";
+			this.btn_select.Click += new System.EventHandler(this.btn_select_Click);
 			// 
 			// toolStripSeparator1
 			// 
@@ -274,6 +276,7 @@
 			this.btn_showColor.BackColor = System.Drawing.Color.Black;
 			this.btn_showColor.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
 			this.btn_showColor.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.btn_WhileColor,
             this.btn_BlackColor,
             this.btn_greyColor,
             this.btn_darkRedColor,
@@ -291,35 +294,35 @@
 			// btn_BlackColor
 			// 
 			this.btn_BlackColor.Name = "btn_BlackColor";
-			this.btn_BlackColor.Size = new System.Drawing.Size(130, 22);
+			this.btn_BlackColor.Size = new System.Drawing.Size(180, 22);
 			this.btn_BlackColor.Text = "黑色";
 			this.btn_BlackColor.Click += new System.EventHandler(this.btn_BlackColor_Click);
 			// 
 			// btn_greyColor
 			// 
 			this.btn_greyColor.Name = "btn_greyColor";
-			this.btn_greyColor.Size = new System.Drawing.Size(130, 22);
+			this.btn_greyColor.Size = new System.Drawing.Size(180, 22);
 			this.btn_greyColor.Text = "灰色-50%";
 			this.btn_greyColor.Click += new System.EventHandler(this.btn_greyColor_Click);
 			// 
 			// btn_darkRedColor
 			// 
 			this.btn_darkRedColor.Name = "btn_darkRedColor";
-			this.btn_darkRedColor.Size = new System.Drawing.Size(130, 22);
+			this.btn_darkRedColor.Size = new System.Drawing.Size(180, 22);
 			this.btn_darkRedColor.Text = "深红色";
 			this.btn_darkRedColor.Click += new System.EventHandler(this.btn_darkRedColor_Click);
 			// 
 			// btn_RedColor
 			// 
 			this.btn_RedColor.Name = "btn_RedColor";
-			this.btn_RedColor.Size = new System.Drawing.Size(130, 22);
+			this.btn_RedColor.Size = new System.Drawing.Size(180, 22);
 			this.btn_RedColor.Text = "红色";
 			this.btn_RedColor.Click += new System.EventHandler(this.btn_RedColor_Click);
 			// 
 			// btn_OrangeColor
 			// 
 			this.btn_OrangeColor.Name = "btn_OrangeColor";
-			this.btn_OrangeColor.Size = new System.Drawing.Size(130, 22);
+			this.btn_OrangeColor.Size = new System.Drawing.Size(180, 22);
 			this.btn_OrangeColor.Text = "橙色";
 			this.btn_OrangeColor.Click += new System.EventHandler(this.btn_OrangeColor_Click);
 			// 
@@ -413,6 +416,13 @@
 			this.toolStripComboBox1.Name = "toolStripComboBox1";
 			this.toolStripComboBox1.Size = new System.Drawing.Size(121, 25);
 			// 
+			// btn_WhileColor
+			// 
+			this.btn_WhileColor.Name = "btn_WhileColor";
+			this.btn_WhileColor.Size = new System.Drawing.Size(180, 22);
+			this.btn_WhileColor.Text = "白色";
+			this.btn_WhileColor.Click += new System.EventHandler(this.btn_WhileColor_Click);
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -472,6 +482,7 @@
 		private System.Windows.Forms.ToolStripComboBox toolStripComboBox1;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
 		private System.Windows.Forms.ToolStripComboBox cmb_size;
+		private System.Windows.Forms.ToolStripMenuItem btn_WhileColor;
 	}
 }
 

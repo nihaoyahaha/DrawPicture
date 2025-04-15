@@ -15,7 +15,7 @@ namespace DrawPicture.Shapes
 	/// </summary>
 	public class Eraser : Shape
 	{
-		private GraphicsPath path = new GraphicsPath(); // 存储鼠标移动路径
+		Bitmap newCanvas;
 		public Eraser(Bitmap canvas, Panel panel) : base(canvas, panel)
 		{
 			
@@ -24,13 +24,14 @@ namespace DrawPicture.Shapes
 		{
 			if (e.Button == MouseButtons.Left)
 			{
+				newCanvas = (Bitmap)canvas.Clone();
 				EndPoint = e.Location;
 				drawStatus = DrawStatus.Creating;
 			}
 			else if (drawStatus == DrawStatus.Creating && e.Button == MouseButtons.Right)
 			{
-				path = new GraphicsPath();
 				drawStatus = DrawStatus.CannotMovedOrAdjusted;
+				newCanvas = null;
 				panel.Invalidate();
 				return;
 			}
@@ -40,38 +41,64 @@ namespace DrawPicture.Shapes
 		{
 			if (e.Button == MouseButtons.Left)
 			{
-				path.AddRectangle(new Rectangle(e.X,e.Y,10,10));
-			
+				DrawEraserPath(EndPoint,e.Location);
 				EndPoint = e.Location;
-
-				panel.Invalidate();
 			}
+		}
+
+		private void DrawEraserPath(Point start, Point end)
+		{
+			if (newCanvas == null) return;
+			float eraserSize = Size; // 橡皮擦大小
+			using (Graphics g = Graphics.FromImage(newCanvas))
+			{
+				// 计算两点之间的距离
+				double distance = Math.Sqrt(Math.Pow(end.X - start.X, 2) + Math.Pow(end.Y - start.Y, 2));
+
+				// 如果距离小于1，则直接绘制一个点
+				if (distance < 1)
+				{
+					g.FillRectangle(new SolidBrush(ForeColor),
+						start.X - eraserSize / 2,
+						start.Y - eraserSize / 2,
+						eraserSize,
+						eraserSize);
+					return;
+				}
+
+				// 插值计算中间点
+				for (double t = 0; t <= 1; t += 1 / distance)
+				{
+					int x = (int)(start.X + t * (end.X - start.X));
+					int y = (int)(start.Y + t * (end.Y - start.Y));
+
+					// 绘制橡皮擦区域
+					g.FillRectangle(new SolidBrush(ForeColor),
+						x - eraserSize / 2,
+						y - eraserSize / 2,
+						eraserSize,
+						eraserSize);
+				}
+			}
+
+			// 刷新 Panel 显示
+			panel.Invalidate();
 		}
 
 		public override void MouseUp(MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Left)
 			{
-				MouseLeftButtonUpHandle(e);
-			}
-
-		}
-
-		private void MouseLeftButtonUpHandle(MouseEventArgs e)
-		{
-			if (drawStatus == DrawStatus.CannotMovedOrAdjusted) return;
-			using (Graphics g = Graphics.FromImage(canvas))
-			{
-				using (Pen pen = new Pen(Color.Blue, 2))
+				if (newCanvas != null)
 				{
-					g.SmoothingMode = SmoothingMode.HighQuality;
-					g.PixelOffsetMode = PixelOffsetMode.HighQuality;
-					g.DrawPath(pen, path);
+					using (Graphics g = Graphics.FromImage(canvas))
+					{
+						g.DrawImage(newCanvas, new Point(0, 0)); // 将 newBitmap 叠加到 originalBitmap 上
+					}
+					newCanvas = null;
 				}
+				panel.Invalidate();
 			}
-			EndPoint = new Point();
-			path = new GraphicsPath();
-			panel.Invalidate();
 		}
 
 		public override void InPainting(Graphics graphics)
@@ -80,13 +107,9 @@ namespace DrawPicture.Shapes
 			{
 				graphics.DrawImage(canvas, 0, 0);
 			}
-			//using (Pen pen = new Pen(Color.Blue, 2))
-			//{
-			//	graphics.DrawPath(pen, path);
-			//}
-			using (Brush brush = new SolidBrush(Color.Blue))
+			if (newCanvas != null)
 			{
-				graphics.FillEllipse(brush, new Rectangle(EndPoint.X,EndPoint.Y,10,10));
+				graphics.DrawImage(newCanvas,0,0);
 			}
 		}
 

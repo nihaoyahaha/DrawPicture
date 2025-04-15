@@ -58,6 +58,8 @@
     <Compile Include="Shapes\Eraser.cs" />
     <Compile Include="Shapes\Line.cs" />
     <Compile Include="Shapes\MouseStatus.cs" />
+    <Compile Include="Shapes\RectangleShapeFocusType.cs" />
+    <Compile Include="Shapes\RectangularSelection.cs" />
     <Compile Include="Shapes\Shape.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

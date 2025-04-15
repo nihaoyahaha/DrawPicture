@@ -10,14 +10,18 @@ using System.Windows.Forms;
 
 namespace DrawPicture.Shapes
 {
+	/// <summary>
+	/// 直線
+	/// </summary>
 	public class Line : Shape
 	{
 		private int _handleSize = 15; // 控制点矩形的大小
 		private bool _startPointSelected = false;
 		private Point _offset = new Point();
+		private Color _selectedRectForeColor = Color.FromArgb(104, 139, 204);
 		public Line(Bitmap canvas, Panel panel) : base(canvas,panel)
 		{
-			ForeColor = Color.Black;
+			
 		}
 
 		public override void MouseMove(MouseEventArgs e)
@@ -87,12 +91,12 @@ namespace DrawPicture.Shapes
 			if (drawStatus == DrawStatus.CannotMovedOrAdjusted)
 			{
 				BitmapDrawLine();
-				StartPoint = new Point(e.X, e.Y);
+				StartPoint = e.Location;
 				drawStatus = DrawStatus.Creating;
 			}
 			else if (drawStatus == DrawStatus.CanMove)
 			{
-				_offset = new Point(e.X, e.Y);
+				_offset = e.Location;
 			}
 			else if (drawStatus == DrawStatus.CanAdjusted)
 			{
@@ -180,8 +184,9 @@ namespace DrawPicture.Shapes
 			}
 		}
 
-		public void DrawMoveOrAdjusted(Graphics graphics)
+		private void DrawMoveOrAdjusted(Graphics graphics)
 		{
+			if (EndPoint.X == 0 && EndPoint.Y == 0) return;
 			using (Pen pen = new Pen(ForeColor, Size) { DashStyle = DashStyle.Solid, StartCap = LineCap.Round, EndCap = LineCap.Round })
 			{
 				graphics.DrawLine(pen, StartPoint, EndPoint);
@@ -198,7 +203,7 @@ namespace DrawPicture.Shapes
 				_handleSize,
 				_handleSize
 			);
-			g.DrawEllipse(Pens.Black, rect); // 绘制矩形边框
+			g.FillEllipse(new SolidBrush( _selectedRectForeColor), rect); // 绘制矩形边框
 
 			rect = new Rectangle(
 				endPoint.X - _handleSize / 2,
@@ -206,7 +211,7 @@ namespace DrawPicture.Shapes
 				_handleSize,
 				_handleSize
 			);
-			g.DrawEllipse(Pens.Black, rect); // 绘制矩形边框
+			g.FillEllipse(new SolidBrush(_selectedRectForeColor), rect);// 绘制矩形边框
 		}
 
 		private void IsMouseOnHandle(Point mouseLocation ,Point startPoint, Point endPoint)
