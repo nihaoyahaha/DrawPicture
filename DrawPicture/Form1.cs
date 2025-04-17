@@ -103,6 +103,7 @@ namespace DrawPicture
 		{
 			_shape.Size = float.Parse(cmb_size.Text.Substring(0, 1));
 			_shape.drawStatus = DrawStatus.AdjustTheStyle;
+			if (_shape is RectangularSelection) return;
 			panel_main.Refresh();
 		}
 
@@ -147,7 +148,7 @@ namespace DrawPicture
 			}
 
 			// 更新当前画布
-			_canvas?.Dispose(); // 释放旧的画布资源
+			_canvas?.Dispose(); 
 			_canvas = newCanvas;
 			_shape.canvas = _canvas;
 			panel_main.Invalidate();
@@ -218,7 +219,7 @@ namespace DrawPicture
 		//灰色50%
 		private void btn_greyColor_Click(object sender, EventArgs e)
 		{
-			SetShapeForeColor(Color.FromArgb(128, 128, 128, 128));
+			SetShapeForeColor(Color.FromArgb(255, 128, 128, 128));
 		}
 
 		//深红色
@@ -247,6 +248,7 @@ namespace DrawPicture
 			btn_showColor.BackColor = color;
 			_shape.ForeColor = color;
 			_shape.drawStatus = DrawStatus.AdjustTheStyle;
+			if (_shape is RectangularSelection) return;
 			panel_main.Refresh();
 		}
 

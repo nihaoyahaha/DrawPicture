@@ -14,9 +14,24 @@ namespace DrawPicture.Shapes
 		CanMove,
 
 		/// <summary>
+		/// 移動中
+		/// </summary>
+		Moving,
+
+		/// <summary>
 		/// 調整可能
 		/// </summary>
 		CanAdjusted,
+
+		/// <summary>
+		/// 調整中
+		/// </summary>
+		Adjusting,
+
+		/// <summary>
+		/// 調整の完了
+		/// </summary>
+		CompleteAdjustment,
 
 		/// <summary>
 		/// 移動不可調整不可
@@ -24,7 +39,7 @@ namespace DrawPicture.Shapes
 		CannotMovedOrAdjusted,
 
 		/// <summary>
-		/// 描画中
+		/// 作成描画中
 		/// </summary>
 		Creating,
 

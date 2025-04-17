@@ -26,6 +26,7 @@ namespace DrawPicture.Shapes
 			{
 				newCanvas = (Bitmap)canvas.Clone();
 				EndPoint = e.Location;
+				DrawEraserPath(EndPoint,e.Location);
 				drawStatus = DrawStatus.Creating;
 			}
 			else if (drawStatus == DrawStatus.Creating && e.Button == MouseButtons.Right)

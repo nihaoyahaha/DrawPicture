@@ -14,12 +14,15 @@ namespace DrawPicture.Shapes
 	/// 矩形選択
 	/// </summary>
 	public class RectangularSelection : Shape
-	{//104, 139, 204
+	{
 		private Point _offset = new Point();
 		private Bitmap _selectedBitmap;
+		private Rectangle _rectBeforeAdjust;
 		private Rectangle _selectionRect = Rectangle.Empty;
 		private Rectangle _fillRect = Rectangle.Empty;
 		private Color _selectedRectForeColor = Color.FromArgb(104, 139, 204);
+		private Color _FillRectColor;
+		private RectangleShapeFocusType _focusType;
 		public RectangularSelection(Bitmap bitmap, Panel panel) : base(bitmap, panel)
 		{
 			Size = 10;
@@ -39,17 +42,25 @@ namespace DrawPicture.Shapes
 
 		private void MouseRightButtonDownHandle(MouseEventArgs e)
 		{
-			if (drawStatus == DrawStatus.Creating || drawStatus == DrawStatus.CanMove)
+			if (drawStatus == DrawStatus.Creating || drawStatus == DrawStatus.Moving || drawStatus == DrawStatus.Adjusting)
 			{
-				drawStatus = DrawStatus.CannotMovedOrAdjusted;
-				_selectedBitmap = null;
-				_selectionRect = Rectangle.Empty;
-				_fillRect = Rectangle.Empty;
-				panel.Invalidate();
+				CancelDrawing();
 				return;
+			}
+			else if (drawStatus == DrawStatus.CannotMovedOrAdjusted && _selectionRect != Rectangle.Empty)
+			{
+				BitmapDrawImage();
 			}
 		}
 
+		private void CancelDrawing()
+		{
+			drawStatus = DrawStatus.CannotMovedOrAdjusted;
+			_selectedBitmap = null;
+			_selectionRect = Rectangle.Empty;
+			_fillRect = Rectangle.Empty;
+			panel.Invalidate();
+		}
 
 		private void MouseLeftButtonDownHandle(MouseEventArgs e)
 		{
@@ -58,21 +69,34 @@ namespace DrawPicture.Shapes
 				BitmapDrawImage();
 				StartPoint = e.Location;
 				drawStatus = DrawStatus.Creating;
+				_FillRectColor = ForeColor;
 			}
 			else if (drawStatus == DrawStatus.CanMove)
 			{
 				_offset = e.Location;
+				drawStatus = DrawStatus.Moving;
+				_rectBeforeAdjust = new Rectangle(_selectionRect.X, _selectionRect.Y, _selectionRect.Width, _selectionRect.Height);
 			}
-
+			else if (drawStatus == DrawStatus.CanAdjusted)
+			{
+				_offset = e.Location;
+				drawStatus = DrawStatus.Adjusting;
+				_rectBeforeAdjust = new Rectangle(_selectionRect.X,_selectionRect.Y,_selectionRect.Width,_selectionRect.Height);
+			}
 		}
 
 		private void BitmapDrawImage()
 		{
 			if (_selectedBitmap == null) return;
+			if (_fillRect.Equals(_selectionRect))
+			{
+				CancelDrawing();
+				return;
+			}
 			using (Graphics g = Graphics.FromImage(canvas))
 			{
+				g.FillRectangle(new SolidBrush(_FillRectColor), _fillRect);
 				g.DrawImage(_selectedBitmap, _selectionRect);
-				g.FillRectangle(new SolidBrush(ForeColor), _fillRect);
 			}
 			drawStatus = DrawStatus.CannotMovedOrAdjusted;
 			_selectedBitmap = null;
@@ -110,13 +134,84 @@ namespace DrawPicture.Shapes
 				_selectionRect = new Rectangle(x, y, width, height);
 				panel.Invalidate();
 			}
-			else if (drawStatus == DrawStatus.CanMove)
+			else if (drawStatus == DrawStatus.Moving)
 			{
 				int deltaX = e.X - _offset.X;
 				int deltaY = e.Y - _offset.Y;
 				_selectionRect.Offset(deltaX, deltaY);
 				_offset = e.Location;
 				panel.Invalidate();
+			}
+			else if (drawStatus == DrawStatus.Adjusting)
+			{
+				int deltaX = e.X - _offset.X;
+				int deltaY = e.Y - _offset.Y;
+				SelectionAdjusting(deltaX, deltaY);
+				_offset = e.Location;
+				panel.Invalidate();
+			}
+		}
+
+		public void SelectionAdjusting(int horizontalDistance, int verticalDistance)
+		{
+			int width = _selectionRect.Width;
+			int height = _selectionRect.Height;
+			switch (_focusType)
+			{
+				case RectangleShapeFocusType.TopLeft:
+					if (width - horizontalDistance <= 2) return;
+					if (height - verticalDistance <= 2) return;
+
+					_selectionRect.X += horizontalDistance;
+					_selectionRect.Y += verticalDistance;
+					_selectionRect.Width -= horizontalDistance;
+					_selectionRect.Height -= verticalDistance;
+					break;
+				case RectangleShapeFocusType.TopCenter:
+					if (height - verticalDistance <= 2) return;
+
+					_selectionRect.Y += verticalDistance;
+					_selectionRect.Height -= verticalDistance;
+					break;
+				case RectangleShapeFocusType.TopRight:
+					if (width + horizontalDistance <= 2) return;
+					if (height - verticalDistance <= 2) return;
+
+					_selectionRect.Y += verticalDistance;
+					_selectionRect.Width += horizontalDistance;
+					_selectionRect.Height -= verticalDistance;
+					break;
+				case RectangleShapeFocusType.MiddleLeft:
+					if (width - horizontalDistance <= 2) return;
+
+					_selectionRect.X += horizontalDistance;
+					_selectionRect.Width -= horizontalDistance;
+					break;
+				case RectangleShapeFocusType.MiddleRight:
+					if (width + horizontalDistance <= 2) return;
+
+					_selectionRect.Width += horizontalDistance;
+					break;
+				case RectangleShapeFocusType.BottomLeft:
+					if (width - horizontalDistance <= 2) return;
+					if (height + verticalDistance <= 2) return;
+
+					_selectionRect.X += horizontalDistance;
+					_selectionRect.Width -= horizontalDistance;
+					_selectionRect.Height += verticalDistance;
+					break;
+				case RectangleShapeFocusType.BottomCenter:
+					if (height + verticalDistance <= 2) return;
+
+					_selectionRect.Height += verticalDistance;
+					break;
+				case RectangleShapeFocusType.BottomRight:
+					if (width + horizontalDistance <= 2) return;
+					if (height + verticalDistance <= 2) return;
+
+					_selectionRect.Width += horizontalDistance;
+					_selectionRect.Height += verticalDistance;
+					break;
 			}
 		}
 
@@ -128,13 +223,14 @@ namespace DrawPicture.Shapes
 				panel.Cursor = Cursors.SizeAll;
 
 			}
-			foreach (var focusPoint in GetPointCollection())
+			foreach (var focusPoint in GetPointCollection(_selectionRect))
 			{
 				double distance = Math.Sqrt(Math.Pow(mouseLocation.X - focusPoint.editPoint.X, 2) + Math.Pow(mouseLocation.Y - focusPoint.editPoint.Y, 2));
 				if (distance <= Size)
 				{
 					SetFoucsCursorType(focusPoint.focusType);
 					drawStatus = DrawStatus.CanAdjusted;
+					_focusType = focusPoint.focusType;
 				}
 			}
 
@@ -186,7 +282,7 @@ namespace DrawPicture.Shapes
 			{
 				MouseLeftButtonUpHandel(e);
 			}
-			panel.Invalidate();
+
 		}
 
 		private void MouseLeftButtonUpHandel(MouseEventArgs e)
@@ -206,6 +302,17 @@ namespace DrawPicture.Shapes
 					}
 					_fillRect = new Rectangle(_selectionRect.X, _selectionRect.Y, _selectionRect.Width, _selectionRect.Height);
 				}
+				panel.Invalidate();
+			}
+			else if (drawStatus == DrawStatus.Moving)
+			{
+				drawStatus = DrawStatus.CanMove;
+				panel.Invalidate();
+			}
+			else if (drawStatus == DrawStatus.Adjusting)
+			{
+				drawStatus = DrawStatus.CompleteAdjustment;
+				panel.Invalidate();
 			}
 		}
 
@@ -221,9 +328,17 @@ namespace DrawPicture.Shapes
 				if (_selectionRect.Width == 0 || _selectionRect.Height == 0) return;
 				DrawCreating(graphics);
 			}
-			else if (drawStatus == DrawStatus.CanMove || drawStatus == DrawStatus.CanAdjusted)
+			else if (drawStatus == DrawStatus.Moving || drawStatus == DrawStatus.CanMove || drawStatus == DrawStatus.CanAdjusted)
 			{
-				DrawCanAdjust(graphics);
+				DrawCanMoveOrAdjusted(graphics);
+			}
+			else if (drawStatus == DrawStatus.Adjusting)
+			{
+				DrawAdjusting(graphics);
+			}
+			else if (drawStatus == DrawStatus.CompleteAdjustment)
+			{
+				DrawAdjustComplate(graphics);
 			}
 		}
 
@@ -237,52 +352,88 @@ namespace DrawPicture.Shapes
 			}
 		}
 
-		private void DrawCanAdjust(Graphics graphics)
+		private void DrawCanMoveOrAdjusted(Graphics graphics)
 		{
 			if (_selectedBitmap == null) return;
-			graphics.FillRectangle(new SolidBrush(ForeColor), _fillRect);
-			graphics.DrawImage(_selectedBitmap, _selectionRect.Location);
+			graphics.FillRectangle(new SolidBrush(_FillRectColor), _fillRect);
+			graphics.DrawImage(_selectedBitmap, _selectionRect);
 			using (Pen selectionPen = new Pen(_selectedRectForeColor, 0.5f))
 			{
 				selectionPen.DashStyle = DashStyle.Dash;
 				selectionPen.DashPattern = new float[] { 5.0f, 4.0f };// 划线长，间隔长
 				graphics.DrawRectangle(selectionPen, _selectionRect);
 			}
-			foreach (var item in GetPointCollection())
+			foreach (var item in GetPointCollection(_selectionRect))
 			{
-				//using (Pen selectionPen = new Pen(Color.Black, 0.5f))
-				//{
-				//	selectionPen.DashStyle = DashStyle.Solid;
-				//	graphics.DrawEllipse(selectionPen, new Rectangle(
-				//		item.editPoint.X - (int)Size / 2,
-				//		item.editPoint.Y - (int)Size / 2,
-				//		(int)Size, (int)Size
-				//		));
-				//}
 				graphics.FillEllipse(new SolidBrush(_selectedRectForeColor), new Rectangle(
 					item.editPoint.X - (int)Size / 2,
 					item.editPoint.Y - (int)Size / 2,
-					(int)Size, (int)Size
-						));
+					(int)Size, 
+					(int)Size));
 			}
 		}
+
+		private void DrawAdjusting(Graphics graphics)
+		{
+			graphics.FillRectangle(new SolidBrush(_FillRectColor), _fillRect);
+			graphics.DrawImage(_selectedBitmap, _rectBeforeAdjust);
+			using (Pen selectionPen = new Pen(_selectedRectForeColor, 0.5f))
+			{
+				selectionPen.DashStyle = DashStyle.Dash;
+				selectionPen.DashPattern = new float[] { 5.0f, 4.0f };// 划线长，间隔长
+				graphics.DrawRectangle(selectionPen, _rectBeforeAdjust);
+
+				selectionPen.Color = Color.Black;
+				selectionPen.DashPattern = new float[] { 1.0f, 1.0f };// 划线长，间隔长
+				graphics.DrawRectangle(selectionPen, _selectionRect);
+			}
+			foreach (var item in GetPointCollection(_rectBeforeAdjust))
+			{
+				graphics.FillEllipse(new SolidBrush(_selectedRectForeColor), new Rectangle(
+					item.editPoint.X - (int)Size / 2,
+					item.editPoint.Y - (int)Size / 2,
+					(int)Size,
+					(int)Size));
+			}
+		}
+
+		private void DrawAdjustComplate(Graphics graphics)
+		{
+			graphics.FillRectangle(new SolidBrush(_FillRectColor), _fillRect);
+			graphics.DrawImage(_selectedBitmap, _selectionRect);
+			using (Pen selectionPen = new Pen(_selectedRectForeColor, 0.5f))
+			{
+				selectionPen.DashStyle = DashStyle.Dash;
+				selectionPen.DashPattern = new float[] { 5.0f, 4.0f };// 划线长，间隔长
+				graphics.DrawRectangle(selectionPen, _selectionRect);
+			}
+			foreach (var item in GetPointCollection(_selectionRect))
+			{
+				graphics.FillEllipse(new SolidBrush(_selectedRectForeColor), new Rectangle(
+					item.editPoint.X - (int)Size / 2,
+					item.editPoint.Y - (int)Size / 2,
+					(int)Size,
+					(int)Size));
+			}
+		}
+
 
 		/// <summary>
 		/// 矩形的可编辑点坐标和位置
 		/// </summary>
 		/// <returns></returns>
-		private IEnumerable<(Point editPoint, RectangleShapeFocusType focusType)> GetPointCollection()
+		private IEnumerable<(Point editPoint, RectangleShapeFocusType focusType)> GetPointCollection(Rectangle rect)
 		{
-			yield return (new Point(_selectionRect.X, _selectionRect.Y), RectangleShapeFocusType.TopLeft);
-			yield return (new Point(_selectionRect.X + _selectionRect.Width / 2, _selectionRect.Y), RectangleShapeFocusType.TopCenter);
-			yield return (new Point(_selectionRect.X + _selectionRect.Width, _selectionRect.Y), RectangleShapeFocusType.TopRight);
+			yield return (new Point(rect.X, rect.Y), RectangleShapeFocusType.TopLeft);
+			yield return (new Point(rect.X + rect.Width / 2, rect.Y), RectangleShapeFocusType.TopCenter);
+			yield return (new Point(rect.X + rect.Width, rect.Y), RectangleShapeFocusType.TopRight);
 
-			yield return (new Point(_selectionRect.X, _selectionRect.Y + _selectionRect.Height / 2), RectangleShapeFocusType.MiddleLeft);
-			yield return (new Point(_selectionRect.X + _selectionRect.Width, _selectionRect.Y + _selectionRect.Height / 2), RectangleShapeFocusType.MiddleRight);
+			yield return (new Point(rect.X, rect.Y + rect.Height / 2), RectangleShapeFocusType.MiddleLeft);
+			yield return (new Point(rect.X + rect.Width, rect.Y + rect.Height / 2), RectangleShapeFocusType.MiddleRight);
 
-			yield return (new Point(_selectionRect.X, _selectionRect.Y + _selectionRect.Height), RectangleShapeFocusType.BottomLeft);
-			yield return (new Point(_selectionRect.X + _selectionRect.Width / 2, _selectionRect.Y + _selectionRect.Height), RectangleShapeFocusType.BottomCenter);
-			yield return (new Point(_selectionRect.X + _selectionRect.Width, _selectionRect.Y + _selectionRect.Height), RectangleShapeFocusType.BottomRight);
+			yield return (new Point(rect.X, rect.Y + rect.Height), RectangleShapeFocusType.BottomLeft);
+			yield return (new Point(rect.X + rect.Width / 2, rect.Y + rect.Height), RectangleShapeFocusType.BottomCenter);
+			yield return (new Point(rect.X + rect.Width, rect.Y + rect.Height), RectangleShapeFocusType.BottomRight);
 		}
 
 	}

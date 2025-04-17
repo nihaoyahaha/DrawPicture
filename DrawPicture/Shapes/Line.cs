@@ -30,11 +30,7 @@ namespace DrawPicture.Shapes
 			{
 				MouseMoveLeftButtonHandle(e);
 			}
-			else if (e.Button == MouseButtons.Right)
-			{
-
-			}
-			else
+			else if(e.Button == MouseButtons.None)
 			{
 				_startPointSelected = false;
 				drawStatus = DrawStatus.CannotMovedOrAdjusted;
