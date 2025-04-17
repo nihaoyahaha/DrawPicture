@@ -121,11 +121,14 @@
   <data name="六边形" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\六边形.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="擦除" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\擦除.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="粗细" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\粗细.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="保存 (1)" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\保存 (1).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="透明" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\透明.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="坐标轴" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\坐标轴.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -142,11 +145,11 @@
   <data name="打开" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\打开.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="保存" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\保存.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="圆圈" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\圆圈.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="矩形" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\矩形.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="颜色" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\颜色.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -163,8 +166,8 @@
   <data name="形状-矩形" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\形状-矩形.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="拓展" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\拓展.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="保存" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\保存.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="直角三角形" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\直角三角形.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -172,16 +175,16 @@
   <data name="五边形" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\五边形.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="擦除" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\擦除.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="拓展" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\拓展.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="select" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\select.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="矩形" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\矩形.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="保存 (1)" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\保存 (1).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="透明" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\透明.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="填充颜色" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\填充颜色.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

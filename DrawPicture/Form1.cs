@@ -55,6 +55,11 @@ namespace DrawPicture
 				_shape.InPainting(e.Graphics);
 			}
 		}
+		/// <summary>
+		/// 直線
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void btn_Line_Click(object sender, EventArgs e)
 		{
 			_shape = new Line(_canvas, panel_main)
@@ -63,6 +68,12 @@ namespace DrawPicture
 				Size = float.Parse(cmb_size.Text.Substring(0, 1))
 			};
 		}
+
+		/// <summary>
+		/// 消しゴム
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void btn_Erase_Click(object sender, EventArgs e)
 		{
 			_shape = new Eraser(_canvas, panel_main)
@@ -71,9 +82,28 @@ namespace DrawPicture
 				Size = float.Parse(cmb_size.Text.Substring(0, 1))
 			};
 		}
+
+		/// <summary>
+		/// 矩形選択
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void btn_select_Click(object sender, EventArgs e)
 		{
 			_shape = new RectangularSelection(_canvas, panel_main)
+			{
+				ForeColor = btn_showColor.BackColor
+			};
+		}
+
+		/// <summary>
+		/// カラーフィル
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void btn_Fill_Click(object sender, EventArgs e)
+		{
+			_shape = new OilTank(_canvas, panel_main)
 			{
 				ForeColor = btn_showColor.BackColor
 			};
@@ -243,7 +273,7 @@ namespace DrawPicture
 			SetShapeForeColor(Color.White);
 		}
 
-		private void SetShapeForeColor(Color color)
+		private void SetShapeForeColor( Color color)
 		{
 			btn_showColor.BackColor = color;
 			_shape.ForeColor = color;
@@ -251,7 +281,5 @@ namespace DrawPicture
 			if (_shape is RectangularSelection) return;
 			panel_main.Refresh();
 		}
-
-
 	}
 }

@@ -153,6 +153,16 @@ namespace DrawPicture.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
+        internal static System.Drawing.Bitmap 填充颜色 {
+            get {
+                object obj = ResourceManager.GetObject("填充颜色", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
         internal static System.Drawing.Bitmap 形状_三角形 {
             get {
                 object obj = ResourceManager.GetObject("形状-三角形", resourceCulture);
