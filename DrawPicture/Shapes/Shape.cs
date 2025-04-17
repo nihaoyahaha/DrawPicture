@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,7 +29,15 @@ namespace DrawPicture.Shapes
 		public abstract void MouseUp(MouseEventArgs e);
 		//描画中
 		public abstract void InPainting(Graphics graphics);
+		//回転指定角度
+		public abstract void Rotate(float angle);
+		//水平反転
+		public abstract void FlipHorizontal();
+		//垂直反転
+		public abstract void FlipVertical();
 
+		//クリアランス
+		public abstract void Clear(Color color);
 		/// <summary>
 		/// 点が直線上にあるかどうかを判断する
 		/// </summary>
@@ -51,6 +60,9 @@ namespace DrawPicture.Shapes
 
 			return Math.Sqrt((pf.X - px) * (pf.X - px) + (py - pf.Y) * (py - pf.Y)) <= range;
 		}
+
+		
+
 
 	}
 }

@@ -41,7 +41,12 @@
 			this.toolStripComboBox1 = new System.Windows.Forms.ToolStripComboBox();
 			this.lb_Penposition = new System.Windows.Forms.ToolStripLabel();
 			this.btn_select = new System.Windows.Forms.ToolStripDropDownButton();
-			this.btn_rotate = new System.Windows.Forms.ToolStripButton();
+			this.btn_rotate = new System.Windows.Forms.ToolStripDropDownButton();
+			this.btn_RightRotate90 = new System.Windows.Forms.ToolStripMenuItem();
+			this.btn_LeftRotate90 = new System.Windows.Forms.ToolStripMenuItem();
+			this.btn_Rotate180 = new System.Windows.Forms.ToolStripMenuItem();
+			this.btn_FlipVertical = new System.Windows.Forms.ToolStripMenuItem();
+			this.btn_FlipHorizontal = new System.Windows.Forms.ToolStripMenuItem();
 			this.btn_Erase = new System.Windows.Forms.ToolStripButton();
 			this.btn_Fill = new System.Windows.Forms.ToolStripButton();
 			this.btn_Text = new System.Windows.Forms.ToolStripButton();
@@ -63,6 +68,7 @@
 			this.btn_OrangeColor = new System.Windows.Forms.ToolStripMenuItem();
 			this.btn_save = new System.Windows.Forms.ToolStripButton();
 			this.btn_open = new System.Windows.Forms.ToolStripButton();
+			this.btn_ClearAll = new System.Windows.Forms.ToolStripButton();
 			this.toolStrip1.SuspendLayout();
 			this.toolStrip2.SuspendLayout();
 			this.SuspendLayout();
@@ -93,10 +99,11 @@
             this.btn_showColor,
             this.toolStripSeparator5,
             this.btn_save,
-            this.btn_open});
+            this.btn_open,
+            this.btn_ClearAll});
 			this.toolStrip1.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip1.Name = "toolStrip1";
-			this.toolStrip1.Size = new System.Drawing.Size(834, 56);
+			this.toolStrip1.Size = new System.Drawing.Size(940, 56);
 			this.toolStrip1.TabIndex = 0;
 			this.toolStrip1.Text = "toolStrip1";
 			// 
@@ -148,7 +155,7 @@
 			this.panel_main.BackColor = System.Drawing.Color.White;
 			this.panel_main.Location = new System.Drawing.Point(12, 59);
 			this.panel_main.Name = "panel_main";
-			this.panel_main.Size = new System.Drawing.Size(810, 444);
+			this.panel_main.Size = new System.Drawing.Size(916, 444);
 			this.panel_main.TabIndex = 1;
 			this.panel_main.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_main_Paint);
 			this.panel_main.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel_main_MouseDown);
@@ -167,7 +174,7 @@
 			this.toolStrip2.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
 			this.toolStrip2.Location = new System.Drawing.Point(0, 517);
 			this.toolStrip2.Name = "toolStrip2";
-			this.toolStrip2.Size = new System.Drawing.Size(834, 25);
+			this.toolStrip2.Size = new System.Drawing.Size(940, 25);
 			this.toolStrip2.Stretch = true;
 			this.toolStrip2.TabIndex = 2;
 			this.toolStrip2.Text = "toolStrip2";
@@ -220,13 +227,53 @@
 			// 
 			// btn_rotate
 			// 
-			this.btn_rotate.Image = global::DrawPicture.Properties.Resources.右旋转;
+			this.btn_rotate.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.btn_RightRotate90,
+            this.btn_LeftRotate90,
+            this.btn_Rotate180,
+            this.btn_FlipVertical,
+            this.btn_FlipHorizontal});
+			this.btn_rotate.Image = global::DrawPicture.Properties.Resources.右旋转1;
 			this.btn_rotate.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-			this.btn_rotate.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.btn_rotate.Name = "btn_rotate";
-			this.btn_rotate.Size = new System.Drawing.Size(36, 53);
+			this.btn_rotate.Size = new System.Drawing.Size(45, 53);
 			this.btn_rotate.Text = "回転";
 			this.btn_rotate.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			// 
+			// btn_RightRotate90
+			// 
+			this.btn_RightRotate90.Name = "btn_RightRotate90";
+			this.btn_RightRotate90.Size = new System.Drawing.Size(150, 22);
+			this.btn_RightRotate90.Text = "向右旋转90度";
+			this.btn_RightRotate90.Click += new System.EventHandler(this.btn_RightRotate90_Click);
+			// 
+			// btn_LeftRotate90
+			// 
+			this.btn_LeftRotate90.Name = "btn_LeftRotate90";
+			this.btn_LeftRotate90.Size = new System.Drawing.Size(150, 22);
+			this.btn_LeftRotate90.Text = "向左旋转90度";
+			this.btn_LeftRotate90.Click += new System.EventHandler(this.btn_LeftRotate90_Click);
+			// 
+			// btn_Rotate180
+			// 
+			this.btn_Rotate180.Name = "btn_Rotate180";
+			this.btn_Rotate180.Size = new System.Drawing.Size(150, 22);
+			this.btn_Rotate180.Text = "旋转180度";
+			this.btn_Rotate180.Click += new System.EventHandler(this.btn_Rotate180_Click);
+			// 
+			// btn_FlipVertical
+			// 
+			this.btn_FlipVertical.Name = "btn_FlipVertical";
+			this.btn_FlipVertical.Size = new System.Drawing.Size(150, 22);
+			this.btn_FlipVertical.Text = "垂直翻转";
+			this.btn_FlipVertical.Click += new System.EventHandler(this.btn_FlipVertical_Click);
+			// 
+			// btn_FlipHorizontal
+			// 
+			this.btn_FlipHorizontal.Name = "btn_FlipHorizontal";
+			this.btn_FlipHorizontal.Size = new System.Drawing.Size(150, 22);
+			this.btn_FlipHorizontal.Text = "水平翻转";
+			this.btn_FlipHorizontal.Click += new System.EventHandler(this.btn_FlipHorizontal_Click);
 			// 
 			// btn_Erase
 			// 
@@ -259,6 +306,7 @@
 			this.btn_Text.Size = new System.Drawing.Size(36, 53);
 			this.btn_Text.Text = "文字";
 			this.btn_Text.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.btn_Text.Visible = false;
 			// 
 			// btn_Line
 			// 
@@ -281,6 +329,7 @@
 			this.btn_circle.Name = "btn_circle";
 			this.btn_circle.Size = new System.Drawing.Size(36, 53);
 			this.btn_circle.Text = "円";
+			this.btn_circle.Visible = false;
 			// 
 			// btn_rectangle
 			// 
@@ -301,6 +350,7 @@
 			this.btn_roundedRectangle.Name = "btn_roundedRectangle";
 			this.btn_roundedRectangle.Size = new System.Drawing.Size(42, 53);
 			this.btn_roundedRectangle.Text = "フィレット長方形";
+			this.btn_roundedRectangle.Visible = false;
 			// 
 			// btn_triangle
 			// 
@@ -311,6 +361,7 @@
 			this.btn_triangle.Name = "btn_triangle";
 			this.btn_triangle.Size = new System.Drawing.Size(36, 53);
 			this.btn_triangle.Text = "三角形";
+			this.btn_triangle.Visible = false;
 			// 
 			// btn_RightTriangle
 			// 
@@ -321,6 +372,7 @@
 			this.btn_RightTriangle.Name = "btn_RightTriangle";
 			this.btn_RightTriangle.Size = new System.Drawing.Size(36, 53);
 			this.btn_RightTriangle.Text = "直角三角形";
+			this.btn_RightTriangle.Visible = false;
 			// 
 			// btn_rhombus
 			// 
@@ -331,6 +383,7 @@
 			this.btn_rhombus.Name = "btn_rhombus";
 			this.btn_rhombus.Size = new System.Drawing.Size(36, 53);
 			this.btn_rhombus.Text = "ひし形";
+			this.btn_rhombus.Visible = false;
 			// 
 			// btn_pentagon
 			// 
@@ -351,6 +404,7 @@
 			this.btn_hexagon.Name = "btn_hexagon";
 			this.btn_hexagon.Size = new System.Drawing.Size(36, 53);
 			this.btn_hexagon.Text = "六角形";
+			this.btn_hexagon.Visible = false;
 			// 
 			// btn_showColor
 			// 
@@ -436,12 +490,23 @@
 			this.btn_open.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
 			this.btn_open.Click += new System.EventHandler(this.btn_open_Click);
 			// 
+			// btn_ClearAll
+			// 
+			this.btn_ClearAll.Image = global::DrawPicture.Properties.Resources.Clearup;
+			this.btn_ClearAll.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+			this.btn_ClearAll.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.btn_ClearAll.Name = "btn_ClearAll";
+			this.btn_ClearAll.Size = new System.Drawing.Size(48, 53);
+			this.btn_ClearAll.Text = "クリア";
+			this.btn_ClearAll.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.btn_ClearAll.Click += new System.EventHandler(this.btn_ClearAll_Click);
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.SystemColors.Control;
-			this.ClientSize = new System.Drawing.Size(834, 542);
+			this.ClientSize = new System.Drawing.Size(940, 542);
 			this.Controls.Add(this.toolStrip2);
 			this.Controls.Add(this.panel_main);
 			this.Controls.Add(this.toolStrip1);
@@ -464,7 +529,6 @@
 
 		private System.Windows.Forms.ToolStrip toolStrip1;
 		private System.Windows.Forms.ToolStripDropDownButton btn_select;
-		private System.Windows.Forms.ToolStripButton btn_rotate;
 		private System.Windows.Forms.ToolStripButton btn_Erase;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
@@ -497,6 +561,13 @@
 		private System.Windows.Forms.ToolStripComboBox cmb_size;
 		private System.Windows.Forms.ToolStripMenuItem btn_WhileColor;
 		private System.Windows.Forms.ToolStripButton btn_Fill;
+		private System.Windows.Forms.ToolStripDropDownButton btn_rotate;
+		private System.Windows.Forms.ToolStripMenuItem btn_RightRotate90;
+		private System.Windows.Forms.ToolStripMenuItem btn_LeftRotate90;
+		private System.Windows.Forms.ToolStripMenuItem btn_Rotate180;
+		private System.Windows.Forms.ToolStripMenuItem btn_FlipVertical;
+		private System.Windows.Forms.ToolStripMenuItem btn_FlipHorizontal;
+		private System.Windows.Forms.ToolStripButton btn_ClearAll;
 	}
 }
 

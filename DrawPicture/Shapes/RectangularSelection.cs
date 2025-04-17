@@ -23,6 +23,7 @@ namespace DrawPicture.Shapes
 		private Color _selectedRectForeColor = Color.FromArgb(104, 139, 204);
 		private Color _FillRectColor;
 		private RectangleShapeFocusType _focusType;
+		private float _angle=0;
 		public RectangularSelection(Bitmap bitmap, Panel panel) : base(bitmap, panel)
 		{
 			Size = 10;
@@ -357,6 +358,35 @@ namespace DrawPicture.Shapes
 			if (_selectedBitmap == null) return;
 			graphics.FillRectangle(new SolidBrush(_FillRectColor), _fillRect);
 			graphics.DrawImage(_selectedBitmap, _selectionRect);
+			// 保存当前绘图状态
+			//GraphicsState state = graphics.Save();
+
+			//try
+			//{
+			//	// 设置旋转中心（_selectionRect 的中心点）
+			//	float centerX = _selectionRect.X + _selectionRect.Width / 2f;
+			//	float centerY = _selectionRect.Y + _selectionRect.Height / 2f;
+
+			//	// 平移到旋转中心
+			//	graphics.TranslateTransform(centerX, centerY);
+
+			//	// 旋转 90 度（顺时针）
+			//	graphics.RotateTransform(_angle);
+
+			//	// 平移回原点
+			//	//graphics.TranslateTransform(-centerX, -centerY);
+
+			//	// 绘制图像
+			//	graphics.DrawImage(_selectedBitmap,Point.Empty);
+			//	graphics.ResetTransform();
+			//}
+			//finally
+			//{
+			//	// 恢复原始状态
+			//	//graphics.Restore(state);
+			//}
+
+
 			using (Pen selectionPen = new Pen(_selectedRectForeColor, 0.5f))
 			{
 				selectionPen.DashStyle = DashStyle.Dash;
@@ -436,5 +466,65 @@ namespace DrawPicture.Shapes
 			yield return (new Point(rect.X + rect.Width, rect.Y + rect.Height), RectangleShapeFocusType.BottomRight);
 		}
 
+		public override void Rotate(float angle)
+		{
+			drawStatus = DrawStatus.CanAdjusted;
+			var center = GetCenter();
+			var matrix = new Matrix();
+			matrix.RotateAt(angle, center);
+			ApplyTransform(matrix);
+			
+		}
+		public PointF GetCenter()
+		{
+			return new PointF(_selectionRect.X + _selectionRect.Width / 2f, _selectionRect.Y + _selectionRect.Height / 2f);
+		}
+		// 应用变换并更新边界
+		public void ApplyTransform(Matrix transform)
+		{
+			var points = GetPoints();
+			transform.TransformPoints(points);
+
+			// 更新边界为变换后顶点的包围盒
+			float minX = points.Min(p => p.X);
+			float maxX = points.Max(p => p.X);
+			float minY = points.Min(p => p.Y);
+			float maxY = points.Max(p => p.Y);
+
+			_selectionRect = Rectangle.FromLTRB((int)Math.Round(minX), (int)Math.Round(minY),
+										(int)Math.Round(maxX), (int)Math.Round(maxY));
+		}
+
+		// 获取矩形的四个顶点
+		public PointF[] GetPoints()
+		{
+			return new PointF[]
+			{
+			new PointF(_selectionRect.Left, _selectionRect.Top),
+			new PointF(_selectionRect.Right, _selectionRect.Top),
+			new PointF(_selectionRect.Right, _selectionRect.Bottom),
+			new PointF(_selectionRect.Left, _selectionRect.Bottom)
+			};
+		}
+
+
+		public override void FlipHorizontal()
+		{
+			
+		}
+
+		public override void FlipVertical()
+		{
+			
+		}
+
+		public override void Clear(Color color)
+		{
+			using (Graphics g = Graphics.FromImage(canvas))
+			{
+				g.Clear(color);
+			}
+			panel.Invalidate();
+		}
 	}
 }

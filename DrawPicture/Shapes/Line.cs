@@ -130,6 +130,7 @@ namespace DrawPicture.Shapes
 			if (drawStatus == DrawStatus.Creating && EndPoint.X == 0 && EndPoint.Y == 0) 
 			{ 
 				drawStatus = DrawStatus.CannotMovedOrAdjusted;
+				StartPoint = new Point();
 				return; 
 			}
 			
@@ -168,6 +169,7 @@ namespace DrawPicture.Shapes
 			}
 			else if (drawStatus == DrawStatus.CanMove || drawStatus == DrawStatus.CanAdjusted || drawStatus == DrawStatus.AdjustTheStyle)
 			{
+				if (EndPoint.X == 0 && EndPoint.Y == 0) return;
 				DrawMoveOrAdjusted(graphics);
 			}
 		}
@@ -182,7 +184,6 @@ namespace DrawPicture.Shapes
 
 		private void DrawMoveOrAdjusted(Graphics graphics)
 		{
-			if (EndPoint.X == 0 && EndPoint.Y == 0) return;
 			using (Pen pen = new Pen(ForeColor, Size) { DashStyle = DashStyle.Solid, StartCap = LineCap.Round, EndCap = LineCap.Round })
 			{
 				graphics.DrawLine(pen, StartPoint, EndPoint);
@@ -236,8 +237,53 @@ namespace DrawPicture.Shapes
 				drawStatus = DrawStatus.CanAdjusted;
 				panel.Cursor = Cursors.SizeNS;
 			}
-
 		}
 
+		public override void Rotate(float angle)
+		{
+			if (StartPoint.X == 0 && StartPoint.Y == 0) return;
+			drawStatus = DrawStatus.AdjustTheStyle;
+			RotateShape(angle);
+		}
+
+		public override void FlipHorizontal(){}
+
+		public override void FlipVertical(){}
+
+		private Point GetLineCenter()
+		{
+			return new Point((StartPoint.X + EndPoint.X) / 2, (StartPoint.Y + EndPoint.Y) / 2);
+		}
+
+		/// <summary>
+		/// 回転指定角度
+		/// </summary>
+		/// <param name="angle">角度</param>
+		private void RotateShape(float angle)
+		{
+			var center = GetLineCenter();
+			var matrix = new Matrix();
+			matrix.RotateAt(angle, center);
+			ApplyTransform(matrix);
+		}
+
+		private void ApplyTransform(Matrix transform)
+		{
+			var points = new[] { StartPoint, EndPoint };
+			transform.TransformPoints(points);
+			StartPoint = points[0];
+			EndPoint = points[1];
+		}
+
+		public override void Clear(Color color)
+		{
+			using (Graphics g = Graphics.FromImage(canvas))
+			{
+				g.Clear(color);
+			}
+			StartPoint = new Point();
+			EndPoint = new Point();
+			panel.Invalidate();
+		}
 	}
 }

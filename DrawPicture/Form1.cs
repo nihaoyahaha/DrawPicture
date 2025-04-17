@@ -18,7 +18,7 @@ namespace DrawPicture
 	{
 		private Bitmap _canvas;
 		private Shape _shape;
-		private Color _canvasBackgroundColor = Color.AliceBlue;
+		private Color _canvasBackgroundColor = Color.White;
 		public Form1()
 		{
 			InitializeComponent();
@@ -155,34 +155,7 @@ namespace DrawPicture
 			new object[] { true });
 		}
 
-		private void ResizeCanvasToPanel()
-		{
-			// 获取新的 Panel 尺寸
-			int newWidth = this.Width;
-			int newHeight = this.Height;
-
-			if (newWidth <= 500) return;
-			if (newHeight <= 500) return;
-
-			// 创建一个新的 Bitmap，尺寸与 Panel 相同
-			 Bitmap newCanvas = new Bitmap(newWidth, newHeight);
-
-			// 如果已有画布内容，将其绘制到新的画布上
-			if (_canvas != null)
-			{
-				using (Graphics g = Graphics.FromImage(newCanvas))
-				{
-					g.Clear(_canvasBackgroundColor); // 清除背景
-					g.DrawImage(_canvas, Point.Empty); // 绘制原有内容
-				}
-			}
-
-			// 更新当前画布
-			_canvas?.Dispose(); 
-			_canvas = newCanvas;
-			_shape.canvas = _canvas;
-			panel_main.Invalidate();
-		}
+		
 		private void SavePng()
 		{
 			// 保存位图为 PNG 文件
@@ -280,6 +253,80 @@ namespace DrawPicture
 			_shape.drawStatus = DrawStatus.AdjustTheStyle;
 			if (_shape is RectangularSelection) return;
 			panel_main.Refresh();
+		}
+
+		private void btn_RightRotate90_Click(object sender, EventArgs e)
+		{
+			if (_shape is Eraser) return;
+			if (_shape is OilTank) return;
+			_shape.Rotate(90);
+			panel_main.Refresh();
+		}
+
+		private void btn_LeftRotate90_Click(object sender, EventArgs e)
+		{
+			if (_shape is Eraser) return;
+			if (_shape is OilTank) return;
+			_shape.Rotate(-90);
+			panel_main.Refresh();
+		}
+
+		private void btn_Rotate180_Click(object sender, EventArgs e)
+		{
+			if (_shape is Eraser) return;
+			if (_shape is OilTank) return;
+			_shape.Rotate(180);
+			panel_main.Refresh();
+		}
+
+		private void btn_FlipVertical_Click(object sender, EventArgs e)
+		{
+			if (_shape is Eraser) return;
+			if (_shape is OilTank) return;
+			_shape.FlipHorizontal();
+			panel_main.Refresh();
+		}
+
+		private void btn_FlipHorizontal_Click(object sender, EventArgs e)
+		{
+			if (_shape is Eraser) return;
+			if (_shape is OilTank) return;
+			_shape.FlipVertical();
+			panel_main.Refresh();
+		}
+
+		private void btn_ClearAll_Click(object sender, EventArgs e)
+		{
+			_shape.Clear(_canvasBackgroundColor);
+		}
+
+		private void ResizeCanvasToPanel()
+		{
+			// 获取新的 Panel 尺寸
+			int newWidth = this.Width;
+			int newHeight = this.Height;
+
+			if (newWidth <= 500) return;
+			if (newHeight <= 500) return;
+
+			// 创建一个新的 Bitmap，尺寸与 Panel 相同
+			Bitmap newCanvas = new Bitmap(newWidth, newHeight);
+
+			// 如果已有画布内容，将其绘制到新的画布上
+			if (_canvas != null)
+			{
+				using (Graphics g = Graphics.FromImage(newCanvas))
+				{
+					g.Clear(_canvasBackgroundColor); // 清除背景
+					g.DrawImage(_canvas, Point.Empty); // 绘制原有内容
+				}
+			}
+
+			// 更新当前画布
+			_canvas?.Dispose();
+			_canvas = newCanvas;
+			_shape.canvas = _canvas;
+			panel_main.Invalidate();
 		}
 	}
 }

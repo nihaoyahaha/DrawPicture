@@ -140,5 +140,19 @@ namespace DrawPicture.Shapes
 			}
 		}
 
+		public override void Rotate(float angle){}
+
+		public override void FlipHorizontal(){}
+
+		public override void FlipVertical(){}
+
+		public override void Clear(Color color)
+		{
+			using (Graphics g = Graphics.FromImage(canvas))
+			{
+				g.Clear(color);
+			}
+			panel.Invalidate();
+		}
 	}
 }

@@ -63,6 +63,16 @@ namespace DrawPicture.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
+        internal static System.Drawing.Bitmap Clearup {
+            get {
+                object obj = ResourceManager.GetObject("Clearup", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
         internal static System.Drawing.Bitmap select {
             get {
                 object obj = ResourceManager.GetObject("select", resourceCulture);
@@ -116,6 +126,16 @@ namespace DrawPicture.Properties {
         internal static System.Drawing.Bitmap 右旋转 {
             get {
                 object obj = ResourceManager.GetObject("右旋转", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap 右旋转1 {
+            get {
+                object obj = ResourceManager.GetObject("右旋转1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
