@@ -148,11 +148,7 @@ namespace DrawPicture.Shapes
 
 		public override void Clear(Color color)
 		{
-			using (Graphics g = Graphics.FromImage(canvas))
-			{
-				g.Clear(color);
-			}
-			panel.Invalidate();
+			ClearBitmap(color);
 		}
 	}
 }

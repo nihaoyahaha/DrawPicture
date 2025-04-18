@@ -16,10 +16,7 @@ namespace DrawPicture.Shapes
 	public class Eraser : Shape
 	{
 		Bitmap newCanvas;
-		public Eraser(Bitmap canvas, Panel panel) : base(canvas, panel)
-		{
-			
-		}
+		public Eraser(Bitmap canvas, Panel panel) : base(canvas, panel){}
 		public override void MouseDown(MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Left)
@@ -122,11 +119,7 @@ namespace DrawPicture.Shapes
 
 		public override void Clear(Color color)
 		{
-			using (Graphics g = Graphics.FromImage(canvas))
-			{
-				g.Clear(color);
-			}
-			panel.Invalidate();
+			Clear(color);
 		}
 	}
 }

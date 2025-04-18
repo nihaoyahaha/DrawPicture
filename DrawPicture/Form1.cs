@@ -55,11 +55,8 @@ namespace DrawPicture
 				_shape.InPainting(e.Graphics);
 			}
 		}
-		/// <summary>
-		/// 直線
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
+
+		//直線
 		private void btn_Line_Click(object sender, EventArgs e)
 		{
 			_shape = new Line(_canvas, panel_main)
@@ -69,11 +66,7 @@ namespace DrawPicture
 			};
 		}
 
-		/// <summary>
-		/// 消しゴム
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
+		//消しゴム
 		private void btn_Erase_Click(object sender, EventArgs e)
 		{
 			_shape = new Eraser(_canvas, panel_main)
@@ -83,11 +76,7 @@ namespace DrawPicture
 			};
 		}
 
-		/// <summary>
-		/// 矩形選択
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
+		//矩形選択
 		private void btn_select_Click(object sender, EventArgs e)
 		{
 			_shape = new RectangularSelection(_canvas, panel_main)
@@ -96,11 +85,7 @@ namespace DrawPicture
 			};
 		}
 
-		/// <summary>
-		/// カラーフィル
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
+		//カラーフィル
 		private void btn_Fill_Click(object sender, EventArgs e)
 		{
 			_shape = new OilTank(_canvas, panel_main)
@@ -108,6 +93,27 @@ namespace DrawPicture
 				ForeColor = btn_showColor.BackColor
 			};
 		}
+
+		//長方形
+		private void btn_rectangle_Click(object sender, EventArgs e)
+		{
+			_shape = new ShapeRectangle(_canvas, panel_main)
+			{
+				ForeColor = btn_showColor.BackColor,
+				Size = float.Parse(cmb_size.Text.Substring(0, 1))
+			};
+		}
+
+		//五角形
+		private void btn_pentagon_Click(object sender, EventArgs e)
+		{
+			_shape = new Pentagon(_canvas, panel_main)
+			{
+				ForeColor = btn_showColor.BackColor,
+				Size = float.Parse(cmb_size.Text.Substring(0, 1))
+			};
+		}
+
 		private void Form1_Resize(object sender, EventArgs e)
 		{
 			ResizeCanvasToPanel();
@@ -328,5 +334,7 @@ namespace DrawPicture
 			_shape.canvas = _canvas;
 			panel_main.Invalidate();
 		}
+
+
 	}
 }

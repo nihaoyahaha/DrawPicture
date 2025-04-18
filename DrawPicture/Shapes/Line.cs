@@ -17,8 +17,6 @@ namespace DrawPicture.Shapes
 	{
 		private int _handleSize = 15; // 控制点矩形的大小
 		private bool _startPointSelected = false;
-		private Point _offset = new Point();
-		private Color _selectedRectForeColor = Color.FromArgb(104, 139, 204);
 		public Line(Bitmap canvas, Panel panel) : base(canvas,panel)
 		{
 			
@@ -55,11 +53,11 @@ namespace DrawPicture.Shapes
 			}
 			else if (drawStatus == DrawStatus.CanMove)
 			{
-				int deltaX = e.X - _offset.X;
-				int deltaY = e.Y - _offset.Y;
+				int deltaX = e.X - Offset.X;
+				int deltaY = e.Y - Offset.Y;
 				StartPoint = new Point(StartPoint.X+deltaX,StartPoint.Y+deltaY);
 				EndPoint = new Point(EndPoint.X+deltaX,EndPoint.Y+deltaY);
-				_offset = new Point(e.X, e.Y);
+				Offset = new Point(e.X, e.Y);
 				panel.Invalidate();
 			}
 			else if (drawStatus == DrawStatus.CanAdjusted)
@@ -92,7 +90,7 @@ namespace DrawPicture.Shapes
 			}
 			else if (drawStatus == DrawStatus.CanMove)
 			{
-				_offset = e.Location;
+				Offset = e.Location;
 			}
 			else if (drawStatus == DrawStatus.CanAdjusted)
 			{
@@ -200,7 +198,7 @@ namespace DrawPicture.Shapes
 				_handleSize,
 				_handleSize
 			);
-			g.FillEllipse(new SolidBrush( _selectedRectForeColor), rect); // 绘制矩形边框
+			g.FillEllipse(new SolidBrush(ResizerPointColor), rect); // 绘制矩形边框
 
 			rect = new Rectangle(
 				endPoint.X - _handleSize / 2,
@@ -208,7 +206,7 @@ namespace DrawPicture.Shapes
 				_handleSize,
 				_handleSize
 			);
-			g.FillEllipse(new SolidBrush(_selectedRectForeColor), rect);// 绘制矩形边框
+			g.FillEllipse(new SolidBrush(ResizerPointColor), rect);// 绘制矩形边框
 		}
 
 		private void IsMouseOnHandle(Point mouseLocation ,Point startPoint, Point endPoint)
@@ -277,13 +275,9 @@ namespace DrawPicture.Shapes
 
 		public override void Clear(Color color)
 		{
-			using (Graphics g = Graphics.FromImage(canvas))
-			{
-				g.Clear(color);
-			}
 			StartPoint = new Point();
 			EndPoint = new Point();
-			panel.Invalidate();
+			ClearBitmap(color);
 		}
 	}
 }
