@@ -21,9 +21,7 @@ namespace DrawPicture.Shapes
 		private Color _FillRectColor;
 		
 		private float _angle=0;
-		public RectangularSelection(Bitmap bitmap, Panel panel) : base(bitmap, panel)
-		{
-		}
+		public RectangularSelection(Bitmap bitmap, Panel panel) : base(bitmap, panel){}
 
 		public override void MouseDown(MouseEventArgs e)
 		{

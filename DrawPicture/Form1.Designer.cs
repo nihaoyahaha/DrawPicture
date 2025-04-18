@@ -256,7 +256,7 @@
 			this.btn_circle.Name = "btn_circle";
 			this.btn_circle.Size = new System.Drawing.Size(36, 53);
 			this.btn_circle.Text = "円";
-			this.btn_circle.Visible = false;
+			this.btn_circle.Click += new System.EventHandler(this.btn_circle_Click);
 			// 
 			// btn_rectangle
 			// 

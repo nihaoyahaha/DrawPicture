@@ -114,6 +114,15 @@ namespace DrawPicture
 			};
 		}
 
+		//円
+		private void btn_circle_Click(object sender, EventArgs e)
+		{
+			_shape = new Circle(_canvas, panel_main)
+			{
+				ForeColor = btn_showColor.BackColor,
+				Size = float.Parse(cmb_size.Text.Substring(0, 1))
+			};
+		}
 		private void Form1_Resize(object sender, EventArgs e)
 		{
 			ResizeCanvasToPanel();
