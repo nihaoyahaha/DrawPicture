@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,14 +10,14 @@ using System.Windows.Forms;
 
 namespace DrawPicture.Shapes
 {
-	/// <summary>
-	/// 長方形
-	/// </summary>
-	public class ShapeRectangle : Shape
+	public class RoundedRectangle : Shape
 	{
-		public ShapeRectangle(Bitmap bitmap, Panel panel) : base(bitmap, panel){}
+		public RoundedRectangle(Bitmap bitmap, Panel panel) : base(bitmap, panel){}
 
-		private void BitmapDrawRectangle()
+		//頂点の集合
+		private GraphicsPath _path = new GraphicsPath();
+		private int _radius = 20;
+		private void BitmapDrawRoundedRectangle()
 		{
 			if (canvas == null) return;
 			if (SelectionRect.Width == 0 && SelectionRect.Height == 0) return;
@@ -25,7 +26,7 @@ namespace DrawPicture.Shapes
 				using (Pen selectionPen = new Pen(ForeColor, Size))
 				{
 					selectionPen.DashStyle = DashStyle.Solid;
-					g.DrawRectangle(selectionPen, SelectionRect);
+					g.DrawPath(selectionPen, _path);
 				}
 			}
 			drawStatus = DrawStatus.CannotMovedOrAdjusted;
@@ -47,7 +48,7 @@ namespace DrawPicture.Shapes
 		{
 			if (drawStatus == DrawStatus.CannotMovedOrAdjusted)
 			{
-				BitmapDrawRectangle();
+				BitmapDrawRoundedRectangle();
 				StartPoint = e.Location;
 				drawStatus = DrawStatus.Creating;
 			}
@@ -62,7 +63,6 @@ namespace DrawPicture.Shapes
 				drawStatus = DrawStatus.Adjusting;
 			}
 		}
-
 		private void MouseRightButtonDownHandle(MouseEventArgs e)
 		{
 			if (drawStatus == DrawStatus.Creating || drawStatus == DrawStatus.Moving || drawStatus == DrawStatus.Adjusting)
@@ -72,7 +72,7 @@ namespace DrawPicture.Shapes
 			}
 			else if (drawStatus == DrawStatus.CannotMovedOrAdjusted && SelectionRect != Rectangle.Empty)
 			{
-				BitmapDrawRectangle();
+				BitmapDrawRoundedRectangle();
 			}
 		}
 
@@ -90,10 +90,6 @@ namespace DrawPicture.Shapes
 			}
 		}
 
-		/// <summary>
-		/// 矩形的可编辑点坐标和位置
-		/// </summary>
-		/// <returns></returns>
 		private void MouseMoveLeftButtonHandle(MouseEventArgs e)
 		{
 			if (drawStatus == DrawStatus.Creating)
@@ -104,6 +100,7 @@ namespace DrawPicture.Shapes
 				int width = Math.Abs(StartPoint.X - EndPoint.X);
 				int height = Math.Abs(StartPoint.Y - EndPoint.Y);
 				SelectionRect = new Rectangle(x, y, width, height);
+				GetRoundedRectanglePath();
 				panel.Invalidate();
 			}
 			else if (drawStatus == DrawStatus.Moving)
@@ -112,6 +109,7 @@ namespace DrawPicture.Shapes
 				int deltaY = e.Y - Offset.Y;
 				SelectionRect.Offset(deltaX, deltaY);
 				Offset = e.Location;
+				GetRoundedRectanglePath();
 				panel.Invalidate();
 			}
 			else if (drawStatus == DrawStatus.Adjusting)
@@ -120,8 +118,24 @@ namespace DrawPicture.Shapes
 				int deltaY = e.Y - Offset.Y;
 				SelectionAdjusting(deltaX, deltaY);
 				Offset = e.Location;
+				GetRoundedRectanglePath();
 				panel.Invalidate();
 			}
+		}
+
+		/// <summary>
+		/// フィレット長方形パスを取得するには
+		/// </summary>
+		private void GetRoundedRectanglePath()
+		{
+			//_path= new GraphicsPath();
+			//_path.AddArc(SelectionRect.Left,SelectionRect.Top,_radius,_radius,180,90);
+			//path.AddArc(rectangle.Right - radius, rectangle.Y, radius, radius, 270, 90); // 右上角
+			//path.AddArc(rectangle.Right - radius, rectangle.Bottom - radius, radius, radius, 0, 90); // 右下角
+			//path.AddArc(rectangle.X, rectangle.Bottom - radius, radius, radius, 90, 90); // 左下角
+			//path.CloseFigure(); // 闭合路径
+
+
 		}
 
 		public override void MouseUp(MouseEventArgs e)
@@ -131,7 +145,6 @@ namespace DrawPicture.Shapes
 				MouseLeftButtonUpHandel(e);
 			}
 		}
-
 		private void MouseLeftButtonUpHandel(MouseEventArgs e)
 		{
 			if (drawStatus == DrawStatus.Creating)
@@ -150,7 +163,6 @@ namespace DrawPicture.Shapes
 				panel.Invalidate();
 			}
 		}
-
 		public override void InPainting(Graphics graphics)
 		{
 			if (canvas != null)
@@ -162,14 +174,14 @@ namespace DrawPicture.Shapes
 				if (SelectionRect.Width == 0 || SelectionRect.Height == 0) return;
 				DrawCreating(graphics);
 			}
-			else if (drawStatus == DrawStatus.Moving || 
-				drawStatus == DrawStatus.CanMove || 
-				drawStatus == DrawStatus.CanAdjusted || 
+			else if (drawStatus == DrawStatus.Moving ||
+				drawStatus == DrawStatus.CanMove ||
+				drawStatus == DrawStatus.CanAdjusted ||
 				drawStatus == DrawStatus.Adjusting ||
 				drawStatus == DrawStatus.CompleteAdjustment ||
 				drawStatus == DrawStatus.AdjustTheStyle)
 			{
-				if (SelectionRect.Width == 0 || SelectionRect.Height == 0) return; 
+				if (SelectionRect.Width == 0 || SelectionRect.Height == 0) return;
 				DrawCanMoveOrAdjusted(graphics);
 			}
 		}
@@ -178,7 +190,7 @@ namespace DrawPicture.Shapes
 			using (Pen selectionPen = new Pen(ForeColor, Size))
 			{
 				selectionPen.DashStyle = DashStyle.Solid;
-				graphics.DrawRectangle(selectionPen, SelectionRect);
+				graphics.DrawPath(selectionPen, _path);
 			}
 		}
 		private void DrawCanMoveOrAdjusted(Graphics graphics)
@@ -186,6 +198,12 @@ namespace DrawPicture.Shapes
 			using (Pen selectionPen = new Pen(ForeColor, Size))
 			{
 				selectionPen.DashStyle = DashStyle.Solid;
+				graphics.DrawPath(selectionPen, _path);
+			}
+			using (Pen selectionPen = new Pen(ResizerPointColor, 0.5f))
+			{
+				selectionPen.DashStyle = DashStyle.Dash;
+				selectionPen.DashPattern = new float[] { 5.0f, 4.0f };// 划线长，间隔长
 				graphics.DrawRectangle(selectionPen, SelectionRect);
 			}
 			foreach (var item in GetResizerPoints(SelectionRect))
@@ -199,21 +217,16 @@ namespace DrawPicture.Shapes
 		}
 		public override void Rotate(float angle)
 		{
-			
 		}
-
 		public override void FlipHorizontal()
 		{
-
 		}
 
 		public override void FlipVertical()
 		{
-
 		}
 		public override void Clear(Color color)
 		{
-			SelectionRect = Rectangle.Empty;
 			ClearBitmap(color);
 		}
 	}

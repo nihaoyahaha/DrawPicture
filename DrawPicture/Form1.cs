@@ -123,6 +123,45 @@ namespace DrawPicture
 				Size = float.Parse(cmb_size.Text.Substring(0, 1))
 			};
 		}
+
+		//三角形
+		private void btn_triangle_Click(object sender, EventArgs e)
+		{
+			_shape = new Triangle(_canvas, panel_main)
+			{
+				ForeColor = btn_showColor.BackColor,
+				Size = float.Parse(cmb_size.Text.Substring(0, 1))
+			};
+		}
+
+		//直角三角形
+		private void btn_RightTriangle_Click(object sender, EventArgs e)
+		{
+			_shape = new RightTriangle(_canvas, panel_main)
+			{
+				ForeColor = btn_showColor.BackColor,
+				Size = float.Parse(cmb_size.Text.Substring(0, 1))
+			};
+		}
+
+		//ひし形
+		private void btn_rhombus_Click(object sender, EventArgs e)
+		{
+			_shape = new Rhombus(_canvas, panel_main)
+			{
+				ForeColor = btn_showColor.BackColor,
+				Size = float.Parse(cmb_size.Text.Substring(0, 1))
+			};
+		}
+		//六角形
+		private void btn_hexagon_Click(object sender, EventArgs e)
+		{
+			_shape = new Hexagon(_canvas, panel_main)
+			{
+				ForeColor = btn_showColor.BackColor,
+				Size = float.Parse(cmb_size.Text.Substring(0, 1))
+			};
+		}
 		private void Form1_Resize(object sender, EventArgs e)
 		{
 			ResizeCanvasToPanel();
@@ -343,7 +382,6 @@ namespace DrawPicture
 			_shape.canvas = _canvas;
 			panel_main.Invalidate();
 		}
-
 
 	}
 }

@@ -252,5 +252,15 @@ namespace DrawPicture.Shapes
 			}
 			panel.Invalidate();
 		}
+
+		/// <summary>
+		/// 描画解除
+		/// </summary>
+		protected virtual void CancelDrawing()
+		{
+			drawStatus = DrawStatus.CannotMovedOrAdjusted;
+			SelectionRect = Rectangle.Empty;
+			panel.Invalidate();
+		}
 	}
 }

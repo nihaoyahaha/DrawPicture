@@ -48,7 +48,7 @@ namespace DrawPicture.Shapes
 			}
 		}
 
-		private void CancelDrawing()
+		protected override void  CancelDrawing()
 		{
 			drawStatus = DrawStatus.CannotMovedOrAdjusted;
 			_selectedBitmap = null;
@@ -64,7 +64,7 @@ namespace DrawPicture.Shapes
 				BitmapDrawImage();
 				StartPoint = e.Location;
 				drawStatus = DrawStatus.Creating;
-				_FillRectColor = ForeColor;
+				_FillRectColor = Color.White;//ForeColor;
 			}
 			else if (drawStatus == DrawStatus.CanMove)
 			{

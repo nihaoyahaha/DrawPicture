@@ -10,7 +10,7 @@ using System.Windows.Forms;
 namespace DrawPicture.Shapes
 {
 	/// <summary>
-	/// ドラム缶
+	/// カラーフィル
 	/// </summary>
 	public class OilTank : Shape
 	{

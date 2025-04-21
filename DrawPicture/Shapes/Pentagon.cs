@@ -81,12 +81,7 @@ namespace DrawPicture.Shapes
 				BitmapDrawPentagon();
 			}
 		}
-		private void CancelDrawing()
-		{
-			drawStatus = DrawStatus.CannotMovedOrAdjusted;
-			SelectionRect = Rectangle.Empty;
-			panel.Invalidate();
-		}
+
 		public override void MouseMove(MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Left)
@@ -100,10 +95,7 @@ namespace DrawPicture.Shapes
 				MouseOverResizeHandle(e.Location);
 			}
 		}
-		/// <summary>
-		/// 矩形的可编辑点坐标和位置
-		/// </summary>
-		/// <returns></returns>
+		
 		private void MouseMoveLeftButtonHandle(MouseEventArgs e)
 		{
 			if (drawStatus == DrawStatus.Creating)
@@ -184,6 +176,9 @@ namespace DrawPicture.Shapes
 			}
 		}
 
+		/// <summary>
+		/// 五角形頂点の計算
+		/// </summary>
 		private void CalculatePentagonPoints()
 		{
 			_vertexs.Clear();

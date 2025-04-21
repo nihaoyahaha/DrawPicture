@@ -56,7 +56,7 @@ namespace DrawPicture.Shapes
 				// 如果距离小于1，则直接绘制一个点
 				if (distance < 1)
 				{
-					g.FillRectangle(new SolidBrush(ForeColor),
+					g.FillRectangle(new SolidBrush(Color.White /*ForeColor*/),
 						start.X - eraserSize / 2,
 						start.Y - eraserSize / 2,
 						eraserSize,
@@ -71,7 +71,7 @@ namespace DrawPicture.Shapes
 					int y = (int)(start.Y + t * (end.Y - start.Y));
 
 					// 绘制橡皮擦区域
-					g.FillRectangle(new SolidBrush(ForeColor),
+					g.FillRectangle(new SolidBrush(Color.White /*ForeColor*/),
 						x - eraserSize / 2,
 						y - eraserSize / 2,
 						eraserSize,

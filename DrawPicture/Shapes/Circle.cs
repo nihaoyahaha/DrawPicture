@@ -76,12 +76,7 @@ namespace DrawPicture.Shapes
 				BitmapDrawCircle();
 			}
 		}
-		private void CancelDrawing()
-		{
-			drawStatus = DrawStatus.CannotMovedOrAdjusted;
-			SelectionRect = Rectangle.Empty;
-			panel.Invalidate();
-		}
+
 		public override void MouseMove(MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Left)

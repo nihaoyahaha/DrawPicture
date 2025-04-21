@@ -289,7 +289,7 @@
 			this.btn_triangle.Name = "btn_triangle";
 			this.btn_triangle.Size = new System.Drawing.Size(36, 53);
 			this.btn_triangle.Text = "三角形";
-			this.btn_triangle.Visible = false;
+			this.btn_triangle.Click += new System.EventHandler(this.btn_triangle_Click);
 			// 
 			// btn_RightTriangle
 			// 
@@ -300,7 +300,7 @@
 			this.btn_RightTriangle.Name = "btn_RightTriangle";
 			this.btn_RightTriangle.Size = new System.Drawing.Size(36, 53);
 			this.btn_RightTriangle.Text = "直角三角形";
-			this.btn_RightTriangle.Visible = false;
+			this.btn_RightTriangle.Click += new System.EventHandler(this.btn_RightTriangle_Click);
 			// 
 			// btn_rhombus
 			// 
@@ -311,7 +311,7 @@
 			this.btn_rhombus.Name = "btn_rhombus";
 			this.btn_rhombus.Size = new System.Drawing.Size(36, 53);
 			this.btn_rhombus.Text = "ひし形";
-			this.btn_rhombus.Visible = false;
+			this.btn_rhombus.Click += new System.EventHandler(this.btn_rhombus_Click);
 			// 
 			// btn_pentagon
 			// 
@@ -333,7 +333,7 @@
 			this.btn_hexagon.Name = "btn_hexagon";
 			this.btn_hexagon.Size = new System.Drawing.Size(36, 53);
 			this.btn_hexagon.Text = "六角形";
-			this.btn_hexagon.Visible = false;
+			this.btn_hexagon.Click += new System.EventHandler(this.btn_hexagon_Click);
 			// 
 			// toolStripSeparator3
 			// 

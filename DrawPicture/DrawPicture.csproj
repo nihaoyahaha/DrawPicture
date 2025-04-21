@@ -59,13 +59,18 @@
     <Compile Include="Shapes\Circle.cs" />
     <Compile Include="Shapes\DrawStatus.cs" />
     <Compile Include="Shapes\Eraser.cs" />
+    <Compile Include="Shapes\Hexagon.cs" />
     <Compile Include="Shapes\Line.cs" />
     <Compile Include="Shapes\OilTank.cs" />
     <Compile Include="Shapes\Pentagon.cs" />
+    <Compile Include="Shapes\Rhombus.cs" />
+    <Compile Include="Shapes\RightTriangle.cs" />
+    <Compile Include="Shapes\RoundedRectangle.cs" />
     <Compile Include="Shapes\ShapeRectangle.cs" />
     <Compile Include="Shapes\RectangleShapeFocusType.cs" />
     <Compile Include="Shapes\RectangularSelection.cs" />
     <Compile Include="Shapes\Shape.cs" />
+    <Compile Include="Shapes\Triangle.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

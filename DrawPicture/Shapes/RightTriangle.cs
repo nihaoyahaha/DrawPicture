@@ -10,13 +10,15 @@ using System.Windows.Forms;
 namespace DrawPicture.Shapes
 {
 	/// <summary>
-	/// 長方形
+	/// 直角三角形
 	/// </summary>
-	public class ShapeRectangle : Shape
+	public class RightTriangle : Shape
 	{
-		public ShapeRectangle(Bitmap bitmap, Panel panel) : base(bitmap, panel){}
+		//頂点の集合
+		private List<Point> _vertexs = new List<Point>();
+		public RightTriangle(Bitmap bitmap, Panel panel) : base(bitmap, panel) { }
 
-		private void BitmapDrawRectangle()
+		private void BitmapDrawRightTriangle()
 		{
 			if (canvas == null) return;
 			if (SelectionRect.Width == 0 && SelectionRect.Height == 0) return;
@@ -25,7 +27,7 @@ namespace DrawPicture.Shapes
 				using (Pen selectionPen = new Pen(ForeColor, Size))
 				{
 					selectionPen.DashStyle = DashStyle.Solid;
-					g.DrawRectangle(selectionPen, SelectionRect);
+					g.DrawPolygon(selectionPen, _vertexs.ToArray());
 				}
 			}
 			drawStatus = DrawStatus.CannotMovedOrAdjusted;
@@ -47,7 +49,7 @@ namespace DrawPicture.Shapes
 		{
 			if (drawStatus == DrawStatus.CannotMovedOrAdjusted)
 			{
-				BitmapDrawRectangle();
+				BitmapDrawRightTriangle();
 				StartPoint = e.Location;
 				drawStatus = DrawStatus.Creating;
 			}
@@ -62,7 +64,6 @@ namespace DrawPicture.Shapes
 				drawStatus = DrawStatus.Adjusting;
 			}
 		}
-
 		private void MouseRightButtonDownHandle(MouseEventArgs e)
 		{
 			if (drawStatus == DrawStatus.Creating || drawStatus == DrawStatus.Moving || drawStatus == DrawStatus.Adjusting)
@@ -72,7 +73,7 @@ namespace DrawPicture.Shapes
 			}
 			else if (drawStatus == DrawStatus.CannotMovedOrAdjusted && SelectionRect != Rectangle.Empty)
 			{
-				BitmapDrawRectangle();
+				BitmapDrawRightTriangle();
 			}
 		}
 
@@ -90,10 +91,6 @@ namespace DrawPicture.Shapes
 			}
 		}
 
-		/// <summary>
-		/// 矩形的可编辑点坐标和位置
-		/// </summary>
-		/// <returns></returns>
 		private void MouseMoveLeftButtonHandle(MouseEventArgs e)
 		{
 			if (drawStatus == DrawStatus.Creating)
@@ -104,6 +101,7 @@ namespace DrawPicture.Shapes
 				int width = Math.Abs(StartPoint.X - EndPoint.X);
 				int height = Math.Abs(StartPoint.Y - EndPoint.Y);
 				SelectionRect = new Rectangle(x, y, width, height);
+				CalculateRightTrianglePoints();
 				panel.Invalidate();
 			}
 			else if (drawStatus == DrawStatus.Moving)
@@ -112,6 +110,7 @@ namespace DrawPicture.Shapes
 				int deltaY = e.Y - Offset.Y;
 				SelectionRect.Offset(deltaX, deltaY);
 				Offset = e.Location;
+				CalculateRightTrianglePoints();
 				panel.Invalidate();
 			}
 			else if (drawStatus == DrawStatus.Adjusting)
@@ -120,8 +119,28 @@ namespace DrawPicture.Shapes
 				int deltaY = e.Y - Offset.Y;
 				SelectionAdjusting(deltaX, deltaY);
 				Offset = e.Location;
+				CalculateRightTrianglePoints();
 				panel.Invalidate();
 			}
+		}
+
+		/// <summary>
+		/// 直角三角形頂点の計算
+		/// </summary>
+		private void CalculateRightTrianglePoints()
+		{
+			_vertexs.Clear();
+			//上部頂点
+			var point = new Point(SelectionRect.Left, SelectionRect.Top);
+			_vertexs.Add(point);
+
+			//右下の頂点
+			point = new Point(SelectionRect.Right, SelectionRect.Bottom);
+			_vertexs.Add(point);
+
+			//左下の頂点
+			point = new Point(SelectionRect.Left, SelectionRect.Bottom);
+			_vertexs.Add(point);
 		}
 
 		public override void MouseUp(MouseEventArgs e)
@@ -131,7 +150,6 @@ namespace DrawPicture.Shapes
 				MouseLeftButtonUpHandel(e);
 			}
 		}
-
 		private void MouseLeftButtonUpHandel(MouseEventArgs e)
 		{
 			if (drawStatus == DrawStatus.Creating)
@@ -150,7 +168,6 @@ namespace DrawPicture.Shapes
 				panel.Invalidate();
 			}
 		}
-
 		public override void InPainting(Graphics graphics)
 		{
 			if (canvas != null)
@@ -162,14 +179,14 @@ namespace DrawPicture.Shapes
 				if (SelectionRect.Width == 0 || SelectionRect.Height == 0) return;
 				DrawCreating(graphics);
 			}
-			else if (drawStatus == DrawStatus.Moving || 
-				drawStatus == DrawStatus.CanMove || 
-				drawStatus == DrawStatus.CanAdjusted || 
+			else if (drawStatus == DrawStatus.Moving ||
+				drawStatus == DrawStatus.CanMove ||
+				drawStatus == DrawStatus.CanAdjusted ||
 				drawStatus == DrawStatus.Adjusting ||
 				drawStatus == DrawStatus.CompleteAdjustment ||
 				drawStatus == DrawStatus.AdjustTheStyle)
 			{
-				if (SelectionRect.Width == 0 || SelectionRect.Height == 0) return; 
+				if (SelectionRect.Width == 0 || SelectionRect.Height == 0) return;
 				DrawCanMoveOrAdjusted(graphics);
 			}
 		}
@@ -178,7 +195,7 @@ namespace DrawPicture.Shapes
 			using (Pen selectionPen = new Pen(ForeColor, Size))
 			{
 				selectionPen.DashStyle = DashStyle.Solid;
-				graphics.DrawRectangle(selectionPen, SelectionRect);
+				graphics.DrawPolygon(selectionPen, _vertexs.ToArray());
 			}
 		}
 		private void DrawCanMoveOrAdjusted(Graphics graphics)
@@ -186,6 +203,12 @@ namespace DrawPicture.Shapes
 			using (Pen selectionPen = new Pen(ForeColor, Size))
 			{
 				selectionPen.DashStyle = DashStyle.Solid;
+				graphics.DrawPolygon(selectionPen, _vertexs.ToArray());
+			}
+			using (Pen selectionPen = new Pen(ResizerPointColor, 0.5f))
+			{
+				selectionPen.DashStyle = DashStyle.Dash;
+				selectionPen.DashPattern = new float[] { 5.0f, 4.0f };// 划线长，间隔长
 				graphics.DrawRectangle(selectionPen, SelectionRect);
 			}
 			foreach (var item in GetResizerPoints(SelectionRect))
@@ -199,21 +222,16 @@ namespace DrawPicture.Shapes
 		}
 		public override void Rotate(float angle)
 		{
-			
 		}
-
 		public override void FlipHorizontal()
 		{
-
 		}
 
 		public override void FlipVertical()
 		{
-
 		}
 		public override void Clear(Color color)
 		{
-			SelectionRect = Rectangle.Empty;
 			ClearBitmap(color);
 		}
 	}
