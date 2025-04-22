@@ -22,7 +22,27 @@ namespace DrawPicture.Shapes
 		
 		private float _angle=0;
 		public RectangularSelection(Bitmap bitmap, Panel panel) : base(bitmap, panel){}
-
+		private void BitmapDrawImage()
+		{
+			if (_selectedBitmap == null) return;
+			if (_fillRect.Equals(SelectionRect))
+			{
+				CancelDrawing();
+				return;
+			}
+			using (Graphics g = Graphics.FromImage(canvas))
+			{
+				//g.FillRectangle(new SolidBrush(_FillRectColor), _fillRect);
+				//g.DrawImage(_selectedBitmap, SelectionRect);
+				g.FillRectangle(new SolidBrush(_FillRectColor), ConvertSelectionRectToCanvasRect( _fillRect));
+				g.DrawImage(_selectedBitmap, ConvertSelectionRectToCanvasRect( SelectionRect));
+			}
+			drawStatus = DrawStatus.CannotMovedOrAdjusted;
+			_selectedBitmap = null;
+			SelectionRect = Rectangle.Empty;
+			_fillRect = Rectangle.Empty;
+			panel.Invalidate();
+		}
 		public override void MouseDown(MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Left)
@@ -37,7 +57,10 @@ namespace DrawPicture.Shapes
 
 		private void MouseRightButtonDownHandle(MouseEventArgs e)
 		{
-			if (drawStatus == DrawStatus.Creating || drawStatus == DrawStatus.Moving || drawStatus == DrawStatus.Adjusting)
+			if (drawStatus == DrawStatus.Creating || 
+				drawStatus == DrawStatus.Moving || 
+				drawStatus == DrawStatus.Adjusting ||
+				drawStatus == DrawStatus.CanvasAdjusting)
 			{
 				CancelDrawing();
 				return;
@@ -64,7 +87,7 @@ namespace DrawPicture.Shapes
 				BitmapDrawImage();
 				StartPoint = e.Location;
 				drawStatus = DrawStatus.Creating;
-				_FillRectColor = Color.White;//ForeColor;
+				_FillRectColor = ForeColor;
 			}
 			else if (drawStatus == DrawStatus.CanMove)
 			{
@@ -78,27 +101,15 @@ namespace DrawPicture.Shapes
 				drawStatus = DrawStatus.Adjusting;
 				_rectBeforeAdjust = new Rectangle(SelectionRect.X, SelectionRect.Y, SelectionRect.Width, SelectionRect.Height);
 			}
+			else if (drawStatus == DrawStatus.CanvasAdjustable)
+			{
+				AdjustingCanvasRect = GetCanvasRegion();
+				Offset = e.Location;
+				drawStatus = DrawStatus.CanvasAdjusting;
+			}
 		}
 
-		private void BitmapDrawImage()
-		{
-			if (_selectedBitmap == null) return;
-			if (_fillRect.Equals(SelectionRect))
-			{
-				CancelDrawing();
-				return;
-			}
-			using (Graphics g = Graphics.FromImage(canvas))
-			{
-				g.FillRectangle(new SolidBrush(_FillRectColor), _fillRect);
-				g.DrawImage(_selectedBitmap, SelectionRect);
-			}
-			drawStatus = DrawStatus.CannotMovedOrAdjusted;
-			_selectedBitmap = null;
-			SelectionRect = Rectangle.Empty;
-			_fillRect = Rectangle.Empty;
-			panel.Invalidate();
-		}
+
 
 
 		public override void MouseMove(MouseEventArgs e)
@@ -111,8 +122,8 @@ namespace DrawPicture.Shapes
 			{
 				drawStatus = DrawStatus.CannotMovedOrAdjusted;
 				panel.Cursor = Cursors.Default;
-				if (StartPoint.X == 0 && StartPoint.Y == 0) return;
-				if (EndPoint.X == 0 && EndPoint.Y == 0) return;
+				//if (StartPoint.X == 0 && StartPoint.Y == 0) return;
+				//if (EndPoint.X == 0 && EndPoint.Y == 0) return;
 				MouseOverResizeHandle(e.Location);
 			}
 
@@ -141,7 +152,15 @@ namespace DrawPicture.Shapes
 			{
 				int deltaX = e.X - Offset.X;
 				int deltaY = e.Y - Offset.Y;
-				SelectionAdjusting(deltaX, deltaY);
+				SelectionAdjusting(deltaX, deltaY, ref SelectionRect);
+				Offset = e.Location;
+				panel.Invalidate();
+			}
+			else if (drawStatus == DrawStatus.CanvasAdjusting)
+			{
+				int deltaX = e.X - Offset.X;
+				int deltaY = e.Y - Offset.Y;
+				SelectionAdjusting(deltaX, deltaY, ref AdjustingCanvasRect);
 				Offset = e.Location;
 				panel.Invalidate();
 			}
@@ -168,7 +187,7 @@ namespace DrawPicture.Shapes
 					{
 						g.DrawImage(canvas,
 									new Rectangle(0, 0, SelectionRect.Width, SelectionRect.Height),
-									SelectionRect,
+									ConvertSelectionRectToCanvasRect( SelectionRect),
 									GraphicsUnit.Pixel);
 					}
 					_fillRect = new Rectangle(SelectionRect.X, SelectionRect.Y, SelectionRect.Width, SelectionRect.Height);
@@ -185,13 +204,18 @@ namespace DrawPicture.Shapes
 				drawStatus = DrawStatus.CompleteAdjustment;
 				panel.Invalidate();
 			}
+			else if (drawStatus == DrawStatus.CanvasAdjusting)
+			{
+				drawStatus = DrawStatus.CompleteCanvasAdjustment;
+				panel.Invalidate();
+			}
 		}
 
 		public override void InPainting(Graphics graphics)
 		{
 			if (canvas != null)
 			{
-				graphics.DrawImage(canvas, 0, 0);
+				BitmapDrawShape(canvas,graphics);
 			}
 
 			if (drawStatus == DrawStatus.Creating)
@@ -211,6 +235,10 @@ namespace DrawPicture.Shapes
 			{
 				DrawAdjustComplate(graphics);
 			}
+			else if (drawStatus == DrawStatus.CanvasAdjusting)
+			{
+				DrawCanvasAdjusted(graphics);
+			}
 		}
 
 		private void DrawCreating(Graphics graphics)
@@ -219,15 +247,22 @@ namespace DrawPicture.Shapes
 			{
 				selectionPen.DashStyle = DashStyle.Dash;
 				selectionPen.DashPattern = new float[] { 5.0f, 4.0f };// 划线长，间隔长
+				Rectangle bitmapArea = GetCanvasRegion();
+				graphics.SetClip(bitmapArea);
 				graphics.DrawRectangle(selectionPen, SelectionRect);
+				graphics.ResetClip();
 			}
 		}
 
 		private void DrawCanMoveOrAdjusted(Graphics graphics)
 		{
 			if (_selectedBitmap == null) return;
+			Rectangle bitmapArea = GetCanvasRegion();
+			graphics.SetClip(bitmapArea);
 			graphics.FillRectangle(new SolidBrush(_FillRectColor), _fillRect);
 			graphics.DrawImage(_selectedBitmap, SelectionRect);
+			graphics.ResetClip();
+
 			// 保存当前绘图状态
 			//GraphicsState state = graphics.Save();
 
@@ -275,8 +310,11 @@ namespace DrawPicture.Shapes
 
 		private void DrawAdjusting(Graphics graphics)
 		{
+			Rectangle bitmapArea = GetCanvasRegion();
+			graphics.SetClip(bitmapArea);
 			graphics.FillRectangle(new SolidBrush(_FillRectColor), _fillRect);
 			graphics.DrawImage(_selectedBitmap, _rectBeforeAdjust);
+			graphics.ResetClip();
 			using (Pen selectionPen = new Pen(ResizerPointColor, 0.5f))
 			{
 				selectionPen.DashStyle = DashStyle.Dash;
@@ -299,8 +337,11 @@ namespace DrawPicture.Shapes
 
 		private void DrawAdjustComplate(Graphics graphics)
 		{
+			Rectangle bitmapArea = GetCanvasRegion();
+			graphics.SetClip(bitmapArea);
 			graphics.FillRectangle(new SolidBrush(_FillRectColor), _fillRect);
 			graphics.DrawImage(_selectedBitmap, SelectionRect);
+			graphics.ResetClip();
 			using (Pen selectionPen = new Pen(ResizerPointColor, 0.5f))
 			{
 				selectionPen.DashStyle = DashStyle.Dash;

@@ -20,12 +20,13 @@ namespace DrawPicture.Shapes
 		{
 			if (canvas == null) return;
 			if (SelectionRect.Width == 0 && SelectionRect.Height == 0) return;
+
 			using (Graphics g = Graphics.FromImage(canvas))
 			{
 				using (Pen selectionPen = new Pen(ForeColor, Size))
 				{
 					selectionPen.DashStyle = DashStyle.Solid;
-					g.DrawEllipse(selectionPen, SelectionRect);
+					g.DrawEllipse(selectionPen, ConvertSelectionRectToCanvasRect(SelectionRect));
 				}
 			}
 			drawStatus = DrawStatus.CannotMovedOrAdjusted;
@@ -62,11 +63,20 @@ namespace DrawPicture.Shapes
 				Offset = e.Location;
 				drawStatus = DrawStatus.Adjusting;
 			}
+			else if (drawStatus == DrawStatus.CanvasAdjustable)
+			{
+				AdjustingCanvasRect = GetCanvasRegion();
+				Offset = e.Location;
+				drawStatus = DrawStatus.CanvasAdjusting;
+			}
 		}
 
 		private void MouseRightButtonDownHandle(MouseEventArgs e)
 		{
-			if (drawStatus == DrawStatus.Creating || drawStatus == DrawStatus.Moving || drawStatus == DrawStatus.Adjusting)
+			if (drawStatus == DrawStatus.Creating || 
+				drawStatus == DrawStatus.Moving || 
+				drawStatus == DrawStatus.Adjusting || 
+				drawStatus == DrawStatus.CanvasAdjusting)
 			{
 				CancelDrawing();
 				return;
@@ -90,10 +100,7 @@ namespace DrawPicture.Shapes
 				MouseOverResizeHandle(e.Location);
 			}
 		}
-		/// <summary>
-		/// 矩形的可编辑点坐标和位置
-		/// </summary>
-		/// <returns></returns>
+
 		private void MouseMoveLeftButtonHandle(MouseEventArgs e)
 		{
 			if (drawStatus == DrawStatus.Creating)
@@ -118,10 +125,19 @@ namespace DrawPicture.Shapes
 			{
 				int deltaX = e.X - Offset.X;
 				int deltaY = e.Y - Offset.Y;
-				SelectionAdjusting(deltaX, deltaY);
+				SelectionAdjusting(deltaX, deltaY,ref SelectionRect);
 				Offset = e.Location;
 				panel.Invalidate();
 			}
+			else if (drawStatus == DrawStatus.CanvasAdjusting)
+			{
+				int deltaX = e.X - Offset.X;
+				int deltaY = e.Y - Offset.Y;
+				SelectionAdjusting(deltaX,deltaY,ref AdjustingCanvasRect);
+				Offset = e.Location;
+				panel.Invalidate();
+			}
+
 		}
 		public override void MouseUp(MouseEventArgs e)
 		{
@@ -148,13 +164,18 @@ namespace DrawPicture.Shapes
 				drawStatus = DrawStatus.CompleteAdjustment;
 				panel.Invalidate();
 			}
+			else if (drawStatus == DrawStatus.CanvasAdjusting)
+			{
+				drawStatus = DrawStatus.CompleteCanvasAdjustment;
+				panel.Invalidate();
+			}
 		}
 
 		public override void InPainting(Graphics graphics)
 		{
 			if (canvas != null)
 			{
-				graphics.DrawImage(canvas, 0, 0);
+				BitmapDrawShape(canvas, graphics);
 			}
 			if (drawStatus == DrawStatus.Creating)
 			{
@@ -171,13 +192,20 @@ namespace DrawPicture.Shapes
 				if (SelectionRect.Width == 0 || SelectionRect.Height == 0) return;
 				DrawCanMoveOrAdjusted(graphics);
 			}
+			else if (drawStatus == DrawStatus.CanvasAdjusting)
+			{
+				DrawCanvasAdjusted(graphics);
+			}
 		}
 		private void DrawCreating(Graphics graphics)
 		{
 			using (Pen selectionPen = new Pen(ForeColor, Size))
 			{
 				selectionPen.DashStyle = DashStyle.Solid;
+				Rectangle bitmapArea = GetCanvasRegion();
+				graphics.SetClip(bitmapArea);
 				graphics.DrawEllipse(selectionPen, SelectionRect);
+				graphics.ResetClip();
 			}
 		}
 
@@ -186,7 +214,10 @@ namespace DrawPicture.Shapes
 			using (Pen selectionPen = new Pen(ForeColor, Size))
 			{
 				selectionPen.DashStyle = DashStyle.Solid;
+				Rectangle bitmapArea = GetCanvasRegion();
+				graphics.SetClip(bitmapArea);
 				graphics.DrawEllipse(selectionPen, SelectionRect);
+				graphics.ResetClip();
 			}
 			using (Pen selectionPen = new Pen(ResizerPointColor, 0.5f))
 			{

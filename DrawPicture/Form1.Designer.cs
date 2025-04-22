@@ -278,7 +278,7 @@
 			this.btn_roundedRectangle.Name = "btn_roundedRectangle";
 			this.btn_roundedRectangle.Size = new System.Drawing.Size(42, 53);
 			this.btn_roundedRectangle.Text = "フィレット長方形";
-			this.btn_roundedRectangle.Visible = false;
+			this.btn_roundedRectangle.Click += new System.EventHandler(this.btn_roundedRectangle_Click);
 			// 
 			// btn_triangle
 			// 
@@ -446,9 +446,9 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.panel_main.BackColor = System.Drawing.Color.White;
-			this.panel_main.Location = new System.Drawing.Point(12, 59);
+			this.panel_main.Location = new System.Drawing.Point(0, 59);
 			this.panel_main.Name = "panel_main";
-			this.panel_main.Size = new System.Drawing.Size(916, 444);
+			this.panel_main.Size = new System.Drawing.Size(940, 447);
 			this.panel_main.TabIndex = 1;
 			this.panel_main.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_main_Paint);
 			this.panel_main.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel_main_MouseDown);

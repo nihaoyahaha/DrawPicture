@@ -21,6 +21,75 @@ namespace DrawPicture.Shapes
 		{
 			
 		}
+		private void BitmapDrawLine()
+		{
+			if (EndPoint.X == 0 && EndPoint.Y == 0) return;
+			using (Graphics g = Graphics.FromImage(canvas))
+			{
+				using (Pen pen = new Pen(ForeColor, Size) { DashStyle = DashStyle.Solid, StartCap = LineCap.Round, EndCap = LineCap.Round })
+				{
+					g.SmoothingMode = SmoothingMode.HighQuality;
+					g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+					int offsetX = (panel.Width - canvas.Width) / 2;
+					int offsetY = (panel.Height - canvas.Height) / 2;
+					g.DrawLine(pen,ConvertPoint(StartPoint),ConvertPoint(EndPoint));
+				}
+			}
+			EndPoint = new Point();
+			panel.Invalidate();
+		}
+		public override void MouseDown(MouseEventArgs e)
+		{
+			if (e.Button == MouseButtons.Left)
+			{
+				MouseLeftButtonDownHandle(e);
+			}
+			else if (e.Button == MouseButtons.Right)
+			{
+				MouseRightButtonDownHandle(e);
+			}
+		}
+		private void MouseLeftButtonDownHandle(MouseEventArgs e)
+		{
+			if (drawStatus == DrawStatus.CannotMovedOrAdjusted)
+			{
+				BitmapDrawLine();
+				StartPoint = e.Location;
+				drawStatus = DrawStatus.Creating;
+			}
+			else if (drawStatus == DrawStatus.CanMove)
+			{
+				Offset = e.Location;
+			}
+			else if (drawStatus == DrawStatus.CanAdjusted)
+			{
+				if (_startPointSelected)
+				{
+					Point temp = StartPoint;
+					StartPoint = EndPoint;
+					EndPoint = EndPoint;
+				}
+			}
+			else if (drawStatus == DrawStatus.CanvasAdjustable)
+			{
+				AdjustingCanvasRect = GetCanvasRegion();
+				Offset = e.Location;
+				drawStatus = DrawStatus.CanvasAdjusting;
+			}
+
+		}
+		private void MouseRightButtonDownHandle(MouseEventArgs e)
+		{
+			if (drawStatus == DrawStatus.Creating || 
+				drawStatus == DrawStatus.CanAdjusted || 
+				drawStatus == DrawStatus.CanMove ||
+				drawStatus == DrawStatus.CanvasAdjusting)
+			{
+				EndPoint = new Point();
+				CancelDrawing();
+				return;
+			}
+		}
 
 		public override void MouseMove(MouseEventArgs e)
 		{
@@ -33,14 +102,14 @@ namespace DrawPicture.Shapes
 				_startPointSelected = false;
 				drawStatus = DrawStatus.CannotMovedOrAdjusted;
 				panel.Cursor = Cursors.Default;
-				if (StartPoint.X == 0 && StartPoint.Y == 0) return;
-				if (EndPoint.X == 0 && EndPoint.Y == 0) return; 
+				
 				IsMouseOnHandle(e.Location, StartPoint, EndPoint);
 				if (GetPointIsInLine(e.Location, StartPoint, EndPoint, 10))
 				{
 					panel.Cursor = Cursors.SizeAll;
 					drawStatus = DrawStatus.CanMove;
 				}
+				MouseOverResizeHandle(e.Location);
 			}
 		}
 
@@ -65,64 +134,16 @@ namespace DrawPicture.Shapes
 				EndPoint = e.Location;
 				panel.Invalidate();
 			}
-		}
-
-		public override void MouseDown(MouseEventArgs e)
-		{
-			if ((drawStatus == DrawStatus.Creating || drawStatus == DrawStatus.CanAdjusted || drawStatus == DrawStatus.CanMove)
-				&& e.Button == MouseButtons.Right)
+			else if (drawStatus == DrawStatus.CanvasAdjusting)
 			{
-				drawStatus = DrawStatus.CannotMovedOrAdjusted;
-				EndPoint = new Point();
-				panel.Invalidate();
-				return;
-			}
-			MouseDownHandle(e);
-		}
-
-		private void MouseDownHandle(MouseEventArgs e)
-		{
-			if (drawStatus == DrawStatus.CannotMovedOrAdjusted)
-			{
-				BitmapDrawLine();
-				StartPoint = e.Location;
-				drawStatus = DrawStatus.Creating;
-			}
-			else if (drawStatus == DrawStatus.CanMove)
-			{
+				int deltaX = e.X - Offset.X;
+				int deltaY = e.Y - Offset.Y;
+				SelectionAdjusting(deltaX, deltaY, ref AdjustingCanvasRect);
 				Offset = e.Location;
+				panel.Invalidate();
 			}
-			else if (drawStatus == DrawStatus.CanAdjusted)
-			{
-				if (_startPointSelected)
-				{
-					Point temp = StartPoint;
-					StartPoint = EndPoint;
-					EndPoint = EndPoint;
-				}
-			}
-
 		}
 
-		private void BitmapDrawLine()
-		{
-			if (EndPoint.X == 0 && EndPoint.Y == 0) return;
-			using (Graphics g = Graphics.FromImage(canvas))
-			{
-				using (Pen pen = new Pen(ForeColor, Size) { DashStyle = DashStyle.Solid, StartCap = LineCap.Round, EndCap = LineCap.Round })
-				{
-					g.SmoothingMode = SmoothingMode.HighQuality;
-					g.PixelOffsetMode = PixelOffsetMode.HighQuality;
-					g.DrawLine(pen, StartPoint, EndPoint);
-				}
-			}
-			EndPoint = new Point();
-			// 触发重绘以更新显示
-			panel.Invalidate();
-		}
-
-
-		//在 Bitmap 上绘制形状
 		public override void MouseUp(MouseEventArgs e)
 		{
 			if (drawStatus == DrawStatus.Creating && EndPoint.X == 0 && EndPoint.Y == 0) 
@@ -131,16 +152,10 @@ namespace DrawPicture.Shapes
 				StartPoint = new Point();
 				return; 
 			}
-			
 			if (e.Button == MouseButtons.Left)
 			{
 				MouseLeftButtonUpHandle(e);
 			}
-			else if (e.Button == MouseButtons.Right)
-			{
-
-			}
-			panel.Invalidate();
 		}
 
 		private void MouseLeftButtonUpHandle(MouseEventArgs e)
@@ -148,8 +163,13 @@ namespace DrawPicture.Shapes
 			if (drawStatus == DrawStatus.Creating)
 			{
 				drawStatus = DrawStatus.CanAdjusted;
+				panel.Invalidate();
 			}
-			
+			else if (drawStatus == DrawStatus.CanvasAdjusting)
+			{
+				drawStatus = DrawStatus.CompleteCanvasAdjustment;
+				panel.Invalidate();
+			}
 		}
 
 		//绘图中描绘
@@ -158,17 +178,23 @@ namespace DrawPicture.Shapes
 			//将位图缓存绘制到panel上
 			if (canvas != null)
 			{
-				graphics.DrawImage(canvas, 0, 0);
+				BitmapDrawShape(canvas, graphics);
 			}
 			if (drawStatus == DrawStatus.Creating)
 			{
 				if (EndPoint.X == 0 && EndPoint.Y == 0) return;
 				DrawCreating(graphics);
 			}
-			else if (drawStatus == DrawStatus.CanMove || drawStatus == DrawStatus.CanAdjusted || drawStatus == DrawStatus.AdjustTheStyle)
+			else if (drawStatus == DrawStatus.CanMove || 
+				drawStatus == DrawStatus.CanAdjusted || 
+				drawStatus == DrawStatus.AdjustTheStyle)
 			{
 				if (EndPoint.X == 0 && EndPoint.Y == 0) return;
 				DrawMoveOrAdjusted(graphics);
+			}
+			else if (drawStatus == DrawStatus.CanvasAdjusting)
+			{
+				DrawCanvasAdjusted(graphics);
 			}
 		}
 
@@ -176,7 +202,10 @@ namespace DrawPicture.Shapes
 		{
 			using (Pen pen = new Pen(ForeColor, Size) { DashStyle = DashStyle.Solid, StartCap = LineCap.Round, EndCap = LineCap.Round })
 			{
+				Rectangle bitmapArea = GetCanvasRegion();
+				graphics.SetClip(bitmapArea);
 				graphics.DrawLine(pen, StartPoint, EndPoint);
+				graphics.ResetClip();
 			}
 		}
 
@@ -184,7 +213,10 @@ namespace DrawPicture.Shapes
 		{
 			using (Pen pen = new Pen(ForeColor, Size) { DashStyle = DashStyle.Solid, StartCap = LineCap.Round, EndCap = LineCap.Round })
 			{
+				Rectangle bitmapArea = GetCanvasRegion();
+				graphics.SetClip(bitmapArea);
 				graphics.DrawLine(pen, StartPoint, EndPoint);
+				graphics.ResetClip();
 			}
 			DrawHandle(graphics, StartPoint, EndPoint);
 		}
@@ -211,6 +243,8 @@ namespace DrawPicture.Shapes
 
 		private void IsMouseOnHandle(Point mouseLocation ,Point startPoint, Point endPoint)
 		{
+			if (StartPoint.X == 0 && StartPoint.Y == 0) return;
+			if (EndPoint.X == 0 && EndPoint.Y == 0) return;
 			// 判断鼠标是否在控制点范围内
 			Rectangle rect = new Rectangle(
 				startPoint.X - _handleSize / 2,

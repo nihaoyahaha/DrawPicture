@@ -23,9 +23,10 @@ namespace DrawPicture
 		{
 			InitializeComponent();
 			InitializeCanvas(panel_main.Width,panel_main.Height);
-			_shape = new RectangularSelection(_canvas, this.panel_main);
+			_shape = new Circle(_canvas, this.panel_main);
+			panel_main.BackColor = Color.AliceBlue;
 		}
-
+		
 		private void Form1_Load(object sender, EventArgs e)
 		{
 			cmb_size.SelectedIndex = 3;
@@ -34,7 +35,9 @@ namespace DrawPicture
 		private void panel_main_MouseMove(object sender, MouseEventArgs e)
 		{
 			_shape.MouseMove(e);
-			lb_Penposition.Text = $"{e.Location.X}, {e.Location.Y}像素";
+			//int offsetX = (panel_main.Width - _canvas.Width) / 2;
+			//int offsetY = (panel_main.Height - _canvas.Height) / 2;
+			//lb_Penposition.Text = $"{e.Location.X-offsetX}, {e.Location.Y-offsetY}像素";
 		}
 
 		private void panel_main_MouseDown(object sender, MouseEventArgs e)
@@ -45,7 +48,31 @@ namespace DrawPicture
 		private void panel_main_MouseUp(object sender, MouseEventArgs e)
 		{
 			_shape.MouseUp(e);
+			if (_shape.drawStatus == DrawStatus.CompleteCanvasAdjustment)
+			{
+				int width = _shape.AdjustingCanvasRect.Width;
+				int height = _shape.AdjustingCanvasRect.Height;
+				CreateNewBitmap(width,height);
+			}
 		}
+		private void CreateNewBitmap(int width, int height)
+		{
+			Bitmap newCanvas = new Bitmap(width, height);
+			if (_canvas != null)
+			{
+				//将现在bitmap其绘制到新的bitmap上
+				using (Graphics g = Graphics.FromImage(newCanvas))
+				{
+					g.Clear(_canvasBackgroundColor);
+					g.DrawImage(_canvas, Point.Empty);
+				}
+				_canvas.Dispose();
+				_canvas = newCanvas;
+				_shape.canvas = _canvas;
+			}
+			panel_main.Invalidate();
+		}
+
 		private void panel_main_Paint(object sender, PaintEventArgs e)
 		{
 			if (_canvas != null)
@@ -64,6 +91,7 @@ namespace DrawPicture
 				ForeColor = btn_showColor.BackColor,
 				Size = float.Parse(cmb_size.Text.Substring(0, 1))
 			};
+			panel_main.Invalidate();
 		}
 
 		//消しゴム
@@ -74,6 +102,7 @@ namespace DrawPicture
 				ForeColor = btn_showColor.BackColor,
 				Size = float.Parse(cmb_size.Text.Substring(0, 1))
 			};
+			panel_main.Invalidate();
 		}
 
 		//矩形選択
@@ -83,6 +112,7 @@ namespace DrawPicture
 			{
 				ForeColor = btn_showColor.BackColor
 			};
+			panel_main.Invalidate();
 		}
 
 		//カラーフィル
@@ -92,6 +122,7 @@ namespace DrawPicture
 			{
 				ForeColor = btn_showColor.BackColor
 			};
+			panel_main.Invalidate();
 		}
 
 		//長方形
@@ -102,6 +133,7 @@ namespace DrawPicture
 				ForeColor = btn_showColor.BackColor,
 				Size = float.Parse(cmb_size.Text.Substring(0, 1))
 			};
+			panel_main.Invalidate();
 		}
 
 		//五角形
@@ -112,6 +144,7 @@ namespace DrawPicture
 				ForeColor = btn_showColor.BackColor,
 				Size = float.Parse(cmb_size.Text.Substring(0, 1))
 			};
+			panel_main.Invalidate();
 		}
 
 		//円
@@ -122,6 +155,7 @@ namespace DrawPicture
 				ForeColor = btn_showColor.BackColor,
 				Size = float.Parse(cmb_size.Text.Substring(0, 1))
 			};
+			panel_main.Invalidate();
 		}
 
 		//三角形
@@ -132,6 +166,7 @@ namespace DrawPicture
 				ForeColor = btn_showColor.BackColor,
 				Size = float.Parse(cmb_size.Text.Substring(0, 1))
 			};
+			panel_main.Invalidate();
 		}
 
 		//直角三角形
@@ -142,6 +177,7 @@ namespace DrawPicture
 				ForeColor = btn_showColor.BackColor,
 				Size = float.Parse(cmb_size.Text.Substring(0, 1))
 			};
+			panel_main.Invalidate();
 		}
 
 		//ひし形
@@ -152,6 +188,7 @@ namespace DrawPicture
 				ForeColor = btn_showColor.BackColor,
 				Size = float.Parse(cmb_size.Text.Substring(0, 1))
 			};
+			panel_main.Invalidate();
 		}
 		//六角形
 		private void btn_hexagon_Click(object sender, EventArgs e)
@@ -161,10 +198,21 @@ namespace DrawPicture
 				ForeColor = btn_showColor.BackColor,
 				Size = float.Parse(cmb_size.Text.Substring(0, 1))
 			};
+			panel_main.Invalidate();
+		}
+		//フィレット長方形
+		private void btn_roundedRectangle_Click(object sender, EventArgs e)
+		{
+			_shape = new RoundedRectangle(_canvas, panel_main)
+			{
+				ForeColor = btn_showColor.BackColor,
+				Size = float.Parse(cmb_size.Text.Substring(0, 1))
+			};
+			panel_main.Invalidate();
 		}
 		private void Form1_Resize(object sender, EventArgs e)
 		{
-			ResizeCanvasToPanel();
+			CreateNewBitmap(_canvas.Width,_canvas.Height);
 		}
 
 		private void btn_save_Click(object sender, EventArgs e)
@@ -193,7 +241,7 @@ namespace DrawPicture
 
 		private void InitializeCanvas(int width, int height)
 		{
-			_canvas = new Bitmap(width, width);
+			_canvas = new Bitmap(200, 200);
 			using (Graphics g = Graphics.FromImage(_canvas))
 			{
 				g.Clear(_canvasBackgroundColor); // 初始化背景色
@@ -354,34 +402,7 @@ namespace DrawPicture
 			_shape.Clear(_canvasBackgroundColor);
 		}
 
-		private void ResizeCanvasToPanel()
-		{
-			// 获取新的 Panel 尺寸
-			int newWidth = this.Width;
-			int newHeight = this.Height;
 
-			if (newWidth <= 500) return;
-			if (newHeight <= 500) return;
-
-			// 创建一个新的 Bitmap，尺寸与 Panel 相同
-			Bitmap newCanvas = new Bitmap(newWidth, newHeight);
-
-			// 如果已有画布内容，将其绘制到新的画布上
-			if (_canvas != null)
-			{
-				using (Graphics g = Graphics.FromImage(newCanvas))
-				{
-					g.Clear(_canvasBackgroundColor); // 清除背景
-					g.DrawImage(_canvas, Point.Empty); // 绘制原有内容
-				}
-			}
-
-			// 更新当前画布
-			_canvas?.Dispose();
-			_canvas = newCanvas;
-			_shape.canvas = _canvas;
-			panel_main.Invalidate();
-		}
 
 	}
 }

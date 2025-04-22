@@ -31,7 +31,7 @@ namespace DrawPicture.Shapes
 				using (Pen selectionPen = new Pen(ForeColor, Size))
 				{
 					selectionPen.DashStyle = DashStyle.Solid;
-					g.DrawPolygon(selectionPen, _vertexs.ToArray());
+					g.DrawPolygon(selectionPen,ConvertVertexs( _vertexs));
 				}
 			}
 			drawStatus = DrawStatus.CannotMovedOrAdjusted;
@@ -68,10 +68,19 @@ namespace DrawPicture.Shapes
 				Offset = e.Location;
 				drawStatus = DrawStatus.Adjusting;
 			}
+			else if (drawStatus == DrawStatus.CanvasAdjustable)
+			{
+				AdjustingCanvasRect = GetCanvasRegion();
+				Offset = e.Location;
+				drawStatus = DrawStatus.CanvasAdjusting;
+			}
 		}
 		private void MouseRightButtonDownHandle(MouseEventArgs e)
 		{
-			if (drawStatus == DrawStatus.Creating || drawStatus == DrawStatus.Moving || drawStatus == DrawStatus.Adjusting)
+			if (drawStatus == DrawStatus.Creating || 
+				drawStatus == DrawStatus.Moving || 
+				drawStatus == DrawStatus.Adjusting ||
+				drawStatus == DrawStatus.CanvasAdjusting)
 			{
 				CancelDrawing();
 				return;
@@ -122,9 +131,17 @@ namespace DrawPicture.Shapes
 			{
 				int deltaX = e.X - Offset.X;
 				int deltaY = e.Y - Offset.Y;
-				SelectionAdjusting(deltaX, deltaY);
+				SelectionAdjusting(deltaX, deltaY, ref SelectionRect);
 				Offset = e.Location;
 				CalculatePentagonPoints();
+				panel.Invalidate();
+			}
+			else if (drawStatus == DrawStatus.CanvasAdjusting)
+			{
+				int deltaX = e.X - Offset.X;
+				int deltaY = e.Y - Offset.Y;
+				SelectionAdjusting(deltaX, deltaY, ref AdjustingCanvasRect);
+				Offset = e.Location;
 				panel.Invalidate();
 			}
 		}
@@ -152,12 +169,17 @@ namespace DrawPicture.Shapes
 				drawStatus = DrawStatus.CompleteAdjustment;
 				panel.Invalidate();
 			}
+			else if (drawStatus == DrawStatus.CanvasAdjusting)
+			{
+				drawStatus = DrawStatus.CompleteCanvasAdjustment;
+				panel.Invalidate();
+			}
 		}
 		public override void InPainting(Graphics graphics)
 		{
 			if (canvas != null)
 			{
-				graphics.DrawImage(canvas, 0, 0);
+				BitmapDrawShape(canvas,graphics);
 			}
 			if (drawStatus == DrawStatus.Creating)
 			{
@@ -173,6 +195,10 @@ namespace DrawPicture.Shapes
 			{
 				if (SelectionRect.Width == 0 || SelectionRect.Height == 0) return;
 				DrawCanMoveOrAdjusted(graphics);
+			}
+			else if (drawStatus == DrawStatus.CanvasAdjusting)
+			{
+				DrawCanvasAdjusted(graphics);
 			}
 		}
 
@@ -211,7 +237,10 @@ namespace DrawPicture.Shapes
 			using (Pen selectionPen = new Pen(ForeColor, Size))
 			{
 				selectionPen.DashStyle = DashStyle.Solid;
+				Rectangle bitmapArea = GetCanvasRegion();
+				graphics.SetClip(bitmapArea);
 				graphics.DrawPolygon(selectionPen, _vertexs.ToArray());
+				graphics.ResetClip();
 			}
 		}
 
@@ -220,7 +249,10 @@ namespace DrawPicture.Shapes
 			using (Pen selectionPen = new Pen(ForeColor, Size))
 			{
 				selectionPen.DashStyle = DashStyle.Solid;
+				Rectangle bitmapArea = GetCanvasRegion();
+				graphics.SetClip(bitmapArea);
 				graphics.DrawPolygon(selectionPen, _vertexs.ToArray());
+				graphics.ResetClip();
 			}
 			using (Pen selectionPen = new Pen(ResizerPointColor, 0.5f))
 			{

@@ -19,13 +19,10 @@ namespace DrawPicture.Shapes
 
 		public override void MouseDown(MouseEventArgs e)
 		{
+			if (!IsValidLocation(e.Location) && drawStatus != DrawStatus.CanvasAdjustable) return;
 			if (e.Button == MouseButtons.Left)
 			{
-				_tempCanvas = (Bitmap)canvas.Clone();
-				StartPoint = e.Location;
-				Color pixelColor = canvas.GetPixel(e.Location.X,e.Location.Y);
-				FloodFillScanline(_tempCanvas, e.Location.X, e.Location.Y, pixelColor.ToArgb() /*Color.AliceBlue.ToArgb()*/, ForeColor.ToArgb());
-				panel.Invalidate();
+				MouseLeftButtonDownHandle(e);
 			}
 			else if (e.Button == MouseButtons.Right)
 			{
@@ -35,11 +32,66 @@ namespace DrawPicture.Shapes
 			}
 		}
 
-		public override void MouseMove(MouseEventArgs e){}
+		private void MouseLeftButtonDownHandle(MouseEventArgs e)
+		{
+			if (drawStatus == DrawStatus.CanvasAdjustable)
+			{
+				AdjustingCanvasRect = GetCanvasRegion();
+				Offset = e.Location;
+				drawStatus = DrawStatus.CanvasAdjusting;
+			}
+			else
+			{
+				_tempCanvas = (Bitmap)canvas.Clone();
+				StartPoint = e.Location;
+				Point pointIncanvas = ConvertPoint(e.Location);
+				Color pixelColor = canvas.GetPixel(pointIncanvas.X, pointIncanvas.Y);
+				FloodFillScanline(_tempCanvas, pointIncanvas.X, pointIncanvas.Y, pixelColor.ToArgb() /*Color.AliceBlue.ToArgb()*/, ForeColor.ToArgb());
+				panel.Invalidate();
+			}
+		}
 
+		public override void MouseMove(MouseEventArgs e)
+		{
+			if (e.Button == MouseButtons.Left)
+			{
+				MouseMoveLeftButtonHandle(e);
+			}
+			else if (e.Button == MouseButtons.None)
+			{
+				drawStatus = DrawStatus.CannotMovedOrAdjusted;
+				panel.Cursor = Cursors.Default;
+				MouseOverResizeHandle(e.Location);
+			}
+		}
+		private void MouseMoveLeftButtonHandle(MouseEventArgs e)
+		{
+			if (drawStatus == DrawStatus.CanvasAdjusting)
+			{
+				int deltaX = e.X - Offset.X;
+				int deltaY = e.Y - Offset.Y;
+				SelectionAdjusting(deltaX, deltaY, ref AdjustingCanvasRect);
+				Offset = e.Location;
+				panel.Invalidate();
+			}
+
+		}
 		public override void MouseUp(MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Left)
+			{
+				MouseLeftButtonUpHandel(e);
+			}
+		}
+
+		private void MouseLeftButtonUpHandel(MouseEventArgs e)
+		{
+			if (drawStatus == DrawStatus.CanvasAdjusting)
+			{
+				drawStatus = DrawStatus.CompleteCanvasAdjustment;
+				panel.Invalidate();
+			}
+			else
 			{
 				if (_tempCanvas != null)
 				{
@@ -57,11 +109,16 @@ namespace DrawPicture.Shapes
 		{
 			if (canvas != null)
 			{
-				graphics.DrawImage(canvas, 0, 0);
+				BitmapDrawShape(canvas, graphics);
 			}
 			if (_tempCanvas != null)
 			{
-				graphics.DrawImage(_tempCanvas, 0, 0);
+				BitmapDrawShape(_tempCanvas,graphics);
+				//graphics.DrawImage(_tempCanvas, 0, 0);
+			}
+			if (drawStatus == DrawStatus.CanvasAdjusting)
+			{
+				DrawCanvasAdjusted(graphics);
 			}
 		}
 

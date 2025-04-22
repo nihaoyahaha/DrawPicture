@@ -46,7 +46,22 @@ namespace DrawPicture.Shapes
 		/// <summary>
 		/// スタイルの調整
 		/// </summary>
-		AdjustTheStyle
+		AdjustTheStyle,
+
+		/// <summary>
+		/// Bitmapを調整可能
+		/// </summary>
+		CanvasAdjustable,
+
+		/// <summary>
+		///  Bitmap調整中
+		/// </summary>
+		CanvasAdjusting,
+
+		/// <summary>
+		/// Bitmap調整の完了
+		/// </summary>
+		CompleteCanvasAdjustment
 
 	}
 }
