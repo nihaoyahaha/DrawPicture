@@ -121,8 +121,11 @@
   <data name="圆圈" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\圆圈.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Clearup" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Clearup.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="尺寸 (1)" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\尺寸 (1).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="右旋转" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\右旋转.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="坐标轴" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\坐标轴.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -139,8 +142,8 @@
   <data name="尺寸1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\尺寸1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="右旋转" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\右旋转.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Clearup" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Clearup.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="菱形框" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\菱形框.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -199,7 +202,7 @@
   <data name="右旋转1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\右旋转1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="尺寸 (1)" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\尺寸 (1).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="22" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\22.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

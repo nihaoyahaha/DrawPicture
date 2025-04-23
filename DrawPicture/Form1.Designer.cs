@@ -71,7 +71,9 @@
 			this.btn_save = new System.Windows.Forms.ToolStripButton();
 			this.btn_open = new System.Windows.Forms.ToolStripButton();
 			this.btn_ClearAll = new System.Windows.Forms.ToolStripButton();
+			this.rtb_Text = new DrawPicture.UserControl.TransparentRichTextBox();
 			this.toolStrip1.SuspendLayout();
+			this.panel_main.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -157,6 +159,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.panel_main.BackColor = System.Drawing.Color.White;
+			this.panel_main.Controls.Add(this.rtb_Text);
 			this.panel_main.Location = new System.Drawing.Point(0, 59);
 			this.panel_main.Name = "panel_main";
 			this.panel_main.Size = new System.Drawing.Size(940, 447);
@@ -325,7 +328,7 @@
 			this.btn_Text.Size = new System.Drawing.Size(36, 53);
 			this.btn_Text.Text = "文字";
 			this.btn_Text.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-			this.btn_Text.Visible = false;
+			this.btn_Text.Click += new System.EventHandler(this.btn_Text_Click);
 			// 
 			// btn_Line
 			// 
@@ -522,6 +525,16 @@
 			this.btn_ClearAll.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
 			this.btn_ClearAll.Click += new System.EventHandler(this.btn_ClearAll_Click);
 			// 
+			// rtb_Text
+			// 
+			this.rtb_Text.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.rtb_Text.EmptyTextTip = null;
+			this.rtb_Text.Location = new System.Drawing.Point(732, 383);
+			this.rtb_Text.Name = "rtb_Text";
+			this.rtb_Text.Size = new System.Drawing.Size(100, 96);
+			this.rtb_Text.TabIndex = 0;
+			this.rtb_Text.Text = "";
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -544,6 +557,7 @@
 			this.Resize += new System.EventHandler(this.Form1_Resize);
 			this.toolStrip1.ResumeLayout(false);
 			this.toolStrip1.PerformLayout();
+			this.panel_main.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -597,6 +611,7 @@
 		private System.Windows.Forms.Label lb_CanvasSize;
 		private System.Windows.Forms.Label lb_SelectionSize;
 		private System.Windows.Forms.PictureBox pictureBox3;
+		private UserControl.TransparentRichTextBox rtb_Text;
 	}
 }
 

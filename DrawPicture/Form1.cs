@@ -25,6 +25,7 @@ namespace DrawPicture
 			InitializeCanvas();
 			_shape = new Circle(_canvas, this.panel_main);
 			panel_main.BackColor = Color.AliceBlue;
+			rtb_Text.Visible = false;
 		}
 		
 		private void Form1_Load(object sender, EventArgs e)
@@ -83,7 +84,19 @@ namespace DrawPicture
 				int height = _shape.AdjustingCanvasRect.Height;
 				GenerateStretchedBitmap(width,height);
 			}
+			SetRichTextBoxLocation();
 		}
+
+		private void SetRichTextBoxLocation()
+		{
+			if (_shape is TextBoxArea)
+			{
+				rtb_Text.Location = _shape.SelectionRect.Location;
+				rtb_Text.Size = new Size(_shape.SelectionRect.Width,_shape.SelectionRect.Height);
+				rtb_Text.Visible = true;
+			}
+		}
+
 		private void CreateNewBitmap(int width, int height)
 		{
 			Bitmap newCanvas = new Bitmap(width, height);
@@ -125,6 +138,8 @@ namespace DrawPicture
 			{
 				e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
 				e.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+				e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+
 				_shape.InPainting(e.Graphics);
 			}
 		}
@@ -250,6 +265,16 @@ namespace DrawPicture
 		private void btn_roundedRectangle_Click(object sender, EventArgs e)
 		{
 			_shape = new RoundedRectangle(_canvas, panel_main)
+			{
+				ForeColor = btn_showColor.BackColor,
+				Size = float.Parse(cmb_size.Text.Substring(0, 1))
+			};
+			panel_main.Invalidate();
+		}
+		//テキスト
+		private void btn_Text_Click(object sender, EventArgs e)
+		{
+			_shape = new TextBoxArea(_canvas, panel_main)
 			{
 				ForeColor = btn_showColor.BackColor,
 				Size = float.Parse(cmb_size.Text.Substring(0, 1))
@@ -442,8 +467,5 @@ namespace DrawPicture
 		{
 			_shape.Clear(_canvasBackgroundColor);
 		}
-
-
-
 	}
 }

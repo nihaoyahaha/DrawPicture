@@ -46,7 +46,7 @@ namespace DrawPicture.Shapes
 				StartPoint = e.Location;
 				Point pointIncanvas = ConvertPoint(e.Location);
 				Color pixelColor = canvas.GetPixel(pointIncanvas.X, pointIncanvas.Y);
-				FloodFillScanline(_tempCanvas, pointIncanvas.X, pointIncanvas.Y, pixelColor.ToArgb() /*Color.AliceBlue.ToArgb()*/, ForeColor.ToArgb());
+				FloodFillScanline(_tempCanvas, pointIncanvas.X, pointIncanvas.Y, pixelColor.ToArgb() , ForeColor.ToArgb());
 				panel.Invalidate();
 			}
 		}
