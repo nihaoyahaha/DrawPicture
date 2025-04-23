@@ -183,6 +183,36 @@ namespace DrawPicture.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
+        internal static System.Drawing.Bitmap 尺寸 {
+            get {
+                object obj = ResourceManager.GetObject("尺寸", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap 尺寸__1_ {
+            get {
+                object obj = ResourceManager.GetObject("尺寸 (1)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap 尺寸1 {
+            get {
+                object obj = ResourceManager.GetObject("尺寸1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
         internal static System.Drawing.Bitmap 形状_三角形 {
             get {
                 object obj = ResourceManager.GetObject("形状-三角形", resourceCulture);

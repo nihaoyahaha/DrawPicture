@@ -35,10 +35,39 @@ namespace DrawPicture
 		private void panel_main_MouseMove(object sender, MouseEventArgs e)
 		{
 			_shape.MouseMove(e);
-			//int offsetX = (panel_main.Width - _canvas.Width) / 2;
-			//int offsetY = (panel_main.Height - _canvas.Height) / 2;
-			//lb_Penposition.Text = $"{e.Location.X-offsetX}, {e.Location.Y-offsetY}像素";
+
+			GetMousePositionOnBitmap(e.Location);
+			
+			GetBitmapSize();
 		}
+
+		private void GetMousePositionOnBitmap(Point point)
+		{
+			if (_shape.IsValidLocation(point))
+			{
+				int offsetX = (panel_main.Width - _canvas.Width) / 2;
+				int offsetY = (panel_main.Height - _canvas.Height) / 2;
+				lb_Penposition.Text = $"{point.X - offsetX}, {point.Y - offsetY}ピクセル";
+			}
+			else
+			{
+				lb_Penposition.Text = "";
+			}
+		}
+
+		private void GetBitmapSize()
+		{
+			if (_shape.drawStatus == DrawStatus.CanvasAdjusting)
+			{
+				lb_CanvasSize.Text = $"{_shape.AdjustingCanvasRect.Width},{_shape.AdjustingCanvasRect.Height}ピクセル";
+			}
+			else if (_shape.drawStatus == DrawStatus.Creating || 
+				_shape.drawStatus == DrawStatus.Adjusting)
+			{ 
+			    lb_SelectionSize.Text = $"{_shape.SelectionRect.Width},{_shape.SelectionRect.Height}ピクセル";
+			}
+		}
+
 
 		private void panel_main_MouseDown(object sender, MouseEventArgs e)
 		{
@@ -272,6 +301,8 @@ namespace DrawPicture
 			null,
 			panel_main,
 			new object[] { true });
+			lb_SelectionSize.Text = "";
+			lb_CanvasSize.Text = "400,300ピクセル";
 		}
 
 		
@@ -289,11 +320,11 @@ namespace DrawPicture
 				try
 				{
 					_canvas.Save(saveFileDialog.FileName, ImageFormat.Png);
-					MessageBox.Show("图片已成功保存！", "保存成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
+					MessageBox.Show("画像は正常に保存されました！", "保存に成功しました", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				}
 				catch (Exception ex)
 				{
-					MessageBox.Show($"保存失败：{ex.Message}", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					MessageBox.Show($"保存に失敗しました：{ex.Message}", "エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				}
 			}
 		}
@@ -310,24 +341,17 @@ namespace DrawPicture
 			{
 				try
 				{
-					// 使用 using 确保临时对象被正确释放
 					using (Bitmap tempBitmap = new Bitmap(openFileDialog.FileName))
 					{
-						// 创建深拷贝以避免文件句柄锁定
 						_canvas = new Bitmap(tempBitmap);
 					}
 					_shape.canvas = _canvas;
 
-					// 调整 Panel 大小以适应图片
-					panel_main.Width = _canvas.Width;
-					panel_main.Height = _canvas.Height;
-
-					// 触发重绘
 					panel_main.Invalidate();
 				}
 				catch (Exception ex)
 				{
-					MessageBox.Show($"无法加载图片：{ex.Message}", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					MessageBox.Show($"画像をロードできません：{ex.Message}", "エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				}
 			}
 		}

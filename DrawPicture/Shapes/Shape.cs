@@ -36,7 +36,7 @@ namespace DrawPicture.Shapes
 		protected float ResizerPointSize = 10;
 
 		//選択範囲
-		protected Rectangle SelectionRect = Rectangle.Empty;
+		public Rectangle SelectionRect = Rectangle.Empty;
 
 		//ポイントタイプを編集する
 		protected RectangleShapeFocusType FocusType;
@@ -260,6 +260,7 @@ namespace DrawPicture.Shapes
 					return;
 				}
 			}
+			if (this is Line) return;
 			if (SelectionRect == Rectangle.Empty) return;
 			if (SelectionRect.Contains(mouseLocation))
 			{

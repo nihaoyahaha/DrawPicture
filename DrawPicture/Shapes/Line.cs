@@ -69,6 +69,7 @@ namespace DrawPicture.Shapes
 					StartPoint = EndPoint;
 					EndPoint = EndPoint;
 				}
+				drawStatus = DrawStatus.Adjusting;
 			}
 			else if (drawStatus == DrawStatus.CanvasAdjustable)
 			{
@@ -81,7 +82,7 @@ namespace DrawPicture.Shapes
 		private void MouseRightButtonDownHandle(MouseEventArgs e)
 		{
 			if (drawStatus == DrawStatus.Creating || 
-				drawStatus == DrawStatus.CanAdjusted || 
+				drawStatus == DrawStatus.Adjusting || 
 				drawStatus == DrawStatus.CanMove ||
 				drawStatus == DrawStatus.CanvasAdjusting)
 			{
@@ -118,6 +119,11 @@ namespace DrawPicture.Shapes
 			if (drawStatus == DrawStatus.Creating)
 			{
 				EndPoint = e.Location;
+				int x = Math.Min(StartPoint.X, EndPoint.X);
+				int y = Math.Min(StartPoint.Y, EndPoint.Y);
+				int width = Math.Abs(StartPoint.X - EndPoint.X);
+				int height = Math.Abs(StartPoint.Y - EndPoint.Y);
+				SelectionRect = new Rectangle(x, y, width, height);
 				panel.Invalidate();
 			}
 			else if (drawStatus == DrawStatus.CanMove)
@@ -129,9 +135,16 @@ namespace DrawPicture.Shapes
 				Offset = new Point(e.X, e.Y);
 				panel.Invalidate();
 			}
-			else if (drawStatus == DrawStatus.CanAdjusted)
+			else if (drawStatus == DrawStatus.Adjusting)
 			{
 				EndPoint = e.Location;
+				int x = Math.Min(StartPoint.X, EndPoint.X);
+				int y = Math.Min(StartPoint.Y, EndPoint.Y);
+				int width = Math.Abs(StartPoint.X - EndPoint.X);
+				int height = Math.Abs(StartPoint.Y - EndPoint.Y);
+				SelectionRect = new Rectangle(x, y, width, height);
+
+
 				panel.Invalidate();
 			}
 			else if (drawStatus == DrawStatus.CanvasAdjusting)
@@ -186,7 +199,8 @@ namespace DrawPicture.Shapes
 				DrawCreating(graphics);
 			}
 			else if (drawStatus == DrawStatus.CanMove || 
-				drawStatus == DrawStatus.CanAdjusted || 
+				drawStatus == DrawStatus.CanAdjusted ||
+				drawStatus == DrawStatus.Adjusting || 
 				drawStatus == DrawStatus.AdjustTheStyle)
 			{
 				if (EndPoint.X == 0 && EndPoint.Y == 0) return;

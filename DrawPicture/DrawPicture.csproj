@@ -172,5 +172,14 @@
   <ItemGroup>
     <None Include="Resources\Clearup.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\尺寸.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\尺寸1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\尺寸 %281%29.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
