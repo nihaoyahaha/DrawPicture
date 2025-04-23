@@ -23,8 +23,6 @@ namespace DrawPicture.Shapes
 		//キャンバス調整点コレクション
 		private List<(Rectangle rect, RectangleShapeFocusType focusType)> _canvasEditPoints = new List<(Rectangle rect, RectangleShapeFocusType focusType)>();
 
-		private Color _canvasBackgroundColor = Color.White;
-
 		//開始点
 		protected Point StartPoint { get; set; }
 
@@ -57,6 +55,9 @@ namespace DrawPicture.Shapes
 
 		//図形描画状態
 		public DrawStatus drawStatus { get; set; } = DrawStatus.CannotMovedOrAdjusted;
+
+		//ビットマップストレッチオフセットポイント
+		public Point BitmapStretchOffsetPoint = Point.Empty;
 
 		public abstract void MouseMove(MouseEventArgs e);
 		public abstract void MouseDown(MouseEventArgs e);
@@ -178,12 +179,16 @@ namespace DrawPicture.Shapes
 					rect.Y += verticalDistance;
 					rect.Width -= horizontalDistance;
 					rect.Height -= verticalDistance;
+
+					BitmapStretchOffsetPoint = new Point(rect.Width-canvas.Width, rect.Height-canvas.Height);
 					break;
 				case RectangleShapeFocusType.TopCenter:
 					if (height - verticalDistance <= 2) return;
 
 					rect.Y += verticalDistance;
 					rect.Height -= verticalDistance;
+
+					BitmapStretchOffsetPoint = new Point(0, rect.Height-canvas.Height);
 					break;
 				case RectangleShapeFocusType.TopRight:
 					if (width + horizontalDistance <= 2) return;
@@ -192,17 +197,23 @@ namespace DrawPicture.Shapes
 					rect.Y += verticalDistance;
 					rect.Width += horizontalDistance;
 					rect.Height -= verticalDistance;
+
+					BitmapStretchOffsetPoint = new Point(0, rect.Height-canvas.Height);
 					break;
 				case RectangleShapeFocusType.MiddleLeft:
 					if (width - horizontalDistance <= 2) return;
 
 					rect.X += horizontalDistance;
 					rect.Width -= horizontalDistance;
+
+					BitmapStretchOffsetPoint = new Point(rect.Width-canvas.Width,0);
 					break;
 				case RectangleShapeFocusType.MiddleRight:
 					if (width + horizontalDistance <= 2) return;
 
 					rect.Width += horizontalDistance;
+
+					BitmapStretchOffsetPoint = Point.Empty;
 					break;
 				case RectangleShapeFocusType.BottomLeft:
 					if (width - horizontalDistance <= 2) return;
@@ -211,11 +222,15 @@ namespace DrawPicture.Shapes
 					rect.X += horizontalDistance;
 					rect.Width -= horizontalDistance;
 					rect.Height += verticalDistance;
+
+					BitmapStretchOffsetPoint = new Point(rect.Width-canvas.Width,0);
 					break;
 				case RectangleShapeFocusType.BottomCenter:
 					if (height + verticalDistance <= 2) return;
 
 					rect.Height += verticalDistance;
+
+					BitmapStretchOffsetPoint = Point.Empty;
 					break;
 				case RectangleShapeFocusType.BottomRight:
 					if (width + horizontalDistance <= 2) return;
@@ -223,11 +238,11 @@ namespace DrawPicture.Shapes
 
 					rect.Width += horizontalDistance;
 					rect.Height += verticalDistance;
+
+					BitmapStretchOffsetPoint = Point.Empty;
 					break;
 			}
 		}
-
-
 
 		/// <summary>
 		/// マウスをストレッチ可能な点に置いたままにしているか
@@ -351,7 +366,7 @@ namespace DrawPicture.Shapes
 			return false;
 		}
 
-		public void DrawCanvasEditPoint(Graphics graphics)
+		private void DrawCanvasEditPoint(Graphics graphics)
 		{
 			int resizerSize = 16;
 			Rectangle rect;

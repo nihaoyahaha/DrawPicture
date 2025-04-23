@@ -22,7 +22,7 @@ namespace DrawPicture
 		public Form1()
 		{
 			InitializeComponent();
-			InitializeCanvas(panel_main.Width,panel_main.Height);
+			InitializeCanvas();
 			_shape = new Circle(_canvas, this.panel_main);
 			panel_main.BackColor = Color.AliceBlue;
 		}
@@ -52,7 +52,7 @@ namespace DrawPicture
 			{
 				int width = _shape.AdjustingCanvasRect.Width;
 				int height = _shape.AdjustingCanvasRect.Height;
-				CreateNewBitmap(width,height);
+				GenerateStretchedBitmap(width,height);
 			}
 		}
 		private void CreateNewBitmap(int width, int height)
@@ -65,6 +65,23 @@ namespace DrawPicture
 				{
 					g.Clear(_canvasBackgroundColor);
 					g.DrawImage(_canvas, Point.Empty);
+				}
+				_canvas.Dispose();
+				_canvas = newCanvas;
+				_shape.canvas = _canvas;
+			}
+			panel_main.Invalidate();
+		}
+
+		private void GenerateStretchedBitmap(int width, int height)
+		{
+			Bitmap newCanvas = new Bitmap(width, height);
+			if (_canvas != null)
+			{
+				using (Graphics g = Graphics.FromImage(newCanvas))
+				{
+					g.Clear(_canvasBackgroundColor);
+					g.DrawImage(_canvas, _shape.BitmapStretchOffsetPoint);
 				}
 				_canvas.Dispose();
 				_canvas = newCanvas;
@@ -239,9 +256,9 @@ namespace DrawPicture
 			panel_main.Refresh();
 		}
 
-		private void InitializeCanvas(int width, int height)
+		private void InitializeCanvas()
 		{
-			_canvas = new Bitmap(200, 200);
+			_canvas = new Bitmap(400, 300);
 			using (Graphics g = Graphics.FromImage(_canvas))
 			{
 				g.Clear(_canvasBackgroundColor); // 初始化背景色
