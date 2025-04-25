@@ -313,7 +313,7 @@ namespace DrawPicture.Shapes
 			}
 		}
 
-		protected Rectangle ConvertSelectionRectToCanvasRect(Rectangle rect)
+		public Rectangle ConvertSelectionRectToCanvasRect(Rectangle rect)
 		{
 			int offsetX = (panel.Width - canvas.Width) / 2;
 			int offsetY = (panel.Height - canvas.Height) / 2;
@@ -333,14 +333,14 @@ namespace DrawPicture.Shapes
 			return points.Select(v => new Point(v.X - offsetX, v.Y - offsetY)).ToArray();
 		}
 
-		protected Point ConvertPoint(Point point)
+		public Point ConvertPoint(Point point)
 		{
 			int offsetX = (panel.Width - canvas.Width) / 2;
 			int offsetY = (panel.Height - canvas.Height) / 2;
 			return new Point(point.X-offsetX,point.Y-offsetY);
 		}
 
-		protected Rectangle GetCanvasRegion() 
+		public Rectangle GetCanvasRegion() 
 		{ 
 			int offsetX = (panel.Width - canvas.Width) / 2;
 			int offsetY = (panel.Height - canvas.Height) / 2;
@@ -369,7 +369,7 @@ namespace DrawPicture.Shapes
 
 		private void DrawCanvasEditPoint(Graphics graphics)
 		{
-			int resizerSize = 16;
+			int resizerSize = 8;
 			Rectangle rect;
 			_canvasEditPoints = new List<(Rectangle rect, RectangleShapeFocusType focusType)>();
 			foreach (var item in GetResizerPoints(GetCanvasRegion()))
@@ -478,5 +478,81 @@ namespace DrawPicture.Shapes
 				graphics.DrawRectangle(selectionPen, AdjustingCanvasRect);
 			}
 		}
+
+
+		public Rectangle SetRichTextBoxMinSize(float size,ref Rectangle rectangle)
+		{
+			int width = rectangle.Width;
+			int height = rectangle.Height;
+			switch (size)
+			{
+				case 8:
+					if (width <= 110) rectangle.Width = 110;
+					if (height <= 16) rectangle.Height = 26;
+					break;
+				case 9:
+					if (width <= 130) rectangle.Width = 130;
+					if (height <= 27) rectangle.Height = 37;
+					break;
+				case 10:
+					if (width <= 130) rectangle.Width = 130;
+					if (height <= 29) rectangle.Height = 39;
+					break;
+				case 11:
+					if (width <= 150) rectangle.Width = 150;
+					if (height <= 30) rectangle.Height = 40;
+					break;
+				case 12:
+					if (width <= 170) rectangle.Width = 170;
+					if (height <= 31) rectangle.Height = 41;
+					break;
+				case 14:
+					if (width <= 190) rectangle.Width = 190;
+					if (height <= 34) rectangle.Height = 44;
+					break;
+				case 16:
+					if (width <= 210) rectangle.Width = 210;
+					if (height <= 38) rectangle.Height = 48;
+					break;
+				case 18:
+					if (width <= 250) rectangle.Width = 250;
+					if (height <= 41) rectangle.Height = 51;
+					break;
+				case 20:
+					if (width <= 270) rectangle.Width = 270;
+					if (height <= 45) rectangle.Height = 55;
+					break;
+				case 22:
+					if (width <= 290) rectangle.Width = 290;
+					if (height <= 48) rectangle.Height = 58;
+					break;
+				case 24:
+					if (width <= 310) rectangle.Width = 310;
+					if (height <= 51) rectangle.Height = 61;
+					break;
+				case 26:
+					if (width <= 330) rectangle.Width = 330;
+					if (height <= 55) rectangle.Height = 65;
+					break;
+				case 28:
+					if (width <= 370) rectangle.Width = 370;
+					if (height <= 58) rectangle.Height = 68;
+					break;
+				case 36:
+					if (width <= 415) rectangle.Width = 415;
+					if (height <= 72) rectangle.Height = 82;
+					break;
+				case 48:
+					if (width <= 847) rectangle.Width = 847;
+					if (height <= 134) rectangle.Height = 144;
+					break;
+				case 72:
+					if (width <= 930) rectangle.Width = 930;
+					if (height <= 134) rectangle.Height = 144;
+					break;
+			}
+			return rectangle;
+		}
+
 	}
 }

@@ -25,7 +25,7 @@ namespace DrawPicture
 
 		private void button1_Click(object sender, EventArgs e)
 		{
-			transparentRichTextBox1.Visible = false;
+			
 		}
 	}
 }

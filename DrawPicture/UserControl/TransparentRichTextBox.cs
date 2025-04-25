@@ -42,22 +42,31 @@ namespace DrawPicture.UserControl
 			}
 		}
 
-		protected override void WndProc(ref Message m)
+		[DllImport("kernel32.dll", CharSet = CharSet.Auto)]
+		private static extern IntPtr LoadLibrary(string lpFileName);
+		protected override CreateParams CreateParams
 		{
-			base.WndProc(ref m);
-			if (m.Msg == WM_PAINT)
+			get
 			{
-				WmPaint(ref m);
+				CreateParams prams = base.CreateParams;
+				if (LoadLibrary("msftedit.dll") != IntPtr.Zero)
+				{
+					prams.ExStyle |= 0x020; // transparent 
+					prams.ClassName = "RICHEDIT50W";
+				}
+				return prams;
 			}
 		}
 
-		private void WmPaint(ref Message m)
+
+
+		protected override void WndProc(ref Message m)
 		{
-			using (Graphics graphics = Graphics.FromHwnd(base.Handle))
+			base.WndProc(ref m);
+
+			if (m.Msg == WM_PAINT && !Focused && Text.Length == 0 && !string.IsNullOrEmpty(_emptyTextTip))
 			{
-				if (Text.Length == 0
-					&& !string.IsNullOrEmpty(_emptyTextTip)
-					&& !Focused)
+				using (Graphics graphics = Graphics.FromHwnd(base.Handle))
 				{
 					TextFormatFlags format =
 						TextFormatFlags.EndEllipsis |
@@ -79,21 +88,6 @@ namespace DrawPicture.UserControl
 			}
 		}
 
-		[DllImport("kernel32.dll", CharSet = CharSet.Auto)]
-		private static extern IntPtr LoadLibrary(string lpFileName);
-		protected override CreateParams CreateParams
-		{
-			get
-			{
-				CreateParams prams = base.CreateParams;
-				if (LoadLibrary("msftedit.dll") != IntPtr.Zero)
-				{
-					prams.ExStyle |= 0x020; // transparent 
-					prams.ClassName = "RICHEDIT50W";
-				}
-				return prams;
-			}
-		}
 
 	}
 }

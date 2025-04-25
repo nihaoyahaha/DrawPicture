@@ -6,6 +6,7 @@ using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using System.Drawing.Text;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -19,26 +20,29 @@ namespace DrawPicture
 		private Bitmap _canvas;
 		private Shape _shape;
 		private Color _canvasBackgroundColor = Color.White;
+
 		public Form1()
 		{
 			InitializeComponent();
 			InitializeCanvas();
-			_shape = new Circle(_canvas, this.panel_main);
+			_shape = new TextBoxArea(_canvas, this.panel_main);
 			panel_main.BackColor = Color.AliceBlue;
 			rtb_Text.Visible = false;
+			LoadInstalledFonts();
 		}
 		
 		private void Form1_Load(object sender, EventArgs e)
 		{
 			cmb_size.SelectedIndex = 3;
+			cmb_TextSize.SelectedIndex = 0;
+			cmb_FontFamily.SelectedIndex = 0;
+			SetTextFont();
 		}
 
 		private void panel_main_MouseMove(object sender, MouseEventArgs e)
 		{
 			_shape.MouseMove(e);
-
 			GetMousePositionOnBitmap(e.Location);
-			
 			GetBitmapSize();
 		}
 
@@ -77,7 +81,16 @@ namespace DrawPicture
 
 		private void panel_main_MouseUp(object sender, MouseEventArgs e)
 		{
+			if (_shape is TextBoxArea textBoxArea)
+			{
+				textBoxArea.richTextBox = rtb_Text;
+			}
 			_shape.MouseUp(e);
+			//if (_shape.drawStatus == DrawStatus.Creating)
+			//{
+			//	rtb_Text.Text = "";
+			//}
+			
 			if (_shape.drawStatus == DrawStatus.CompleteCanvasAdjustment)
 			{
 				int width = _shape.AdjustingCanvasRect.Width;
@@ -89,11 +102,43 @@ namespace DrawPicture
 
 		private void SetRichTextBoxLocation()
 		{
-			if (_shape is TextBoxArea)
+			if (_shape is TextBoxArea )
 			{
-				rtb_Text.Location = _shape.SelectionRect.Location;
-				rtb_Text.Size = new Size(_shape.SelectionRect.Width,_shape.SelectionRect.Height);
+				var rect = _shape.GetCanvasRegion();
+
+				if (_shape.SelectionRect.X <= rect.X)
+				{
+					_shape.SelectionRect.X = rect.X;
+				}
+				if (_shape.SelectionRect.Y <= rect.Y)
+				{
+					_shape.SelectionRect.Y = rect.Y;
+				}
+				if (_shape.SelectionRect.X + _shape.SelectionRect.Width >= rect.Right) 
+				{
+					if (rect.Right - _shape.SelectionRect.X <= 5)
+					{
+						_shape.SelectionRect.Width = 5;
+						_shape.SelectionRect.X = rect.Right - 20;
+					}
+					else
+					{
+						_shape.SelectionRect.Width = rect.Right - _shape.SelectionRect.X;
+					}
+						
+				}
+					
+				//if (_shape.SelectionRect.Y + _shape.SelectionRect.Height >= rect.Bottom)
+				//	_shape.SelectionRect.Height = rect.Bottom - rect.Y;
+
+				rtb_Text.Location = new Point( _shape.SelectionRect.X+5,_shape.SelectionRect.Y+5);
+				rtb_Text.Size = new Size(_shape.SelectionRect.Width-10,_shape.SelectionRect.Height-10);
 				rtb_Text.Visible = true;
+				
+				string text = rtb_Text.Text;
+				rtb_Text.Text = text;
+				rtb_Text.SelectionStart = text.Length;
+				rtb_Text.Focus();
 			}
 		}
 
@@ -112,6 +157,8 @@ namespace DrawPicture
 				_canvas = newCanvas;
 				_shape.canvas = _canvas;
 			}
+			SetRichTextBoxLocation();
+			_shape.drawStatus = DrawStatus.CanAdjusted;
 			panel_main.Invalidate();
 		}
 
@@ -329,8 +376,7 @@ namespace DrawPicture
 			lb_SelectionSize.Text = "";
 			lb_CanvasSize.Text = "400,300ピクセル";
 		}
-
-		
+	
 		private void SavePng()
 		{
 			// 保存位图为 PNG 文件
@@ -353,7 +399,6 @@ namespace DrawPicture
 				}
 			}
 		}
-
 		private void OpenPng()
 		{
 			OpenFileDialog openFileDialog = new OpenFileDialog
@@ -419,6 +464,7 @@ namespace DrawPicture
 			btn_showColor.BackColor = color;
 			_shape.ForeColor = color;
 			_shape.drawStatus = DrawStatus.AdjustTheStyle;
+			rtb_Text.ForeColor = color;
 			if (_shape is RectangularSelection) return;
 			panel_main.Refresh();
 		}
@@ -466,6 +512,79 @@ namespace DrawPicture
 		private void btn_ClearAll_Click(object sender, EventArgs e)
 		{
 			_shape.Clear(_canvasBackgroundColor);
+		}
+
+		private void cmb_TextSize_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			SetTextFont();
+			if (_shape is TextBoxArea area && area.SelectionRect.Width>0 && area.SelectionRect.Height >0)
+			{
+				area.SetRichTextBoxMinSize(rtb_Text.Font.Size, ref area.SelectionRect);
+				SetRichTextBoxLocation();
+				_shape.drawStatus = DrawStatus.CanAdjusted;
+				panel_main.Invalidate();
+				rtb_Text.Focus();
+			}
+		}
+
+		private void SetTextFont()
+		{
+			int fontSize = int.Parse(cmb_TextSize.Text);
+			string fontFamily = cmb_FontFamily.Text;
+			Font font = new Font(fontFamily, fontSize);
+			rtb_Text.Font = font;
+
+
+
+			//MessageBox.Show(rtb_Text.PreferredHeight.ToString());
+			//// 尝试创建字体
+			//using (Font font = new Font(fontFamily, fontSize))
+			//{
+			//	// 设置 RichTextBox 的默认字体
+			//	rtb_Text.Font = font;
+
+			//	// 确保当前插入点的字体也被设置为新的字体
+			//	rtb_Text.SelectionFont = rtb_Text.Font;
+			//}
+
+			//// 检查字体是否存在
+			//if (FontFamily.Families.Any(f => f.Name == fontFamily))
+			//{
+			//	Font font = new Font(fontFamily, fontSize);
+
+			//	// 选择整个内容
+			//	rtb_Text.SelectAll();
+			//	rtb_Text.Font = font;
+
+
+			//}
+		}
+		private void LoadInstalledFonts()
+		{
+			InstalledFontCollection installedFonts = new InstalledFontCollection();
+			char japaneseChar ='你';//'あ';
+
+			foreach (FontFamily fontFamily in installedFonts.Families)
+			{
+				try
+				{
+					using (Font font = new Font(fontFamily, 12))
+					{
+						if (TextRenderer.MeasureText(japaneseChar.ToString(), font).Width > 0)
+						{
+							cmb_FontFamily.Items.Add(fontFamily.Name);
+						}
+					}
+				}
+				catch
+				{
+				}
+			}
+		}
+
+		private void cmb_FontFamily_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			SetTextFont();
 		}
 	}
 }

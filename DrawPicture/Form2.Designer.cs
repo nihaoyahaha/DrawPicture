@@ -28,19 +28,8 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.transparentRichTextBox1 = new DrawPicture.UserControl.TransparentRichTextBox();
 			this.button1 = new System.Windows.Forms.Button();
 			this.SuspendLayout();
-			// 
-			// transparentRichTextBox1
-			// 
-			this.transparentRichTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-			this.transparentRichTextBox1.EmptyTextTip = null;
-			this.transparentRichTextBox1.Location = new System.Drawing.Point(165, 87);
-			this.transparentRichTextBox1.Name = "transparentRichTextBox1";
-			this.transparentRichTextBox1.Size = new System.Drawing.Size(123, 137);
-			this.transparentRichTextBox1.TabIndex = 0;
-			this.transparentRichTextBox1.Text = "";
 			// 
 			// button1
 			// 
@@ -59,7 +48,6 @@
 			this.BackgroundImage = global::DrawPicture.Properties.Resources._22;
 			this.ClientSize = new System.Drawing.Size(800, 450);
 			this.Controls.Add(this.button1);
-			this.Controls.Add(this.transparentRichTextBox1);
 			this.Name = "Form2";
 			this.Text = "Form2";
 			this.ResumeLayout(false);
@@ -67,8 +55,6 @@
 		}
 
 		#endregion
-
-		private UserControl.TransparentRichTextBox transparentRichTextBox1;
 		private System.Windows.Forms.Button button1;
 	}
 }

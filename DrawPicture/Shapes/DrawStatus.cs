@@ -61,7 +61,9 @@ namespace DrawPicture.Shapes
 		/// <summary>
 		/// Bitmap調整の完了
 		/// </summary>
-		CompleteCanvasAdjustment
+		CompleteCanvasAdjustment,
+
+	    CompleteDrawText
 
 	}
 }
