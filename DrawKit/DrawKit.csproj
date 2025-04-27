@@ -1,20 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{41005B30-B6D6-4C91-B348-178B9B8BEF7B}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
-    <RootNamespace>DrawPicture</RootNamespace>
-    <AssemblyName>DrawPicture</AssemblyName>
+    <ProjectGuid>{3754853E-D1DE-423B-ABFB-600100DFA8A9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DrawKit</RootNamespace>
+    <AssemblyName>DrawKit</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,83 +22,88 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>7.3</LangVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="CanvasForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CanvasForm.Designer.cs">
+      <DependentUpon>CanvasForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    <Compile Include="Shapes\Circle.cs" />
+    <Compile Include="Shapes\DrawStatus.cs" />
+    <Compile Include="Shapes\Eraser.cs" />
+    <Compile Include="Shapes\Hexagon.cs" />
+    <Compile Include="Shapes\Line.cs" />
+    <Compile Include="Shapes\OilTank.cs" />
+    <Compile Include="Shapes\Pentagon.cs" />
+    <Compile Include="Shapes\RectangleShapeFocusType.cs" />
+    <Compile Include="Shapes\RectangularSelection.cs" />
+    <Compile Include="Shapes\Rhombus.cs" />
+    <Compile Include="Shapes\RightTriangle.cs" />
+    <Compile Include="Shapes\RoundedRectangle.cs" />
+    <Compile Include="Shapes\Shape.cs" />
+    <Compile Include="Shapes\ShapeRectangle.cs" />
+    <Compile Include="Shapes\TextBoxArea.cs" />
+    <Compile Include="Shapes\Triangle.cs" />
+    <Compile Include="UserControl\TransparentRichTextBox.cs">
+      <SubType>Component</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <EmbeddedResource Include="CanvasForm.resx">
+      <DependentUpon>CanvasForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\22.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Clearup.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\select.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\拓展.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\右旋转.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\擦除.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\文字颜色.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\直线.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\圆圈.png" />
+    <None Include="Resources\右旋转1.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\矩形.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\圆角矩形.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\形状-矩形.png" />
@@ -107,46 +112,16 @@
     <None Include="Resources\形状-三角形.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\直角三角形.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\菱形框.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\五边形.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\六边形.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\保存.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\保存 %281%29.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\打开.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\坐标轴.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\粗细.png" />
+    <None Include="Resources\擦除.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\颜色.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\透明.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\填充颜色.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\右旋转1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Clearup.png" />
+    <None Include="Resources\尺寸 %281%29.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\尺寸.png" />
@@ -155,16 +130,49 @@
     <None Include="Resources\尺寸1.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\尺寸 %281%29.png" />
+    <None Include="Resources\粗细.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\22.png" />
+    <None Include="Resources\打开.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DrawKit\DrawKit.csproj">
-      <Project>{3754853e-d1de-423b-abfb-600100dfa8a9}</Project>
-      <Name>DrawKit</Name>
-    </ProjectReference>
+    <None Include="Resources\拓展.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\直角三角形.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\直线.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\填充颜色.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\透明.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\菱形框.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\文字颜色.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\保存 %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\保存.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\六边形.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\圆角矩形.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\圆圈.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\颜色.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
