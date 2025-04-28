@@ -174,5 +174,50 @@
   <ItemGroup>
     <None Include="Resources\颜色.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LineTool.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RectangleTool.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RightTriangleTool.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RoundedRectTool.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RectangularSelectionLarge.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\EraserTool.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FillTool.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TextTool.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TriangleTool.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DiamondTool.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PentagonTool.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HexagonTool.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\OvalTool.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RotateRight.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

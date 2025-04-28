@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -17,6 +18,8 @@ namespace DrawKit
 {
 	public partial class CanvasForm : Form
 	{
+		public string FilePath;
+		public event Action OnConfirm;
 		private Bitmap _canvas;
 		private Shape _shape;
 		private Color _canvasBackgroundColor = Color.White;
@@ -30,7 +33,7 @@ namespace DrawKit
 			rtb_Text.Visible = false;
 			LoadInstalledFonts();
 		}
-		
+
 		private void Form1_Load(object sender, EventArgs e)
 		{
 			cmb_size.SelectedIndex = 3;
@@ -66,10 +69,10 @@ namespace DrawKit
 			{
 				lb_CanvasSize.Text = $"{_shape.AdjustingCanvasRect.Width},{_shape.AdjustingCanvasRect.Height}ピクセル";
 			}
-			else if (_shape.drawStatus == DrawStatus.Creating || 
+			else if (_shape.drawStatus == DrawStatus.Creating ||
 				_shape.drawStatus == DrawStatus.Adjusting)
-			{ 
-			    lb_SelectionSize.Text = $"{_shape.SelectionRect.Width},{_shape.SelectionRect.Height}ピクセル";
+			{
+				lb_SelectionSize.Text = $"{_shape.SelectionRect.Width},{_shape.SelectionRect.Height}ピクセル";
 			}
 		}
 
@@ -90,19 +93,19 @@ namespace DrawKit
 			//{
 			//	rtb_Text.Text = "";
 			//}
-			
+
 			if (_shape.drawStatus == DrawStatus.CompleteCanvasAdjustment)
 			{
 				int width = _shape.AdjustingCanvasRect.Width;
 				int height = _shape.AdjustingCanvasRect.Height;
-				GenerateStretchedBitmap(width,height);
+				GenerateStretchedBitmap(width, height);
 			}
 			SetRichTextBoxLocation();
 		}
 
 		private void SetRichTextBoxLocation()
 		{
-			if (_shape is TextBoxArea )
+			if (_shape is TextBoxArea)
 			{
 				var rect = _shape.GetCanvasRegion();
 
@@ -114,7 +117,7 @@ namespace DrawKit
 				{
 					_shape.SelectionRect.Y = rect.Y;
 				}
-				if (_shape.SelectionRect.X + _shape.SelectionRect.Width >= rect.Right) 
+				if (_shape.SelectionRect.X + _shape.SelectionRect.Width >= rect.Right)
 				{
 					if (rect.Right - _shape.SelectionRect.X <= 5)
 					{
@@ -125,16 +128,16 @@ namespace DrawKit
 					{
 						_shape.SelectionRect.Width = rect.Right - _shape.SelectionRect.X;
 					}
-						
+
 				}
-					
+
 				//if (_shape.SelectionRect.Y + _shape.SelectionRect.Height >= rect.Bottom)
 				//	_shape.SelectionRect.Height = rect.Bottom - rect.Y;
 
-				rtb_Text.Location = new Point( _shape.SelectionRect.X+5,_shape.SelectionRect.Y+5);
-				rtb_Text.Size = new Size(_shape.SelectionRect.Width-10,_shape.SelectionRect.Height-10);
+				rtb_Text.Location = new Point(_shape.SelectionRect.X + 5, _shape.SelectionRect.Y + 5);
+				rtb_Text.Size = new Size(_shape.SelectionRect.Width - 10, _shape.SelectionRect.Height - 10);
 				rtb_Text.Visible = true;
-				
+
 				string text = rtb_Text.Text;
 				rtb_Text.Text = text;
 				rtb_Text.SelectionStart = text.Length;
@@ -330,7 +333,7 @@ namespace DrawKit
 		}
 		private void Form1_Resize(object sender, EventArgs e)
 		{
-			CreateNewBitmap(_canvas.Width,_canvas.Height);
+			CreateNewBitmap(_canvas.Width, _canvas.Height);
 		}
 
 		private void btn_save_Click(object sender, EventArgs e)
@@ -359,7 +362,7 @@ namespace DrawKit
 
 		private void InitializeCanvas()
 		{
-			_canvas = new Bitmap(400, 300);
+			_canvas = new Bitmap(320, 192);
 			using (Graphics g = Graphics.FromImage(_canvas))
 			{
 				g.Clear(_canvasBackgroundColor); // 初始化背景色
@@ -374,9 +377,9 @@ namespace DrawKit
 			panel_main,
 			new object[] { true });
 			lb_SelectionSize.Text = "";
-			lb_CanvasSize.Text = "400,300ピクセル";
+			lb_CanvasSize.Text = $"{_canvas.Width},{_canvas.Height}ピクセル";
 		}
-	
+
 		private void SavePng()
 		{
 			// 保存位图为 PNG 文件
@@ -399,6 +402,28 @@ namespace DrawKit
 				}
 			}
 		}
+
+		private void Save()
+		{
+			ImageFormat imageFormat = GetImageFormatFromExtension(Path.GetExtension(FilePath));
+			_canvas.Save(FilePath, imageFormat);
+
+		}
+
+		private ImageFormat GetImageFormatFromExtension(string extension)
+		{
+			var formatMap = new Dictionary<string, ImageFormat>(StringComparer.OrdinalIgnoreCase){
+			{ ".bmp", ImageFormat.Bmp },
+			{ ".gif", ImageFormat.Gif },
+			{ ".jpg", ImageFormat.Jpeg },
+			{ ".jpeg", ImageFormat.Jpeg },
+			{ ".png", ImageFormat.Png },
+			{ ".tiff", ImageFormat.Tiff },
+			{ ".wmf", ImageFormat.Wmf },
+			{ ".emf", ImageFormat.Emf }};
+			return formatMap.TryGetValue(extension, out var format) ? format : ImageFormat.Jpeg;
+		}
+
 		private void OpenPng()
 		{
 			OpenFileDialog openFileDialog = new OpenFileDialog
@@ -459,7 +484,7 @@ namespace DrawKit
 			SetShapeForeColor(Color.White);
 		}
 
-		private void SetShapeForeColor( Color color)
+		private void SetShapeForeColor(Color color)
 		{
 			btn_showColor.BackColor = color;
 			_shape.ForeColor = color;
@@ -517,7 +542,7 @@ namespace DrawKit
 		private void cmb_TextSize_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			SetTextFont();
-			if (_shape is TextBoxArea area && area.SelectionRect.Width>0 && area.SelectionRect.Height >0)
+			if (_shape is TextBoxArea area && area.SelectionRect.Width > 0 && area.SelectionRect.Height > 0)
 			{
 				area.SetRichTextBoxMinSize(rtb_Text.Font.Size, ref area.SelectionRect);
 				SetRichTextBoxLocation();
@@ -562,7 +587,7 @@ namespace DrawKit
 		private void LoadInstalledFonts()
 		{
 			InstalledFontCollection installedFonts = new InstalledFontCollection();
-			char japaneseChar ='你';//'あ';
+			char japaneseChar = '你';//'あ';
 
 			foreach (FontFamily fontFamily in installedFonts.Families)
 			{
@@ -585,6 +610,12 @@ namespace DrawKit
 		private void cmb_FontFamily_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			SetTextFont();
+		}
+
+		private void btn_Ok_Click(object sender, EventArgs e)
+		{
+			Save();
+			OnConfirm?.Invoke();
 		}
 	}
 }
