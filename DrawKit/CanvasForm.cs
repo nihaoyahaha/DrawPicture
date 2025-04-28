@@ -10,9 +10,13 @@ using System.Drawing.Text;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
+using static System.Windows.Forms.AxHost;
 
 namespace DrawKit
 {
@@ -23,6 +27,7 @@ namespace DrawKit
 		private Bitmap _canvas;
 		private Shape _shape;
 		private Color _canvasBackgroundColor = Color.White;
+		private float[] customValues = { 0.125f, 0.25f, 0.5f, 1, 2, 3, 4, 5, 6, 7, 8 };
 
 		public CanvasForm()
 		{
@@ -30,6 +35,7 @@ namespace DrawKit
 			InitializeCanvas();
 			_shape = new TextBoxArea(_canvas, this.panel_main);
 			panel_main.BackColor = Color.AliceBlue;
+			panel_main.MouseWheel += Panel_MouseWheel;
 			rtb_Text.Visible = false;
 			LoadInstalledFonts();
 		}
@@ -40,6 +46,7 @@ namespace DrawKit
 			cmb_TextSize.SelectedIndex = 0;
 			cmb_FontFamily.SelectedIndex = 0;
 			SetTextFont();
+			UpdateLabel(trackBar_scale.Value);
 		}
 
 		private void panel_main_MouseMove(object sender, MouseEventArgs e)
@@ -73,6 +80,21 @@ namespace DrawKit
 				_shape.drawStatus == DrawStatus.Adjusting)
 			{
 				lb_SelectionSize.Text = $"{_shape.SelectionRect.Width},{_shape.SelectionRect.Height}ピクセル";
+			}
+		}
+
+		private void Panel_MouseWheel(object sender, MouseEventArgs e)
+		{
+			if (Control.ModifierKeys == Keys.Control)
+			{
+				if (e.Delta > 0)
+				{
+					pic_amplify_Click(null, null);
+				}
+				else if (e.Delta < 0)
+				{
+					pic_reduce_Click(null, null);
+				}
 			}
 		}
 
@@ -405,6 +427,7 @@ namespace DrawKit
 
 		private void Save()
 		{
+			if (string.IsNullOrEmpty(FilePath)) return;
 			ImageFormat imageFormat = GetImageFormatFromExtension(Path.GetExtension(FilePath));
 			_canvas.Save(FilePath, imageFormat);
 
@@ -616,6 +639,34 @@ namespace DrawKit
 		{
 			Save();
 			OnConfirm?.Invoke();
+		}
+
+		private void pic_reduce_Click(object sender, EventArgs e)
+		{
+			if (trackBar_scale.Value - 1 >= trackBar_scale.Minimum)
+			{
+				UpdateLabel(trackBar_scale.Value -= 1);
+			}
+		}
+
+		private void pic_amplify_Click(object sender, EventArgs e)
+		{
+			if (trackBar_scale.Value + 1 <= trackBar_scale.Maximum)
+			{
+				UpdateLabel(trackBar_scale.Value += 1);
+			}
+
+		}
+
+		private void trackBar_scale_ValueChanged(object sender, EventArgs e)
+		{
+			UpdateLabel(trackBar_scale.Value);
+		}
+		private void UpdateLabel(int index)
+		{
+			float currentValue = customValues[index];
+			lb_scale.Text = $"{currentValue*100}%";
+			_shape.Scale = currentValue;
 		}
 	}
 }

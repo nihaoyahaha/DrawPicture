@@ -29,7 +29,6 @@
 		private void InitializeComponent()
 		{
 			this.panel_main = new System.Windows.Forms.Panel();
-			this.rtb_Text = new DrawKit.UserControl.TransparentRichTextBox();
 			this.lb_Penposition = new System.Windows.Forms.Label();
 			this.lb_CanvasSize = new System.Windows.Forms.Label();
 			this.lb_SelectionSize = new System.Windows.Forms.Label();
@@ -74,14 +73,22 @@
 			this.btn_save = new System.Windows.Forms.ToolStripButton();
 			this.btn_open = new System.Windows.Forms.ToolStripButton();
 			this.btn_ClearAll = new System.Windows.Forms.ToolStripButton();
+			this.btn_Ok = new System.Windows.Forms.Button();
+			this.trackBar_scale = new System.Windows.Forms.TrackBar();
+			this.lb_scale = new System.Windows.Forms.Label();
 			this.pictureBox2 = new System.Windows.Forms.PictureBox();
 			this.pictureBox3 = new System.Windows.Forms.PictureBox();
+			this.pic_amplify = new System.Windows.Forms.PictureBox();
+			this.pic_reduce = new System.Windows.Forms.PictureBox();
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
-			this.btn_Ok = new System.Windows.Forms.Button();
+			this.rtb_Text = new DrawKit.UserControl.TransparentRichTextBox();
 			this.panel_main.SuspendLayout();
 			this.toolStrip1.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.trackBar_scale)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pic_amplify)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pic_reduce)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -95,28 +102,18 @@
 			this.panel_main.Controls.Add(this.rtb_Text);
 			this.panel_main.Location = new System.Drawing.Point(0, 83);
 			this.panel_main.Name = "panel_main";
-			this.panel_main.Size = new System.Drawing.Size(720, 342);
+			this.panel_main.Size = new System.Drawing.Size(750, 320);
 			this.panel_main.TabIndex = 1;
 			this.panel_main.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_main_Paint);
 			this.panel_main.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel_main_MouseDown);
 			this.panel_main.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel_main_MouseMove);
 			this.panel_main.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panel_main_MouseUp);
 			// 
-			// rtb_Text
-			// 
-			this.rtb_Text.BorderStyle = System.Windows.Forms.BorderStyle.None;
-			this.rtb_Text.EmptyTextTip = null;
-			this.rtb_Text.Location = new System.Drawing.Point(463, 383);
-			this.rtb_Text.Name = "rtb_Text";
-			this.rtb_Text.Size = new System.Drawing.Size(100, 96);
-			this.rtb_Text.TabIndex = 0;
-			this.rtb_Text.Text = "";
-			// 
 			// lb_Penposition
 			// 
 			this.lb_Penposition.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.lb_Penposition.AutoSize = true;
-			this.lb_Penposition.Location = new System.Drawing.Point(44, 440);
+			this.lb_Penposition.Location = new System.Drawing.Point(40, 432);
 			this.lb_Penposition.Name = "lb_Penposition";
 			this.lb_Penposition.Size = new System.Drawing.Size(41, 12);
 			this.lb_Penposition.TabIndex = 2;
@@ -126,7 +123,7 @@
 			// 
 			this.lb_CanvasSize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.lb_CanvasSize.AutoSize = true;
-			this.lb_CanvasSize.Location = new System.Drawing.Point(416, 440);
+			this.lb_CanvasSize.Location = new System.Drawing.Point(350, 432);
 			this.lb_CanvasSize.Name = "lb_CanvasSize";
 			this.lb_CanvasSize.Size = new System.Drawing.Size(41, 12);
 			this.lb_CanvasSize.TabIndex = 2;
@@ -136,7 +133,7 @@
 			// 
 			this.lb_SelectionSize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.lb_SelectionSize.AutoSize = true;
-			this.lb_SelectionSize.Location = new System.Drawing.Point(218, 440);
+			this.lb_SelectionSize.Location = new System.Drawing.Point(194, 432);
 			this.lb_SelectionSize.Name = "lb_SelectionSize";
 			this.lb_SelectionSize.Size = new System.Drawing.Size(41, 12);
 			this.lb_SelectionSize.TabIndex = 2;
@@ -272,7 +269,7 @@
 			this.toolStrip1.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip1.Margin = new System.Windows.Forms.Padding(0, 10, 0, 0);
 			this.toolStrip1.Name = "toolStrip1";
-			this.toolStrip1.Size = new System.Drawing.Size(720, 80);
+			this.toolStrip1.Size = new System.Drawing.Size(750, 80);
 			this.toolStrip1.TabIndex = 0;
 			this.toolStrip1.Text = "toolStrip1";
 			// 
@@ -564,12 +561,44 @@
 			this.btn_ClearAll.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
 			this.btn_ClearAll.Click += new System.EventHandler(this.btn_ClearAll_Click);
 			// 
+			// btn_Ok
+			// 
+			this.btn_Ok.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.btn_Ok.Location = new System.Drawing.Point(663, 427);
+			this.btn_Ok.Name = "btn_Ok";
+			this.btn_Ok.Size = new System.Drawing.Size(75, 23);
+			this.btn_Ok.TabIndex = 3;
+			this.btn_Ok.Text = "確定";
+			this.btn_Ok.UseVisualStyleBackColor = true;
+			this.btn_Ok.Click += new System.EventHandler(this.btn_Ok_Click);
+			// 
+			// trackBar_scale
+			// 
+			this.trackBar_scale.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.trackBar_scale.Location = new System.Drawing.Point(533, 427);
+			this.trackBar_scale.Name = "trackBar_scale";
+			this.trackBar_scale.Size = new System.Drawing.Size(89, 45);
+			this.trackBar_scale.TabIndex = 5;
+			this.trackBar_scale.TickStyle = System.Windows.Forms.TickStyle.None;
+			this.trackBar_scale.Value = 3;
+			this.trackBar_scale.ValueChanged += new System.EventHandler(this.trackBar_scale_ValueChanged);
+			// 
+			// lb_scale
+			// 
+			this.lb_scale.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.lb_scale.AutoSize = true;
+			this.lb_scale.Location = new System.Drawing.Point(464, 432);
+			this.lb_scale.Name = "lb_scale";
+			this.lb_scale.Size = new System.Drawing.Size(41, 12);
+			this.lb_scale.TabIndex = 6;
+			this.lb_scale.Text = "label1";
+			// 
 			// pictureBox2
 			// 
 			this.pictureBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.pictureBox2.BackgroundImage = global::DrawKit.Properties.Resources.尺寸1;
 			this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-			this.pictureBox2.Location = new System.Drawing.Point(380, 431);
+			this.pictureBox2.Location = new System.Drawing.Point(314, 427);
 			this.pictureBox2.Name = "pictureBox2";
 			this.pictureBox2.Size = new System.Drawing.Size(30, 26);
 			this.pictureBox2.TabIndex = 0;
@@ -580,43 +609,70 @@
 			this.pictureBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.pictureBox3.BackgroundImage = global::DrawKit.Properties.Resources.尺寸__1_;
 			this.pictureBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-			this.pictureBox3.Location = new System.Drawing.Point(186, 431);
+			this.pictureBox3.Location = new System.Drawing.Point(162, 427);
 			this.pictureBox3.Name = "pictureBox3";
 			this.pictureBox3.Size = new System.Drawing.Size(26, 26);
 			this.pictureBox3.TabIndex = 0;
 			this.pictureBox3.TabStop = false;
+			// 
+			// pic_amplify
+			// 
+			this.pic_amplify.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.pic_amplify.BackgroundImage = global::DrawKit.Properties.Resources.ZoomIn;
+			this.pic_amplify.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+			this.pic_amplify.Location = new System.Drawing.Point(623, 427);
+			this.pic_amplify.Name = "pic_amplify";
+			this.pic_amplify.Size = new System.Drawing.Size(26, 26);
+			this.pic_amplify.TabIndex = 0;
+			this.pic_amplify.TabStop = false;
+			this.pic_amplify.Click += new System.EventHandler(this.pic_amplify_Click);
+			// 
+			// pic_reduce
+			// 
+			this.pic_reduce.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.pic_reduce.BackgroundImage = global::DrawKit.Properties.Resources.ZoomOut;
+			this.pic_reduce.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+			this.pic_reduce.Location = new System.Drawing.Point(508, 427);
+			this.pic_reduce.Name = "pic_reduce";
+			this.pic_reduce.Size = new System.Drawing.Size(26, 26);
+			this.pic_reduce.TabIndex = 0;
+			this.pic_reduce.TabStop = false;
+			this.pic_reduce.Click += new System.EventHandler(this.pic_reduce_Click);
 			// 
 			// pictureBox1
 			// 
 			this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.pictureBox1.BackgroundImage = global::DrawKit.Properties.Resources.坐标轴;
 			this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-			this.pictureBox1.Location = new System.Drawing.Point(12, 431);
+			this.pictureBox1.Location = new System.Drawing.Point(12, 427);
 			this.pictureBox1.Name = "pictureBox1";
 			this.pictureBox1.Size = new System.Drawing.Size(26, 26);
 			this.pictureBox1.TabIndex = 0;
 			this.pictureBox1.TabStop = false;
 			// 
-			// btn_Ok
+			// rtb_Text
 			// 
-			this.btn_Ok.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.btn_Ok.Location = new System.Drawing.Point(633, 431);
-			this.btn_Ok.Name = "btn_Ok";
-			this.btn_Ok.Size = new System.Drawing.Size(75, 23);
-			this.btn_Ok.TabIndex = 3;
-			this.btn_Ok.Text = "確定";
-			this.btn_Ok.UseVisualStyleBackColor = true;
-			this.btn_Ok.Click += new System.EventHandler(this.btn_Ok_Click);
+			this.rtb_Text.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.rtb_Text.EmptyTextTip = null;
+			this.rtb_Text.Location = new System.Drawing.Point(463, 383);
+			this.rtb_Text.Name = "rtb_Text";
+			this.rtb_Text.Size = new System.Drawing.Size(100, 96);
+			this.rtb_Text.TabIndex = 0;
+			this.rtb_Text.Text = "";
 			// 
 			// CanvasForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.SystemColors.Control;
-			this.ClientSize = new System.Drawing.Size(720, 461);
+			this.ClientSize = new System.Drawing.Size(750, 461);
+			this.Controls.Add(this.lb_scale);
+			this.Controls.Add(this.trackBar_scale);
 			this.Controls.Add(this.btn_Ok);
 			this.Controls.Add(this.pictureBox2);
 			this.Controls.Add(this.pictureBox3);
+			this.Controls.Add(this.pic_amplify);
+			this.Controls.Add(this.pic_reduce);
 			this.Controls.Add(this.pictureBox1);
 			this.Controls.Add(this.lb_SelectionSize);
 			this.Controls.Add(this.lb_CanvasSize);
@@ -632,8 +688,11 @@
 			this.panel_main.ResumeLayout(false);
 			this.toolStrip1.ResumeLayout(false);
 			this.toolStrip1.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.trackBar_scale)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.pic_amplify)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.pic_reduce)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
@@ -691,6 +750,10 @@
 		private System.Windows.Forms.ToolStripButton btn_ClearAll;
 		private System.Windows.Forms.ToolStrip toolStrip1;
 		private System.Windows.Forms.Button btn_Ok;
+		private System.Windows.Forms.TrackBar trackBar_scale;
+		private System.Windows.Forms.Label lb_scale;
+		private System.Windows.Forms.PictureBox pic_reduce;
+		private System.Windows.Forms.PictureBox pic_amplify;
 	}
 }
 

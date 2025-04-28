@@ -7,6 +7,8 @@ using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
+using static System.Windows.Forms.AxHost;
 
 namespace DrawKit.Shapes
 {
@@ -20,6 +22,9 @@ namespace DrawKit.Shapes
 			canvas = bitmap;
 			this.panel = panel;
 		}
+
+		public float Scale = 1f;
+
 		//キャンバス調整点コレクション
 		private List<(Rectangle rect, RectangleShapeFocusType focusType)> _canvasEditPoints = new List<(Rectangle rect, RectangleShapeFocusType focusType)>();
 
@@ -64,6 +69,14 @@ namespace DrawKit.Shapes
 		public abstract void MouseUp(MouseEventArgs e);
 		//描画中
 		public abstract void InPainting(Graphics graphics);
+
+		public void MouseWheel(object sender, MouseEventArgs e)
+		{
+		
+		}
+
+		
+
 		//回転指定角度
 		public abstract void Rotate(float angle);
 		//水平反転
@@ -313,6 +326,9 @@ namespace DrawKit.Shapes
 			}
 		}
 
+
+
+
 		public Rectangle ConvertSelectionRectToCanvasRect(Rectangle rect)
 		{
 			int offsetX = (panel.Width - canvas.Width) / 2;
@@ -341,7 +357,7 @@ namespace DrawKit.Shapes
 		}
 
 		public Rectangle GetCanvasRegion() 
-		{ 
+		{
 			int offsetX = (panel.Width - canvas.Width) / 2;
 			int offsetY = (panel.Height - canvas.Height) / 2;
 
