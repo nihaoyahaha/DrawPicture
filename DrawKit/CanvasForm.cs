@@ -32,12 +32,13 @@ namespace DrawKit
 		public CanvasForm()
 		{
 			InitializeComponent();
-			InitializeCanvas();
-			_shape = new TextBoxArea(_canvas, this.panel_main);
+			
 			panel_main.BackColor = Color.AliceBlue;
 			panel_main.MouseWheel += Panel_MouseWheel;
 			rtb_Text.Visible = false;
+			InitializeCanvas();
 			LoadInstalledFonts();
+			_shape = new Circle(_canvas, this.panel_main);
 		}
 
 		private void Form1_Load(object sender, EventArgs e)
@@ -85,7 +86,7 @@ namespace DrawKit
 
 		private void Panel_MouseWheel(object sender, MouseEventArgs e)
 		{
-			if (Control.ModifierKeys == Keys.Control)
+			if (ModifierKeys == Keys.Control)
 			{
 				if (e.Delta > 0)
 				{
@@ -184,6 +185,7 @@ namespace DrawKit
 			}
 			SetRichTextBoxLocation();
 			_shape.drawStatus = DrawStatus.CanAdjusted;
+			panel_main.AutoScrollMinSize = new Size(_canvas.Width , _canvas.Height );
 			panel_main.Invalidate();
 		}
 
@@ -201,13 +203,17 @@ namespace DrawKit
 				_canvas = newCanvas;
 				_shape.canvas = _canvas;
 			}
+			panel_main.AutoScrollMinSize = new Size(_canvas.Width, _canvas.Height);
 			panel_main.Invalidate();
 		}
 
 		private void panel_main_Paint(object sender, PaintEventArgs e)
 		{
+			if (panel_main.AutoScrollPosition.X != 0) return;
+			if (panel_main.AutoScrollPosition.Y != 0) return;
 			if (_canvas != null)
 			{
+
 				e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
 				e.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
 				e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
@@ -219,6 +225,7 @@ namespace DrawKit
 		//直線
 		private void btn_Line_Click(object sender, EventArgs e)
 		{
+			_shape.CommitCurrentShape();
 			_shape = new Line(_canvas, panel_main)
 			{
 				ForeColor = btn_showColor.BackColor,
@@ -230,6 +237,7 @@ namespace DrawKit
 		//消しゴム
 		private void btn_Erase_Click(object sender, EventArgs e)
 		{
+			_shape.CommitCurrentShape();
 			_shape = new Eraser(_canvas, panel_main)
 			{
 				ForeColor = btn_showColor.BackColor,
@@ -241,6 +249,7 @@ namespace DrawKit
 		//矩形選択
 		private void btn_select_Click(object sender, EventArgs e)
 		{
+			_shape.CommitCurrentShape();
 			_shape = new RectangularSelection(_canvas, panel_main)
 			{
 				ForeColor = btn_showColor.BackColor
@@ -251,6 +260,7 @@ namespace DrawKit
 		//カラーフィル
 		private void btn_Fill_Click(object sender, EventArgs e)
 		{
+			_shape.CommitCurrentShape();
 			_shape = new OilTank(_canvas, panel_main)
 			{
 				ForeColor = btn_showColor.BackColor
@@ -261,6 +271,7 @@ namespace DrawKit
 		//長方形
 		private void btn_rectangle_Click(object sender, EventArgs e)
 		{
+			_shape.CommitCurrentShape();
 			_shape = new ShapeRectangle(_canvas, panel_main)
 			{
 				ForeColor = btn_showColor.BackColor,
@@ -272,6 +283,7 @@ namespace DrawKit
 		//五角形
 		private void btn_pentagon_Click(object sender, EventArgs e)
 		{
+			_shape.CommitCurrentShape();
 			_shape = new Pentagon(_canvas, panel_main)
 			{
 				ForeColor = btn_showColor.BackColor,
@@ -283,6 +295,7 @@ namespace DrawKit
 		//円
 		private void btn_circle_Click(object sender, EventArgs e)
 		{
+			_shape.CommitCurrentShape();
 			_shape = new Circle(_canvas, panel_main)
 			{
 				ForeColor = btn_showColor.BackColor,
@@ -294,6 +307,7 @@ namespace DrawKit
 		//三角形
 		private void btn_triangle_Click(object sender, EventArgs e)
 		{
+			_shape.CommitCurrentShape();
 			_shape = new Triangle(_canvas, panel_main)
 			{
 				ForeColor = btn_showColor.BackColor,
@@ -305,6 +319,7 @@ namespace DrawKit
 		//直角三角形
 		private void btn_RightTriangle_Click(object sender, EventArgs e)
 		{
+			_shape.CommitCurrentShape();
 			_shape = new RightTriangle(_canvas, panel_main)
 			{
 				ForeColor = btn_showColor.BackColor,
@@ -316,6 +331,7 @@ namespace DrawKit
 		//ひし形
 		private void btn_rhombus_Click(object sender, EventArgs e)
 		{
+			_shape.CommitCurrentShape();
 			_shape = new Rhombus(_canvas, panel_main)
 			{
 				ForeColor = btn_showColor.BackColor,
@@ -326,6 +342,7 @@ namespace DrawKit
 		//六角形
 		private void btn_hexagon_Click(object sender, EventArgs e)
 		{
+			_shape.CommitCurrentShape();
 			_shape = new Hexagon(_canvas, panel_main)
 			{
 				ForeColor = btn_showColor.BackColor,
@@ -336,6 +353,7 @@ namespace DrawKit
 		//フィレット長方形
 		private void btn_roundedRectangle_Click(object sender, EventArgs e)
 		{
+			_shape.CommitCurrentShape();
 			_shape = new RoundedRectangle(_canvas, panel_main)
 			{
 				ForeColor = btn_showColor.BackColor,
@@ -346,6 +364,7 @@ namespace DrawKit
 		//テキスト
 		private void btn_Text_Click(object sender, EventArgs e)
 		{
+			_shape.CommitCurrentShape();
 			_shape = new TextBoxArea(_canvas, panel_main)
 			{
 				ForeColor = btn_showColor.BackColor,
@@ -360,11 +379,13 @@ namespace DrawKit
 
 		private void btn_save_Click(object sender, EventArgs e)
 		{
+			_shape.CommitCurrentShape();
 			SavePng();
 		}
 
 		private void btn_open_Click(object sender, EventArgs e)
 		{
+			_shape.CommitCurrentShape();
 			OpenPng();
 		}
 
@@ -400,6 +421,7 @@ namespace DrawKit
 			new object[] { true });
 			lb_SelectionSize.Text = "";
 			lb_CanvasSize.Text = $"{_canvas.Width},{_canvas.Height}ピクセル";
+			panel_main.AutoScrollMinSize = new Size(_canvas.Width, _canvas.Height);
 		}
 
 		private void SavePng()
@@ -637,10 +659,14 @@ namespace DrawKit
 
 		private void btn_Ok_Click(object sender, EventArgs e)
 		{
+			_shape.CommitCurrentShape();
 			Save();
 			OnConfirm?.Invoke();
 		}
-
+		
+		/// <summary>
+		/// 拡大
+		/// </summary>
 		private void pic_reduce_Click(object sender, EventArgs e)
 		{
 			if (trackBar_scale.Value - 1 >= trackBar_scale.Minimum)
@@ -648,14 +674,16 @@ namespace DrawKit
 				UpdateLabel(trackBar_scale.Value -= 1);
 			}
 		}
-
+	
+		/// <summary>
+		/// 縮小
+		/// </summary>
 		private void pic_amplify_Click(object sender, EventArgs e)
 		{
 			if (trackBar_scale.Value + 1 <= trackBar_scale.Maximum)
 			{
 				UpdateLabel(trackBar_scale.Value += 1);
 			}
-
 		}
 
 		private void trackBar_scale_ValueChanged(object sender, EventArgs e)
@@ -667,6 +695,16 @@ namespace DrawKit
 			float currentValue = customValues[index];
 			lb_scale.Text = $"{currentValue*100}%";
 			_shape.Scale = currentValue;
+		}
+
+		private void panel_main_Scroll(object sender, ScrollEventArgs e)
+		{
+			//panel_main.Invalidate();
+		}
+
+		private void panel_main_Leave(object sender, EventArgs e)
+		{
+
 		}
 	}
 }

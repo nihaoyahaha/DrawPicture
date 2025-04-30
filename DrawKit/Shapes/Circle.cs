@@ -61,6 +61,7 @@ namespace DrawKit.Shapes
 			}
 			else if (drawStatus == DrawStatus.CanvasAdjustable)
 			{
+				BitmapDrawCircle();
 				AdjustingCanvasRect = GetCanvasRegion();
 				Offset = e.Location;
 				drawStatus = DrawStatus.CanvasAdjusting;
@@ -247,6 +248,12 @@ namespace DrawKit.Shapes
 		public override void Clear(Color color)
 		{
 			ClearBitmap(color);
+		}
+
+		//編集状態の図を保存
+		public override void CommitCurrentShape()
+		{
+			BitmapDrawCircle();
 		}
 	}
 }

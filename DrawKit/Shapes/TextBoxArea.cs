@@ -24,6 +24,7 @@ namespace DrawKit.Shapes
 		private void BitmapDrawText()
 		{
 			if (canvas == null) return;
+			if (SelectionRect.Width == 0 && SelectionRect.Height == 0) return;
 			using (Graphics g = Graphics.FromImage(canvas))
 			{
 				using (Pen selectionPen = new Pen(ForeColor, Size))
@@ -75,6 +76,7 @@ namespace DrawKit.Shapes
 			}
 			else if (drawStatus == DrawStatus.CanvasAdjustable)
 			{
+				BitmapDrawText();
 				AdjustingCanvasRect = GetCanvasRegion();
 				Offset = e.Location;
 				drawStatus = DrawStatus.CanvasAdjusting;
@@ -330,10 +332,8 @@ namespace DrawKit.Shapes
 		{
 			if (drawStatus == DrawStatus.Creating)
 			{
-				if (SelectionRect.Width >0 && SelectionRect.Height >0)
-				{
-					BitmapDrawText();
-				}
+				BitmapDrawText();
+
 				if (drawStatus == DrawStatus.CompleteDrawText) return;
 
 				if (_rectCreating.X == 0 && _rectCreating.Y == 0)
@@ -461,6 +461,11 @@ namespace DrawKit.Shapes
 
 		public override void FlipVertical()
 		{
+		}
+
+		public override void CommitCurrentShape()
+		{
+			BitmapDrawText();
 		}
 	}
 }

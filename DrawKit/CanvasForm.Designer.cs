@@ -104,7 +104,10 @@
 			this.panel_main.Name = "panel_main";
 			this.panel_main.Size = new System.Drawing.Size(750, 320);
 			this.panel_main.TabIndex = 1;
+			this.panel_main.TabStop = true;
+			this.panel_main.Scroll += new System.Windows.Forms.ScrollEventHandler(this.panel_main_Scroll);
 			this.panel_main.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_main_Paint);
+			this.panel_main.Leave += new System.EventHandler(this.panel_main_Leave);
 			this.panel_main.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel_main_MouseDown);
 			this.panel_main.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel_main_MouseMove);
 			this.panel_main.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panel_main_MouseUp);
@@ -654,7 +657,7 @@
 			// 
 			this.rtb_Text.BorderStyle = System.Windows.Forms.BorderStyle.None;
 			this.rtb_Text.EmptyTextTip = null;
-			this.rtb_Text.Location = new System.Drawing.Point(463, 383);
+			this.rtb_Text.Location = new System.Drawing.Point(78, 210);
 			this.rtb_Text.Name = "rtb_Text";
 			this.rtb_Text.Size = new System.Drawing.Size(100, 96);
 			this.rtb_Text.TabIndex = 0;

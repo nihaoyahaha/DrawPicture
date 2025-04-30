@@ -207,5 +207,7 @@ namespace DrawKit.Shapes
 		{
 			ClearBitmap(color);
 		}
+
+		public override void CommitCurrentShape(){}
 	}
 }

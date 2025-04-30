@@ -70,6 +70,9 @@ namespace DrawKit.Shapes
 		//描画中
 		public abstract void InPainting(Graphics graphics);
 
+		//編集状態の図を保存
+		public abstract void CommitCurrentShape();
+
 		public void MouseWheel(object sender, MouseEventArgs e)
 		{
 		
@@ -319,14 +322,38 @@ namespace DrawKit.Shapes
 		{
 			if (bitmap != null)
 			{
-				int x = (panel.Width - canvas.Width) / 2;
-				int y = (panel.Height - canvas.Height) / 2;
-				graphics.DrawImage(bitmap, GetCanvasRegion()/* x, y*/);
+				var ss = GetCanvasRegion();
+				graphics.DrawImage(bitmap, ss.X,ss.Y);
 				DrawCanvasEditPoint(graphics);
 			}
 		}
 
+		public Rectangle GetCanvasRegion()
+		{
+			int offsetX = (panel.Width - canvas.Width) / 2;
+			int offsetY = (panel.Height - canvas.Height) / 2;
+			// 考虑滚动条的偏移量
+			offsetX -= panel.AutoScrollPosition.X;
+			offsetY -= panel.AutoScrollPosition.Y;
 
+			if (offsetX <=0)
+			{
+				offsetX =Math.Abs(offsetX);
+
+			} 
+			if (offsetY <=0)
+			{
+				offsetY = Math.Abs(offsetY);
+
+			} 
+
+			return new Rectangle(
+				offsetX,
+				offsetY,
+				canvas.Width,
+				canvas.Height
+			);
+		}
 
 
 		public Rectangle ConvertSelectionRectToCanvasRect(Rectangle rect)
@@ -356,18 +383,7 @@ namespace DrawKit.Shapes
 			return new Point(point.X-offsetX,point.Y-offsetY);
 		}
 
-		public Rectangle GetCanvasRegion() 
-		{
-			int offsetX = (panel.Width - canvas.Width) / 2;
-			int offsetY = (panel.Height - canvas.Height) / 2;
-
-			return new Rectangle(
-				offsetX,
-				offsetY,
-				canvas.Width,
-				canvas.Height
-			);
-		}
+		
 
 		public bool IsValidLocation(Point point)
 		{

@@ -260,5 +260,10 @@ namespace DrawKit.Shapes
 			SelectionRect = Rectangle.Empty;
 			ClearBitmap(color);
 		}
+
+		public override void CommitCurrentShape()
+		{
+			BitmapDrawRectangle();
+		}
 	}
 }

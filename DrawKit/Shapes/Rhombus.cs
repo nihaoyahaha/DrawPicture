@@ -64,6 +64,7 @@ namespace DrawKit.Shapes
 			}
 			else if (drawStatus == DrawStatus.CanvasAdjustable)
 			{
+				BitmapDrawRhombus();
 				AdjustingCanvasRect = GetCanvasRegion();
 				Offset = e.Location;
 				drawStatus = DrawStatus.CanvasAdjusting;
@@ -268,6 +269,11 @@ namespace DrawKit.Shapes
 		public override void Clear(Color color)
 		{
 			ClearBitmap(color);
+		}
+
+		public override void CommitCurrentShape()
+		{
+			BitmapDrawRhombus();
 		}
 	}
 }

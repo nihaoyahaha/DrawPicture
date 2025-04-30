@@ -67,6 +67,7 @@ namespace DrawKit.Shapes
 			}
 			else if (drawStatus == DrawStatus.CanvasAdjustable)
 			{
+				BitmapDrawHexagon();
 				AdjustingCanvasRect = GetCanvasRegion();
 				Offset = e.Location;
 				drawStatus = DrawStatus.CanvasAdjusting;
@@ -280,6 +281,11 @@ namespace DrawKit.Shapes
 		public override void Clear(Color color)
 		{
 			ClearBitmap(color);
+		}
+
+		public override void CommitCurrentShape()
+		{
+			BitmapDrawHexagon();
 		}
 	}
 }

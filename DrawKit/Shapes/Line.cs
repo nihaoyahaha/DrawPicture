@@ -73,6 +73,7 @@ namespace DrawKit.Shapes
 			}
 			else if (drawStatus == DrawStatus.CanvasAdjustable)
 			{
+				BitmapDrawLine();
 				AdjustingCanvasRect = GetCanvasRegion();
 				Offset = e.Location;
 				drawStatus = DrawStatus.CanvasAdjusting;
@@ -326,6 +327,11 @@ namespace DrawKit.Shapes
 			StartPoint = new Point();
 			EndPoint = new Point();
 			ClearBitmap(color);
+		}
+
+		public override void CommitCurrentShape()
+		{
+			BitmapDrawLine();
 		}
 	}
 }

@@ -225,5 +225,8 @@
   <ItemGroup>
     <None Include="Resources\ZoomIn.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\颜色 %281%29.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
