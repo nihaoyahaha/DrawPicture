@@ -31,6 +31,9 @@ namespace DrawKit.Shapes
 			}
 			drawStatus = DrawStatus.CannotMovedOrAdjusted;
 			SelectionRect = Rectangle.Empty;
+			RotationCount = 0;
+			IsFlippedHorizontally = false;
+			IsFlippedVertically = false;
 			panel.Invalidate();
 		}
 		public override void MouseDown(MouseEventArgs e)
@@ -119,7 +122,8 @@ namespace DrawKit.Shapes
 				int deltaY = e.Y - Offset.Y;
 				SelectionRect.Offset(deltaX, deltaY);
 				Offset = e.Location;
-				CalculateRhombusPoints();
+				//CalculateRhombusPoints();
+				UpdateTrianglePoints();
 				panel.Invalidate();
 			}
 			else if (drawStatus == DrawStatus.Adjusting)
@@ -128,7 +132,8 @@ namespace DrawKit.Shapes
 				int deltaY = e.Y - Offset.Y;
 				SelectionAdjusting(deltaX, deltaY, ref SelectionRect);
 				Offset = e.Location;
-				CalculateRhombusPoints();
+				//CalculateRhombusPoints();
+				UpdateTrianglePoints();
 				panel.Invalidate();
 			}
 			else if (drawStatus == DrawStatus.CanvasAdjusting)
@@ -270,26 +275,66 @@ namespace DrawKit.Shapes
 
 		public override void RotateRight()
 		{
-			
+			drawStatus = DrawStatus.CanAdjusted;
+			SelectionRect = RotateRectangle90Degrees();
+			RotationCount = (RotationCount + 1) % 4;
+			UpdateTrianglePoints();
 		}
 
 		public override void RotateLeft()
 		{
+			drawStatus = DrawStatus.CanAdjusted;
+			SelectionRect = RotateRectangle90Degrees();
+			RotationCount = (RotationCount + 3) % 4;
+			UpdateTrianglePoints();
+		}
+
+		public override void Rotate180(){}
+
+		public override void FlipHorizontal(){}
+
+		public override void FlipVertical(){}
+
+		private void UpdateTrianglePoints()
+		{
+			_vertexs.Clear();
+
+			Point p1 = new Point(SelectionRect.Left + SelectionRect.Width / 2, SelectionRect.Top);//上中
+			Point p2 = new Point(SelectionRect.Right, SelectionRect.Top + SelectionRect.Height / 2);//右中
+			Point p3 = new Point(SelectionRect.Left + SelectionRect.Width / 2, SelectionRect.Bottom);//下中
+			Point p4 = new Point(SelectionRect.Left, SelectionRect.Top + SelectionRect.Height / 2);//左中
+
+			switch (RotationCount)
+			{
+				case 0:
+					_vertexs.Add(p1);
+					_vertexs.Add(p2);
+					_vertexs.Add(p3);
+					_vertexs.Add(p4);
+					break;
+
+				case 1:
+					_vertexs.Add(p1);
+					_vertexs.Add(p2);
+					_vertexs.Add(p3);
+					_vertexs.Add(p4);
+					break;
+
+				case 2:
+					_vertexs.Add(p1);
+					_vertexs.Add(p2);
+					_vertexs.Add(p3);
+					_vertexs.Add(p4);
+					break;
+
+				case 3:
+					_vertexs.Add(p1);
+					_vertexs.Add(p2);
+					_vertexs.Add(p3);
+					_vertexs.Add(p4);
+					break;
+			}
 			
-		}
-
-		public override void Rotate180()
-		{
-			
-		}
-
-		public override void FlipHorizontal()
-		{
-		}
-
-		public override void FlipVertical()
-		{
-
 		}
 
 	}
