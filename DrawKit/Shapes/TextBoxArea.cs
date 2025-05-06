@@ -447,12 +447,32 @@ namespace DrawKit.Shapes
 			}
 		}
 
-		public override void Rotate(float angle)
-		{
-		}
+
 		public override void Clear(Color color)
 		{
 			ClearBitmap(color);
+		}
+
+		
+
+		public override void CommitCurrentShape()
+		{
+			BitmapDrawText();
+		}
+
+		public override void RotateRight()
+		{
+			
+		}
+
+		public override void RotateLeft()
+		{
+			
+		}
+
+		public override void Rotate180()
+		{
+			
 		}
 
 		public override void FlipHorizontal()
@@ -463,9 +483,5 @@ namespace DrawKit.Shapes
 		{
 		}
 
-		public override void CommitCurrentShape()
-		{
-			BitmapDrawText();
-		}
 	}
 }

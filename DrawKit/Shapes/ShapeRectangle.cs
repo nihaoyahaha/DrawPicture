@@ -241,7 +241,30 @@ namespace DrawKit.Shapes
 					(int)ResizerPointSize));
 			}
 		}
-		public override void Rotate(float angle)
+	
+		
+		public override void Clear(Color color)
+		{
+			SelectionRect = Rectangle.Empty;
+			ClearBitmap(color);
+		}
+
+		public override void CommitCurrentShape()
+		{
+			BitmapDrawRectangle();
+		}
+
+		public override void RotateRight()
+		{
+		
+		}
+
+		public override void RotateLeft()
+		{
+		
+		}
+
+		public override void Rotate180()
 		{
 			
 		}
@@ -255,15 +278,6 @@ namespace DrawKit.Shapes
 		{
 
 		}
-		public override void Clear(Color color)
-		{
-			SelectionRect = Rectangle.Empty;
-			ClearBitmap(color);
-		}
 
-		public override void CommitCurrentShape()
-		{
-			BitmapDrawRectangle();
-		}
 	}
 }

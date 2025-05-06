@@ -64,6 +64,15 @@ namespace DrawKit.Shapes
 		//ビットマップストレッチオフセットポイント
 		public Point BitmapStretchOffsetPoint = Point.Empty;
 
+		//時計回りの回転数を記録する
+		protected int RotationCount = 0;
+
+		//水平反転するかどうか
+		protected bool IsFlippedHorizontally = false; 
+
+		//垂直反転するかどうか
+		protected bool IsFlippedVertically = false; 
+
 		public abstract void MouseMove(MouseEventArgs e);
 		public abstract void MouseDown(MouseEventArgs e);
 		public abstract void MouseUp(MouseEventArgs e);
@@ -78,12 +87,20 @@ namespace DrawKit.Shapes
 		
 		}
 
-		
 
-		//回転指定角度
-		public abstract void Rotate(float angle);
+
+		//右に90度回転
+		public abstract void RotateRight();
+
+		//左に90度回転
+		public abstract void RotateLeft();
+
+		//180度回転
+		public abstract void Rotate180();
+
 		//水平反転
 		public abstract void FlipHorizontal();
+
 		//垂直反転
 		public abstract void FlipVertical();
 
@@ -305,6 +322,11 @@ namespace DrawKit.Shapes
 			{
 				g.Clear(color);
 			}
+			SelectionRect = Rectangle.Empty;
+			drawStatus = DrawStatus.CannotMovedOrAdjusted;
+			RotationCount = 0;
+			IsFlippedHorizontally = false;
+			IsFlippedVertically = false;
 			panel.Invalidate();
 		}
 
@@ -585,6 +607,22 @@ namespace DrawKit.Shapes
 			}
 			return rectangle;
 		}
+
+		protected Rectangle RotateRectangle90Degrees()
+		{
+			int centerX = SelectionRect.Left + SelectionRect.Width / 2;
+			int centerY = SelectionRect.Top + SelectionRect.Height / 2;
+
+			int newWidth = SelectionRect.Height;
+			int newHeight = SelectionRect.Width;
+
+			int newLeft = centerX - newWidth / 2;
+			int newTop = centerY - newHeight / 2;
+
+			return new Rectangle(newLeft, newTop, newWidth, newHeight);
+		}
+
+		
 
 	}
 }

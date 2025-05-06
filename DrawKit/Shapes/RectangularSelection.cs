@@ -359,7 +359,7 @@ namespace DrawKit.Shapes
 			}
 		}
 
-		public override void Rotate(float angle)
+		public  void Rotate(float angle)
 		{
 			drawStatus = DrawStatus.CanAdjusted;
 			var center = GetCenter();
@@ -401,15 +401,7 @@ namespace DrawKit.Shapes
 		}
 
 
-		public override void FlipHorizontal()
-		{
-			
-		}
-
-		public override void FlipVertical()
-		{
-			
-		}
+		
 
 		public override void Clear(Color color)
 		{
@@ -420,5 +412,31 @@ namespace DrawKit.Shapes
 		{
 			BitmapDrawImage();
 		}
+
+		public override void RotateRight()
+		{
+			
+		}
+
+		public override void RotateLeft()
+		{
+			
+		}
+
+		public override void Rotate180()
+		{
+			
+		}
+
+		public override void FlipHorizontal()
+		{
+
+		}
+
+		public override void FlipVertical()
+		{
+
+		}
+
 	}
 }

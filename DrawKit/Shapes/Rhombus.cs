@@ -256,16 +256,8 @@ namespace DrawKit.Shapes
 					(int)ResizerPointSize));
 			}
 		}
-		public override void Rotate(float angle)
-		{
-		}
-		public override void FlipHorizontal()
-		{
-		}
-
-		public override void FlipVertical()
-		{
-		}
+		
+		
 		public override void Clear(Color color)
 		{
 			ClearBitmap(color);
@@ -275,5 +267,30 @@ namespace DrawKit.Shapes
 		{
 			BitmapDrawRhombus();
 		}
+
+		public override void RotateRight()
+		{
+			
+		}
+
+		public override void RotateLeft()
+		{
+			
+		}
+
+		public override void Rotate180()
+		{
+			
+		}
+
+		public override void FlipHorizontal()
+		{
+		}
+
+		public override void FlipVertical()
+		{
+
+		}
+
 	}
 }

@@ -543,7 +543,7 @@ namespace DrawKit
 		{
 			if (_shape is Eraser) return;
 			if (_shape is OilTank) return;
-			_shape.Rotate(90);
+			_shape.RotateRight();
 			panel_main.Refresh();
 		}
 
@@ -551,7 +551,7 @@ namespace DrawKit
 		{
 			if (_shape is Eraser) return;
 			if (_shape is OilTank) return;
-			_shape.Rotate(-90);
+			_shape.RotateLeft();
 			panel_main.Refresh();
 		}
 
@@ -559,7 +559,7 @@ namespace DrawKit
 		{
 			if (_shape is Eraser) return;
 			if (_shape is OilTank) return;
-			_shape.Rotate(180);
+			_shape.Rotate180();
 			panel_main.Refresh();
 		}
 
@@ -567,7 +567,7 @@ namespace DrawKit
 		{
 			if (_shape is Eraser) return;
 			if (_shape is OilTank) return;
-			_shape.FlipHorizontal();
+			_shape.FlipVertical();
 			panel_main.Refresh();
 		}
 
@@ -575,7 +575,7 @@ namespace DrawKit
 		{
 			if (_shape is Eraser) return;
 			if (_shape is OilTank) return;
-			_shape.FlipVertical();
+			_shape.FlipHorizontal();
 			panel_main.Refresh();
 		}
 

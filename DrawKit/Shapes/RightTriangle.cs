@@ -32,6 +32,9 @@ namespace DrawKit.Shapes
 			}
 			drawStatus = DrawStatus.CannotMovedOrAdjusted;
 			SelectionRect = Rectangle.Empty;
+			RotationCount = 0;
+			IsFlippedHorizontally = false;
+			IsFlippedVertically = false;
 			panel.Invalidate();
 		}
 		public override void MouseDown(MouseEventArgs e)
@@ -120,7 +123,8 @@ namespace DrawKit.Shapes
 				int deltaY = e.Y - Offset.Y;
 				SelectionRect.Offset(deltaX, deltaY);
 				Offset = e.Location;
-				CalculateRightTrianglePoints();
+				//CalculateRightTrianglePoints();
+				UpdateTrianglePoints();
 				panel.Invalidate();
 			}
 			else if (drawStatus == DrawStatus.Adjusting)
@@ -129,7 +133,8 @@ namespace DrawKit.Shapes
 				int deltaY = e.Y - Offset.Y;
 				SelectionAdjusting(deltaX, deltaY, ref SelectionRect);
 				Offset = e.Location;
-				CalculateRightTrianglePoints();
+				//CalculateRightTrianglePoints();
+				UpdateTrianglePoints();
 				panel.Invalidate();
 			}
 			else if (drawStatus == DrawStatus.CanvasAdjusting)
@@ -253,16 +258,7 @@ namespace DrawKit.Shapes
 					(int)ResizerPointSize));
 			}
 		}
-		public override void Rotate(float angle)
-		{
-		}
-		public override void FlipHorizontal()
-		{
-		}
-
-		public override void FlipVertical()
-		{
-		}
+	
 		public override void Clear(Color color)
 		{
 			ClearBitmap(color);
@@ -271,6 +267,154 @@ namespace DrawKit.Shapes
 		public override void CommitCurrentShape()
 		{
 			BitmapDrawRightTriangle();
+		}
+
+		public override void RotateRight()
+		{
+			drawStatus = DrawStatus.CanAdjusted;
+			SelectionRect = RotateRectangle90Degrees();
+			RotationCount = (RotationCount + 1) % 4;
+			UpdateTrianglePoints();
+		}
+
+		public override void RotateLeft()
+		{
+			drawStatus = DrawStatus.CanAdjusted;
+			SelectionRect = RotateRectangle90Degrees();
+			RotationCount = (RotationCount + 3) % 4;
+			UpdateTrianglePoints();
+		}
+
+		public override void Rotate180()
+		{
+			drawStatus = DrawStatus.CanAdjusted;
+			RotationCount = (RotationCount + 2) % 4;
+			UpdateTrianglePoints();
+		}
+		public override void FlipHorizontal()
+		{
+			drawStatus = DrawStatus.CanAdjusted;
+			IsFlippedHorizontally = !IsFlippedHorizontally;
+			UpdateTrianglePoints();
+		}
+
+		public override void FlipVertical()
+		{
+			drawStatus = DrawStatus.CanAdjusted;
+			IsFlippedVertically = !IsFlippedVertically;
+			UpdateTrianglePoints();
+		}
+		private void UpdateTrianglePoints()
+		{
+			_vertexs.Clear();
+
+			Point p1 = new Point(SelectionRect.Left, SelectionRect.Top);         // 左上
+			Point p2 = new Point(SelectionRect.Right, SelectionRect.Bottom);     // 右下
+			Point p3 = new Point(SelectionRect.Left, SelectionRect.Bottom);      // 左下
+			Point p4 = new Point(SelectionRect.Right, SelectionRect.Top);        // 右上
+
+			switch (RotationCount)
+			{
+				case 0: 
+					_vertexs.Add(p1); 
+					_vertexs.Add(p2); 
+					_vertexs.Add(p3); 
+					break;
+
+				case 1: 
+					_vertexs.Add(p1); 
+					_vertexs.Add(p4); 
+					_vertexs.Add(p3); 
+					break;
+
+				case 2: 
+					_vertexs.Add(p1); 
+					_vertexs.Add(p4); 
+					_vertexs.Add(p2); 
+					break;
+
+				case 3: 
+					_vertexs.Add(p4); 
+					_vertexs.Add(p2); 
+					_vertexs.Add(p3); 
+					break;
+			}
+			if (IsFlippedVertically) FlippedVerticallyTrianglePoints();
+			if (IsFlippedHorizontally) FlipHorizontalTrianglePoints();
+		}
+
+		private void FlippedVerticallyTrianglePoints()
+		{
+			_vertexs.Clear();
+
+			Point p1 = new Point(SelectionRect.Left, SelectionRect.Top);         // 左上
+			Point p2 = new Point(SelectionRect.Right, SelectionRect.Bottom);     // 右下
+			Point p3 = new Point(SelectionRect.Left, SelectionRect.Bottom);      // 左下
+			Point p4 = new Point(SelectionRect.Right, SelectionRect.Top);        // 右上
+
+			switch (RotationCount)
+			{
+				case 0:
+					_vertexs.Add(p1);
+					_vertexs.Add(p4);
+					_vertexs.Add(p3);
+					break;
+
+				case 1:
+					_vertexs.Add(p1);
+					_vertexs.Add(p2);
+					_vertexs.Add(p3);
+					break;
+
+				case 2:
+					_vertexs.Add(p4);
+					_vertexs.Add(p2);
+					_vertexs.Add(p3);
+					break;
+
+				case 3:
+					_vertexs.Add(p1);
+					_vertexs.Add(p4);
+					_vertexs.Add(p2);
+					break;
+			}
+		}
+
+		private void FlipHorizontalTrianglePoints()
+		{
+			_vertexs.Clear();
+
+			Point p1 = new Point(SelectionRect.Left, SelectionRect.Top);         // 左上
+			Point p2 = new Point(SelectionRect.Right, SelectionRect.Bottom);     // 右下
+			Point p3 = new Point(SelectionRect.Left, SelectionRect.Bottom);      // 左下
+			Point p4 = new Point(SelectionRect.Right, SelectionRect.Top);        // 右上
+
+			switch (RotationCount)
+			{
+				case 0:
+					_vertexs.Add(p4);
+					_vertexs.Add(p2);
+					_vertexs.Add(p3);
+					break;
+
+				case 1:
+					_vertexs.Add(p1);
+					_vertexs.Add(p4);
+					_vertexs.Add(p2);
+					break;
+
+				case 2:
+					_vertexs.Add(p1);
+					_vertexs.Add(p4);
+					_vertexs.Add(p3);
+					break;
+
+				case 3:
+					_vertexs.Add(p1);
+					_vertexs.Add(p2);
+					_vertexs.Add(p3);
+					break;
+			}
 		}
 	}
 }

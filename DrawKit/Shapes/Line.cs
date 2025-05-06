@@ -286,42 +286,6 @@ namespace DrawKit.Shapes
 			}
 		}
 
-		public override void Rotate(float angle)
-		{
-			if (StartPoint.X == 0 && StartPoint.Y == 0) return;
-			drawStatus = DrawStatus.AdjustTheStyle;
-			RotateShape(angle);
-		}
-
-		public override void FlipHorizontal(){}
-
-		public override void FlipVertical(){}
-
-		private Point GetLineCenter()
-		{
-			return new Point((StartPoint.X + EndPoint.X) / 2, (StartPoint.Y + EndPoint.Y) / 2);
-		}
-
-		/// <summary>
-		/// 回転指定角度
-		/// </summary>
-		/// <param name="angle">角度</param>
-		private void RotateShape(float angle)
-		{
-			var center = GetLineCenter();
-			var matrix = new Matrix();
-			matrix.RotateAt(angle, center);
-			ApplyTransform(matrix);
-		}
-
-		private void ApplyTransform(Matrix transform)
-		{
-			var points = new[] { StartPoint, EndPoint };
-			transform.TransformPoints(points);
-			StartPoint = points[0];
-			EndPoint = points[1];
-		}
-
 		public override void Clear(Color color)
 		{
 			StartPoint = new Point();
@@ -333,5 +297,23 @@ namespace DrawKit.Shapes
 		{
 			BitmapDrawLine();
 		}
+
+		public override void RotateRight()
+		{
+			
+		}
+
+		public override void RotateLeft()
+		{
+			
+		}
+
+		public override void Rotate180()
+		{
+			
+		}
+		public override void FlipHorizontal() { }
+
+		public override void FlipVertical() { }
 	}
 }

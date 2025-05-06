@@ -232,7 +232,30 @@ namespace DrawKit.Shapes
 			}
 		}
 
-		public override void Rotate(float angle)
+		
+		
+		public override void Clear(Color color)
+		{
+			ClearBitmap(color);
+		}
+
+		//編集状態の図を保存
+		public override void CommitCurrentShape()
+		{
+			BitmapDrawCircle();
+		}
+
+		public override void RotateRight()
+		{
+			
+		}
+
+		public override void RotateLeft()
+		{
+			
+		}
+
+		public override void Rotate180()
 		{
 			
 		}
@@ -244,16 +267,6 @@ namespace DrawKit.Shapes
 		public override void FlipVertical()
 		{
 
-		}
-		public override void Clear(Color color)
-		{
-			ClearBitmap(color);
-		}
-
-		//編集状態の図を保存
-		public override void CommitCurrentShape()
-		{
-			BitmapDrawCircle();
 		}
 	}
 }
