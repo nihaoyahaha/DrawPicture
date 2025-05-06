@@ -337,6 +337,9 @@ namespace DrawKit.Shapes
 		{
 			drawStatus = DrawStatus.CannotMovedOrAdjusted;
 			SelectionRect = Rectangle.Empty;
+			RotationCount = 0;
+			IsFlippedHorizontally = false;
+			IsFlippedVertically = false;
 			panel.Invalidate();
 		}
 
