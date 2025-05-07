@@ -36,6 +36,9 @@ namespace DrawKit.Shapes
 			}
 			drawStatus = DrawStatus.CannotMovedOrAdjusted;
 			SelectionRect = Rectangle.Empty;
+			RotationCount = 0;
+			IsFlippedHorizontally = false;
+			IsFlippedVertically = false;
 			panel.Invalidate();
 		}
 
@@ -125,7 +128,8 @@ namespace DrawKit.Shapes
 				int deltaY = e.Y - Offset.Y;
 				SelectionRect.Offset(deltaX, deltaY);
 				Offset = e.Location;
-				CalculatePentagonPoints();
+				//CalculatePentagonPoints();
+				UpdateTrianglePoints();
 				panel.Invalidate();
 			}
 			else if (drawStatus == DrawStatus.Adjusting)
@@ -134,7 +138,8 @@ namespace DrawKit.Shapes
 				int deltaY = e.Y - Offset.Y;
 				SelectionAdjusting(deltaX, deltaY, ref SelectionRect);
 				Offset = e.Location;
-				CalculatePentagonPoints();
+				//CalculatePentagonPoints();
+				UpdateTrianglePoints();
 				panel.Invalidate();
 			}
 			else if (drawStatus == DrawStatus.CanvasAdjusting)
@@ -283,25 +288,354 @@ namespace DrawKit.Shapes
 
 		public override void RotateRight()
 		{
+			drawStatus = DrawStatus.CanAdjusted;
+			SelectionRect = RotateRectangle90Degrees();
+			RotationCount = (RotationCount + 1) % 4;
+			UpdateTrianglePoints();
 		}
 
 		public override void RotateLeft()
 		{
+			drawStatus = DrawStatus.CanAdjusted;
+			SelectionRect = RotateRectangle90Degrees();
+			RotationCount = (RotationCount + 3) % 4;
+			UpdateTrianglePoints();
 		}
 
 		public override void Rotate180()
 		{
+			drawStatus = DrawStatus.CanAdjusted;
+			RotationCount = (RotationCount + 2) % 4;
+			UpdateTrianglePoints();
 		}
 
 		public override void FlipHorizontal()
 		{
-
+			drawStatus = DrawStatus.CanAdjusted;
+			IsFlippedHorizontally = !IsFlippedHorizontally;
+			UpdateTrianglePoints();
 		}
 
 		public override void FlipVertical()
 		{
-
+			drawStatus = DrawStatus.CanAdjusted;
+			IsFlippedVertically = !IsFlippedVertically;
+			UpdateTrianglePoints();
 		}
 
+		private void UpdateTrianglePoints()
+		{
+			_vertexs.Clear();
+			Point point;
+			int middleVertexDistance;
+			int bottomVertexDistance;
+			switch (RotationCount)
+			{
+				case 0:
+					//上部頂点
+				    point = new Point(SelectionRect.X + SelectionRect.Width / 2, SelectionRect.Y);
+					_vertexs.Add(point);
+
+					//右上の頂点
+					middleVertexDistance = (int)(SelectionRect.Height * _middleVertexRatio);
+					point = new Point(SelectionRect.Right, SelectionRect.Top + middleVertexDistance);
+					_vertexs.Add(point);
+
+					//右下の頂点
+					bottomVertexDistance = (int)(SelectionRect.Width * _bottomVertexRatio);
+					point = new Point(SelectionRect.Right - bottomVertexDistance, SelectionRect.Bottom);
+					_vertexs.Add(point);
+
+					//左下の頂点
+					point = new Point(SelectionRect.Left + bottomVertexDistance, SelectionRect.Bottom);
+					_vertexs.Add(point);
+
+					//左上の頂点
+					point = new Point(SelectionRect.Left, SelectionRect.Top + middleVertexDistance);
+					_vertexs.Add(point);
+					break;
+				case 1:
+					//右中
+					 point = new Point(SelectionRect.Right,SelectionRect.Top+SelectionRect.Height/2);
+					_vertexs.Add(point);
+
+					//頂点下
+					middleVertexDistance = (int)(SelectionRect.Width * _middleVertexRatio);
+					point = new Point(SelectionRect.Right- middleVertexDistance,SelectionRect.Bottom);
+					_vertexs.Add(point);
+
+					//頂点左下
+					bottomVertexDistance = (int)(SelectionRect.Height * _bottomVertexRatio);
+					point = new Point(SelectionRect.Left,SelectionRect.Bottom-bottomVertexDistance);
+					_vertexs.Add(point);
+
+					//頂点左上
+					point = new Point(SelectionRect.Left,SelectionRect.Top+bottomVertexDistance);
+					_vertexs.Add(point);
+
+					//頂点上
+					point = new Point(SelectionRect.Right- middleVertexDistance,SelectionRect.Top);
+					_vertexs.Add(point);
+					break;
+				case 2:
+					//下中
+					point = new Point(SelectionRect.Left+SelectionRect.Width/2,SelectionRect.Bottom);
+					_vertexs.Add(point);
+
+					//頂点左
+					middleVertexDistance = (int)(SelectionRect.Height * _middleVertexRatio);
+					point = new Point(SelectionRect.Left,SelectionRect.Bottom-middleVertexDistance);
+					_vertexs.Add(point);
+
+					//頂点左上
+					bottomVertexDistance = (int)(SelectionRect.Width * _bottomVertexRatio);
+					point = new Point(SelectionRect.Left+ bottomVertexDistance,SelectionRect.Top);
+					_vertexs.Add(point);
+
+					//頂点右上
+					point = new Point(SelectionRect.Right- bottomVertexDistance,SelectionRect.Top);
+					_vertexs.Add(point);
+
+					//頂点右
+					point = new Point(SelectionRect.Right,SelectionRect.Bottom- middleVertexDistance);
+					_vertexs.Add(point);
+
+					break;
+				case 3:
+					//頂点左中
+					point = new Point(SelectionRect.Left,SelectionRect.Top+SelectionRect.Height/2);
+					_vertexs.Add(point);
+
+					//頂点上
+					middleVertexDistance = (int)(SelectionRect.Width * _middleVertexRatio);
+					point = new Point(SelectionRect.Left+ middleVertexDistance,SelectionRect.Top);
+					_vertexs.Add(point);
+
+					//頂点右上
+					bottomVertexDistance = (int)(SelectionRect.Height * _bottomVertexRatio);
+					point = new Point(SelectionRect.Right,SelectionRect.Top+ bottomVertexDistance);
+					_vertexs.Add(point);
+
+					//頂点右下
+					point = new Point(SelectionRect.Right,SelectionRect.Bottom- bottomVertexDistance);
+					_vertexs.Add(point);
+
+					//頂点下
+					point = new Point(SelectionRect.Left+ middleVertexDistance,SelectionRect.Bottom);
+					_vertexs.Add(point);
+
+					break;
+			}
+			if (IsFlippedVertically) FlippedVerticallyTrianglePoints();
+			if (IsFlippedHorizontally) FlipHorizontalTrianglePoints();
+		}
+
+		private void FlippedVerticallyTrianglePoints()
+		{
+			_vertexs.Clear();
+			Point point;
+			int middleVertexDistance;
+			int bottomVertexDistance;
+			switch (RotationCount)
+			{
+				case 0:
+					//下中
+					point = new Point(SelectionRect.Left + SelectionRect.Width / 2, SelectionRect.Bottom);
+					_vertexs.Add(point);
+
+					//頂点左
+					middleVertexDistance = (int)(SelectionRect.Height * _middleVertexRatio);
+					point = new Point(SelectionRect.Left, SelectionRect.Bottom - middleVertexDistance);
+					_vertexs.Add(point);
+
+					//頂点左上
+					bottomVertexDistance = (int)(SelectionRect.Width * _bottomVertexRatio);
+					point = new Point(SelectionRect.Left + bottomVertexDistance, SelectionRect.Top);
+					_vertexs.Add(point);
+
+					//頂点右上
+					point = new Point(SelectionRect.Right - bottomVertexDistance, SelectionRect.Top);
+					_vertexs.Add(point);
+
+					//頂点右
+					point = new Point(SelectionRect.Right, SelectionRect.Bottom - middleVertexDistance);
+					_vertexs.Add(point);
+					break;
+
+				case 1:
+					//右中
+					point = new Point(SelectionRect.Right, SelectionRect.Top + SelectionRect.Height / 2);
+					_vertexs.Add(point);
+
+					//頂点下
+					middleVertexDistance = (int)(SelectionRect.Width * _middleVertexRatio);
+					point = new Point(SelectionRect.Right - middleVertexDistance, SelectionRect.Bottom);
+					_vertexs.Add(point);
+
+					//頂点左下
+					bottomVertexDistance = (int)(SelectionRect.Height * _bottomVertexRatio);
+					point = new Point(SelectionRect.Left, SelectionRect.Bottom - bottomVertexDistance);
+					_vertexs.Add(point);
+
+					//頂点左上
+					point = new Point(SelectionRect.Left, SelectionRect.Top + bottomVertexDistance);
+					_vertexs.Add(point);
+
+					//頂点上
+					point = new Point(SelectionRect.Right - middleVertexDistance, SelectionRect.Top);
+					_vertexs.Add(point);
+					break;
+
+				case 2:
+					//上部頂点
+					point = new Point(SelectionRect.X + SelectionRect.Width / 2, SelectionRect.Y);
+					_vertexs.Add(point);
+
+					//右上の頂点
+					middleVertexDistance = (int)(SelectionRect.Height * _middleVertexRatio);
+					point = new Point(SelectionRect.Right, SelectionRect.Top + middleVertexDistance);
+					_vertexs.Add(point);
+
+					//右下の頂点
+					bottomVertexDistance = (int)(SelectionRect.Width * _bottomVertexRatio);
+					point = new Point(SelectionRect.Right - bottomVertexDistance, SelectionRect.Bottom);
+					_vertexs.Add(point);
+
+					//左下の頂点
+					point = new Point(SelectionRect.Left + bottomVertexDistance, SelectionRect.Bottom);
+					_vertexs.Add(point);
+
+					//左上の頂点
+					point = new Point(SelectionRect.Left, SelectionRect.Top + middleVertexDistance);
+					_vertexs.Add(point);
+					break;
+
+				case 3:
+					//頂点左中
+					point = new Point(SelectionRect.Left, SelectionRect.Top + SelectionRect.Height / 2);
+					_vertexs.Add(point);
+
+					//頂点上
+					middleVertexDistance = (int)(SelectionRect.Width * _middleVertexRatio);
+					point = new Point(SelectionRect.Left + middleVertexDistance, SelectionRect.Top);
+					_vertexs.Add(point);
+
+					//頂点右上
+					bottomVertexDistance = (int)(SelectionRect.Height * _bottomVertexRatio);
+					point = new Point(SelectionRect.Right, SelectionRect.Top + bottomVertexDistance);
+					_vertexs.Add(point);
+
+					//頂点右下
+					point = new Point(SelectionRect.Right, SelectionRect.Bottom - bottomVertexDistance);
+					_vertexs.Add(point);
+
+					//頂点下
+					point = new Point(SelectionRect.Left + middleVertexDistance, SelectionRect.Bottom);
+					_vertexs.Add(point);
+					break;
+			}
+		}
+		private void FlipHorizontalTrianglePoints()
+		{
+			_vertexs.Clear();
+			Point point;
+			int middleVertexDistance;
+			int bottomVertexDistance;
+			switch (RotationCount)
+			{
+				case 0:
+					//上部頂点
+					point = new Point(SelectionRect.X + SelectionRect.Width / 2, SelectionRect.Y);
+					_vertexs.Add(point);
+
+					//右上の頂点
+					middleVertexDistance = (int)(SelectionRect.Height * _middleVertexRatio);
+					point = new Point(SelectionRect.Right, SelectionRect.Top + middleVertexDistance);
+					_vertexs.Add(point);
+
+					//右下の頂点
+					bottomVertexDistance = (int)(SelectionRect.Width * _bottomVertexRatio);
+					point = new Point(SelectionRect.Right - bottomVertexDistance, SelectionRect.Bottom);
+					_vertexs.Add(point);
+
+					//左下の頂点
+					point = new Point(SelectionRect.Left + bottomVertexDistance, SelectionRect.Bottom);
+					_vertexs.Add(point);
+
+					//左上の頂点
+					point = new Point(SelectionRect.Left, SelectionRect.Top + middleVertexDistance);
+					_vertexs.Add(point);
+					break;
+				case 1:
+					//頂点左中
+					point = new Point(SelectionRect.Left, SelectionRect.Top + SelectionRect.Height / 2);
+					_vertexs.Add(point);
+
+					//頂点上
+					middleVertexDistance = (int)(SelectionRect.Width * _middleVertexRatio);
+					point = new Point(SelectionRect.Left + middleVertexDistance, SelectionRect.Top);
+					_vertexs.Add(point);
+
+					//頂点右上
+					bottomVertexDistance = (int)(SelectionRect.Height * _bottomVertexRatio);
+					point = new Point(SelectionRect.Right, SelectionRect.Top + bottomVertexDistance);
+					_vertexs.Add(point);
+
+					//頂点右下
+					point = new Point(SelectionRect.Right, SelectionRect.Bottom - bottomVertexDistance);
+					_vertexs.Add(point);
+
+					//頂点下
+					point = new Point(SelectionRect.Left + middleVertexDistance, SelectionRect.Bottom);
+					_vertexs.Add(point);
+					break;
+				case 2:
+					//下中
+					point = new Point(SelectionRect.Left + SelectionRect.Width / 2, SelectionRect.Bottom);
+					_vertexs.Add(point);
+
+					//頂点左
+					middleVertexDistance = (int)(SelectionRect.Height * _middleVertexRatio);
+					point = new Point(SelectionRect.Left, SelectionRect.Bottom - middleVertexDistance);
+					_vertexs.Add(point);
+
+					//頂点左上
+					bottomVertexDistance = (int)(SelectionRect.Width * _bottomVertexRatio);
+					point = new Point(SelectionRect.Left + bottomVertexDistance, SelectionRect.Top);
+					_vertexs.Add(point);
+
+					//頂点右上
+					point = new Point(SelectionRect.Right - bottomVertexDistance, SelectionRect.Top);
+					_vertexs.Add(point);
+
+					//頂点右
+					point = new Point(SelectionRect.Right, SelectionRect.Bottom - middleVertexDistance);
+					_vertexs.Add(point);
+					break;
+				case 3:
+					//右中
+					point = new Point(SelectionRect.Right, SelectionRect.Top + SelectionRect.Height / 2);
+					_vertexs.Add(point);
+
+					//頂点下
+					middleVertexDistance = (int)(SelectionRect.Width * _middleVertexRatio);
+					point = new Point(SelectionRect.Right - middleVertexDistance, SelectionRect.Bottom);
+					_vertexs.Add(point);
+
+					//頂点左下
+					bottomVertexDistance = (int)(SelectionRect.Height * _bottomVertexRatio);
+					point = new Point(SelectionRect.Left, SelectionRect.Bottom - bottomVertexDistance);
+					_vertexs.Add(point);
+
+					//頂点左上
+					point = new Point(SelectionRect.Left, SelectionRect.Top + bottomVertexDistance);
+					_vertexs.Add(point);
+
+					//頂点上
+					point = new Point(SelectionRect.Right - middleVertexDistance, SelectionRect.Top);
+					_vertexs.Add(point);
+					break;
+			}
+		}
 	}
 }

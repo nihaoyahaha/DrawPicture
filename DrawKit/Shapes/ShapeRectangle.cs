@@ -245,7 +245,6 @@ namespace DrawKit.Shapes
 		
 		public override void Clear(Color color)
 		{
-			SelectionRect = Rectangle.Empty;
 			ClearBitmap(color);
 		}
 
@@ -256,27 +255,29 @@ namespace DrawKit.Shapes
 
 		public override void RotateRight()
 		{
-		
+			drawStatus = DrawStatus.CanAdjusted;
+			SelectionRect = RotateRectangle90Degrees();
 		}
 
 		public override void RotateLeft()
 		{
-		
+			drawStatus = DrawStatus.CanAdjusted;
+			SelectionRect = RotateRectangle90Degrees();
 		}
 
 		public override void Rotate180()
 		{
-			
+			drawStatus = DrawStatus.CanAdjusted;
 		}
 
 		public override void FlipHorizontal()
 		{
-
+			drawStatus = DrawStatus.CanAdjusted;
 		}
 
 		public override void FlipVertical()
 		{
-
+			drawStatus = DrawStatus.CanAdjusted;
 		}
 
 	}

@@ -30,8 +30,6 @@ namespace DrawKit.Shapes
 				using (Pen selectionPen = new Pen(ForeColor, Size))
 				{
 					selectionPen.DashStyle = DashStyle.Solid;
-					
-
 					g.DrawPath(selectionPen, _pathInBitmap);
 				}
 			}
@@ -281,24 +279,32 @@ namespace DrawKit.Shapes
 
 		public override void RotateRight()
 		{
-		
+			drawStatus = DrawStatus.CanAdjusted;
+			SelectionRect = RotateRectangle90Degrees();
+			GetRoundedRectanglePath();
 		}
 
 		public override void RotateLeft()
 		{
-			
+			drawStatus = DrawStatus.CanAdjusted;
+			SelectionRect = RotateRectangle90Degrees();
+			GetRoundedRectanglePath();
 		}
 
 		public override void Rotate180()
 		{
-		
+			drawStatus = DrawStatus.CanAdjusted;
+			GetRoundedRectanglePath();
 		}
 		public override void FlipHorizontal()
 		{
+			drawStatus = DrawStatus.CanAdjusted;
+			GetRoundedRectanglePath();
 		}
-
 		public override void FlipVertical()
 		{
+			drawStatus = DrawStatus.CanAdjusted;
+			GetRoundedRectanglePath();
 		}
 	}
 }

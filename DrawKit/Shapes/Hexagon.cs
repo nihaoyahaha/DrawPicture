@@ -14,10 +14,9 @@ namespace DrawKit.Shapes
 	/// </summary>
 	public class Hexagon : Shape
 	{
-		public Hexagon(Bitmap bitmap, Panel panel) : base(bitmap, panel){}
-
 		//頂点の集合
 		private List<Point> _vertexs = new List<Point>();
+		public Hexagon(Bitmap bitmap, Panel panel) : base(bitmap, panel){}
 
 		private void BitmapDrawHexagon()
 		{
@@ -34,6 +33,9 @@ namespace DrawKit.Shapes
 			}
 			drawStatus = DrawStatus.CannotMovedOrAdjusted;
 			SelectionRect = Rectangle.Empty;
+			RotationCount = 0;
+			IsFlippedHorizontally = false;
+			IsFlippedVertically = false;
 			panel.Invalidate();
 		}
 		public override void MouseDown(MouseEventArgs e)
@@ -122,7 +124,8 @@ namespace DrawKit.Shapes
 				int deltaY = e.Y - Offset.Y;
 				SelectionRect.Offset(deltaX, deltaY);
 				Offset = e.Location;
-				CalculateHexagonPoints();
+				//CalculateHexagonPoints();
+				UpdateTrianglePoints();
 				panel.Invalidate();
 			}
 			else if (drawStatus == DrawStatus.Adjusting)
@@ -131,7 +134,8 @@ namespace DrawKit.Shapes
 				int deltaY = e.Y - Offset.Y;
 				SelectionAdjusting(deltaX, deltaY, ref SelectionRect);
 				Offset = e.Location;
-				CalculateHexagonPoints();
+				//CalculateHexagonPoints();
+				UpdateTrianglePoints();
 				panel.Invalidate();
 			}
 			else if (drawStatus == DrawStatus.CanvasAdjusting)
@@ -281,23 +285,376 @@ namespace DrawKit.Shapes
 
 		public override void RotateRight()
 		{
+			drawStatus = DrawStatus.CanAdjusted;
+			SelectionRect = RotateRectangle90Degrees();
+			RotationCount = (RotationCount + 1) % 4;
+			UpdateTrianglePoints();
 		}
 
 		public override void RotateLeft()
 		{
-			
+			drawStatus = DrawStatus.CanAdjusted;
+			SelectionRect = RotateRectangle90Degrees();
+			RotationCount = (RotationCount + 3) % 4;
+			UpdateTrianglePoints();
 		}
 
 		public override void Rotate180()
 		{
-			
+			drawStatus = DrawStatus.CanAdjusted;
+			RotationCount = (RotationCount + 2) % 4;
+			UpdateTrianglePoints();
 		}
 		public override void FlipHorizontal()
 		{
+			drawStatus = DrawStatus.CanAdjusted;
+			IsFlippedHorizontally = !IsFlippedHorizontally;
+			UpdateTrianglePoints();
 		}
 
 		public override void FlipVertical()
 		{
+			drawStatus = DrawStatus.CanAdjusted;
+			IsFlippedVertically = !IsFlippedVertically;
+			UpdateTrianglePoints();
+		}
+
+		private void UpdateTrianglePoints()
+		{
+			_vertexs.Clear();
+			Point point;
+			switch (RotationCount)
+			{
+				case 0:
+					//上部頂点
+					point = new Point(SelectionRect.Left + SelectionRect.Width / 2, SelectionRect.Top);
+					_vertexs.Add(point);
+
+					//右上の頂点
+					point = new Point(SelectionRect.Right, SelectionRect.Top + SelectionRect.Height / 4);
+					_vertexs.Add(point);
+
+					//右下の頂点
+					point = new Point(SelectionRect.Right, SelectionRect.Bottom - SelectionRect.Height / 4);
+					_vertexs.Add(point);
+
+					//下部の頂点
+					point = new Point(SelectionRect.Left + SelectionRect.Width / 2, SelectionRect.Bottom);
+					_vertexs.Add(point);
+
+					//左下の頂点
+					point = new Point(SelectionRect.Left, SelectionRect.Bottom - SelectionRect.Height / 4);
+					_vertexs.Add(point);
+
+					//左上の頂点
+					point = new Point(SelectionRect.Left, SelectionRect.Top + SelectionRect.Height / 4);
+					_vertexs.Add(point);
+
+					break;
+
+				case 1:
+					//左中の頂点
+					point = new Point(SelectionRect.Left,SelectionRect.Top+SelectionRect.Height/2);
+					_vertexs.Add(point);
+
+					//上左の頂点
+					point = new Point(SelectionRect.Left+SelectionRect.Width/4,SelectionRect.Top);
+					_vertexs.Add(point);
+
+					//上右の頂点
+					point = new Point(SelectionRect.Right-SelectionRect.Width/4,SelectionRect.Top);
+					_vertexs.Add(point);
+
+					//右中の頂点
+					point = new Point(SelectionRect.Right,SelectionRect.Top+SelectionRect.Height/2);
+					_vertexs.Add(point);
+
+					//下右の頂点
+					point = new Point(SelectionRect.Right-SelectionRect.Width/4,SelectionRect.Bottom);
+					_vertexs.Add(point);
+
+					//下左の頂点
+					point = new Point(SelectionRect.Left+SelectionRect.Width/4,SelectionRect.Bottom);
+					_vertexs.Add(point);
+					break;
+
+				case 2:
+					//上部頂点
+					point = new Point(SelectionRect.Left + SelectionRect.Width / 2, SelectionRect.Top);
+					_vertexs.Add(point);
+
+					//右上の頂点
+					point = new Point(SelectionRect.Right, SelectionRect.Top + SelectionRect.Height / 4);
+					_vertexs.Add(point);
+
+					//右下の頂点
+					point = new Point(SelectionRect.Right, SelectionRect.Bottom - SelectionRect.Height / 4);
+					_vertexs.Add(point);
+
+					//下部の頂点
+					point = new Point(SelectionRect.Left + SelectionRect.Width / 2, SelectionRect.Bottom);
+					_vertexs.Add(point);
+
+					//左下の頂点
+					point = new Point(SelectionRect.Left, SelectionRect.Bottom - SelectionRect.Height / 4);
+					_vertexs.Add(point);
+
+					//左上の頂点
+					point = new Point(SelectionRect.Left, SelectionRect.Top + SelectionRect.Height / 4);
+					_vertexs.Add(point);
+					break;
+
+				case 3:
+					//左中の頂点
+					point = new Point(SelectionRect.Left, SelectionRect.Top + SelectionRect.Height / 2);
+					_vertexs.Add(point);
+
+					//上左の頂点
+					point = new Point(SelectionRect.Left + SelectionRect.Width / 4, SelectionRect.Top);
+					_vertexs.Add(point);
+
+					//上右の頂点
+					point = new Point(SelectionRect.Right - SelectionRect.Width / 4, SelectionRect.Top);
+					_vertexs.Add(point);
+
+					//右中の頂点
+					point = new Point(SelectionRect.Right, SelectionRect.Top + SelectionRect.Height / 2);
+					_vertexs.Add(point);
+
+					//下右の頂点
+					point = new Point(SelectionRect.Right - SelectionRect.Width / 4, SelectionRect.Bottom);
+					_vertexs.Add(point);
+
+					//下左の頂点
+					point = new Point(SelectionRect.Left + SelectionRect.Width / 4, SelectionRect.Bottom);
+					_vertexs.Add(point);
+					break;
+			}
+			if (IsFlippedVertically) FlippedVerticallyTrianglePoints();
+			if (IsFlippedHorizontally) FlipHorizontalTrianglePoints();
+		}
+
+		private void FlippedVerticallyTrianglePoints()
+		{
+			_vertexs.Clear();
+			Point point;
+			switch (RotationCount)
+			{
+				case 0:
+					//上部頂点
+					point = new Point(SelectionRect.Left + SelectionRect.Width / 2, SelectionRect.Top);
+					_vertexs.Add(point);
+
+					//右上の頂点
+					point = new Point(SelectionRect.Right, SelectionRect.Top + SelectionRect.Height / 4);
+					_vertexs.Add(point);
+
+					//右下の頂点
+					point = new Point(SelectionRect.Right, SelectionRect.Bottom - SelectionRect.Height / 4);
+					_vertexs.Add(point);
+
+					//下部の頂点
+					point = new Point(SelectionRect.Left + SelectionRect.Width / 2, SelectionRect.Bottom);
+					_vertexs.Add(point);
+
+					//左下の頂点
+					point = new Point(SelectionRect.Left, SelectionRect.Bottom - SelectionRect.Height / 4);
+					_vertexs.Add(point);
+
+					//左上の頂点
+					point = new Point(SelectionRect.Left, SelectionRect.Top + SelectionRect.Height / 4);
+					_vertexs.Add(point);
+					break;
+
+				case 1:
+					//左中の頂点
+					point = new Point(SelectionRect.Left, SelectionRect.Top + SelectionRect.Height / 2);
+					_vertexs.Add(point);
+
+					//上左の頂点
+					point = new Point(SelectionRect.Left + SelectionRect.Width / 4, SelectionRect.Top);
+					_vertexs.Add(point);
+
+					//上右の頂点
+					point = new Point(SelectionRect.Right - SelectionRect.Width / 4, SelectionRect.Top);
+					_vertexs.Add(point);
+
+					//右中の頂点
+					point = new Point(SelectionRect.Right, SelectionRect.Top + SelectionRect.Height / 2);
+					_vertexs.Add(point);
+
+					//下右の頂点
+					point = new Point(SelectionRect.Right - SelectionRect.Width / 4, SelectionRect.Bottom);
+					_vertexs.Add(point);
+
+					//下左の頂点
+					point = new Point(SelectionRect.Left + SelectionRect.Width / 4, SelectionRect.Bottom);
+					_vertexs.Add(point);
+					break;
+
+				case 2:
+					//上部頂点
+					point = new Point(SelectionRect.Left + SelectionRect.Width / 2, SelectionRect.Top);
+					_vertexs.Add(point);
+
+					//右上の頂点
+					point = new Point(SelectionRect.Right, SelectionRect.Top + SelectionRect.Height / 4);
+					_vertexs.Add(point);
+
+					//右下の頂点
+					point = new Point(SelectionRect.Right, SelectionRect.Bottom - SelectionRect.Height / 4);
+					_vertexs.Add(point);
+
+					//下部の頂点
+					point = new Point(SelectionRect.Left + SelectionRect.Width / 2, SelectionRect.Bottom);
+					_vertexs.Add(point);
+
+					//左下の頂点
+					point = new Point(SelectionRect.Left, SelectionRect.Bottom - SelectionRect.Height / 4);
+					_vertexs.Add(point);
+
+					//左上の頂点
+					point = new Point(SelectionRect.Left, SelectionRect.Top + SelectionRect.Height / 4);
+					_vertexs.Add(point);
+					break;
+
+				case 3:
+					//左中の頂点
+					point = new Point(SelectionRect.Left, SelectionRect.Top + SelectionRect.Height / 2);
+					_vertexs.Add(point);
+
+					//上左の頂点
+					point = new Point(SelectionRect.Left + SelectionRect.Width / 4, SelectionRect.Top);
+					_vertexs.Add(point);
+
+					//上右の頂点
+					point = new Point(SelectionRect.Right - SelectionRect.Width / 4, SelectionRect.Top);
+					_vertexs.Add(point);
+
+					//右中の頂点
+					point = new Point(SelectionRect.Right, SelectionRect.Top + SelectionRect.Height / 2);
+					_vertexs.Add(point);
+
+					//下右の頂点
+					point = new Point(SelectionRect.Right - SelectionRect.Width / 4, SelectionRect.Bottom);
+					_vertexs.Add(point);
+
+					//下左の頂点
+					point = new Point(SelectionRect.Left + SelectionRect.Width / 4, SelectionRect.Bottom);
+					_vertexs.Add(point);
+					break;
+			}
+		}
+		private void FlipHorizontalTrianglePoints()
+		{
+			_vertexs.Clear();
+			Point point;
+			switch (RotationCount)
+			{
+				case 0:
+					//上部頂点
+					point = new Point(SelectionRect.Left + SelectionRect.Width / 2, SelectionRect.Top);
+					_vertexs.Add(point);
+
+					//右上の頂点
+					point = new Point(SelectionRect.Right, SelectionRect.Top + SelectionRect.Height / 4);
+					_vertexs.Add(point);
+
+					//右下の頂点
+					point = new Point(SelectionRect.Right, SelectionRect.Bottom - SelectionRect.Height / 4);
+					_vertexs.Add(point);
+
+					//下部の頂点
+					point = new Point(SelectionRect.Left + SelectionRect.Width / 2, SelectionRect.Bottom);
+					_vertexs.Add(point);
+
+					//左下の頂点
+					point = new Point(SelectionRect.Left, SelectionRect.Bottom - SelectionRect.Height / 4);
+					_vertexs.Add(point);
+
+					//左上の頂点
+					point = new Point(SelectionRect.Left, SelectionRect.Top + SelectionRect.Height / 4);
+					_vertexs.Add(point);
+					break;
+
+				case 1:
+					//左中の頂点
+					point = new Point(SelectionRect.Left, SelectionRect.Top + SelectionRect.Height / 2);
+					_vertexs.Add(point);
+
+					//上左の頂点
+					point = new Point(SelectionRect.Left + SelectionRect.Width / 4, SelectionRect.Top);
+					_vertexs.Add(point);
+
+					//上右の頂点
+					point = new Point(SelectionRect.Right - SelectionRect.Width / 4, SelectionRect.Top);
+					_vertexs.Add(point);
+
+					//右中の頂点
+					point = new Point(SelectionRect.Right, SelectionRect.Top + SelectionRect.Height / 2);
+					_vertexs.Add(point);
+
+					//下右の頂点
+					point = new Point(SelectionRect.Right - SelectionRect.Width / 4, SelectionRect.Bottom);
+					_vertexs.Add(point);
+
+					//下左の頂点
+					point = new Point(SelectionRect.Left + SelectionRect.Width / 4, SelectionRect.Bottom);
+					_vertexs.Add(point);
+					break;
+
+				case 2:
+					//上部頂点
+					point = new Point(SelectionRect.Left + SelectionRect.Width / 2, SelectionRect.Top);
+					_vertexs.Add(point);
+
+					//右上の頂点
+					point = new Point(SelectionRect.Right, SelectionRect.Top + SelectionRect.Height / 4);
+					_vertexs.Add(point);
+
+					//右下の頂点
+					point = new Point(SelectionRect.Right, SelectionRect.Bottom - SelectionRect.Height / 4);
+					_vertexs.Add(point);
+
+					//下部の頂点
+					point = new Point(SelectionRect.Left + SelectionRect.Width / 2, SelectionRect.Bottom);
+					_vertexs.Add(point);
+
+					//左下の頂点
+					point = new Point(SelectionRect.Left, SelectionRect.Bottom - SelectionRect.Height / 4);
+					_vertexs.Add(point);
+
+					//左上の頂点
+					point = new Point(SelectionRect.Left, SelectionRect.Top + SelectionRect.Height / 4);
+					_vertexs.Add(point);
+					break;
+
+				case 3:
+					//左中の頂点
+					point = new Point(SelectionRect.Left, SelectionRect.Top + SelectionRect.Height / 2);
+					_vertexs.Add(point);
+
+					//上左の頂点
+					point = new Point(SelectionRect.Left + SelectionRect.Width / 4, SelectionRect.Top);
+					_vertexs.Add(point);
+
+					//上右の頂点
+					point = new Point(SelectionRect.Right - SelectionRect.Width / 4, SelectionRect.Top);
+					_vertexs.Add(point);
+
+					//右中の頂点
+					point = new Point(SelectionRect.Right, SelectionRect.Top + SelectionRect.Height / 2);
+					_vertexs.Add(point);
+
+					//下右の頂点
+					point = new Point(SelectionRect.Right - SelectionRect.Width / 4, SelectionRect.Bottom);
+					_vertexs.Add(point);
+
+					//下左の頂点
+					point = new Point(SelectionRect.Left + SelectionRect.Width / 4, SelectionRect.Bottom);
+					_vertexs.Add(point);
+					break;
+			}
 		}
 	}
 }
