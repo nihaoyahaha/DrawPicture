@@ -20,16 +20,16 @@ namespace DrawKit.Shapes
 		private Rectangle _fillRect = Rectangle.Empty;
 		private Color _FillRectColor;
 		
-		private float _angle=0;
 		public RectangularSelection(Bitmap bitmap, Panel panel) : base(bitmap, panel){}
 		private void BitmapDrawImage()
 		{
 			if (_selectedBitmap == null) return;
-			if (_fillRect.Equals(SelectionRect))
-			{
-				CancelDrawing();
-				return;
-			}
+			if (SelectionRect == Rectangle.Empty) return;
+			//if (_fillRect.Equals(SelectionRect))
+			//{
+			//	CancelDrawing();
+			//	return;
+			//}
 			using (Graphics g = Graphics.FromImage(canvas))
 			{
 				//g.FillRectangle(new SolidBrush(_FillRectColor), _fillRect);
@@ -109,10 +109,6 @@ namespace DrawKit.Shapes
 				drawStatus = DrawStatus.CanvasAdjusting;
 			}
 		}
-
-
-
-
 		public override void MouseMove(MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Left)
@@ -173,7 +169,6 @@ namespace DrawKit.Shapes
 			{
 				MouseLeftButtonUpHandel(e);
 			}
-
 		}
 
 		private void MouseLeftButtonUpHandel(MouseEventArgs e)
@@ -365,8 +360,7 @@ namespace DrawKit.Shapes
 			var center = GetCenter();
 			var matrix = new Matrix();
 			matrix.RotateAt(angle, center);
-			ApplyTransform(matrix);
-			
+			ApplyTransform(matrix);			
 		}
 		public PointF GetCenter()
 		{
@@ -415,28 +409,35 @@ namespace DrawKit.Shapes
 
 		public override void RotateRight()
 		{
-			
+			drawStatus = DrawStatus.CanAdjusted;
+			SelectionRect = RotateRectangle90Degrees();
+			_selectedBitmap.RotateFlip(RotateFlipType.Rotate90FlipNone);
 		}
 
 		public override void RotateLeft()
 		{
-			
+			drawStatus = DrawStatus.CanAdjusted;
+			SelectionRect = RotateRectangle90Degrees();
+			_selectedBitmap.RotateFlip(RotateFlipType.Rotate270FlipNone);
 		}
 
 		public override void Rotate180()
 		{
-			
+			drawStatus = DrawStatus.CanAdjusted;
+			_selectedBitmap.RotateFlip(RotateFlipType.Rotate180FlipNone);
 		}
 
 		public override void FlipHorizontal()
 		{
-
+			drawStatus = DrawStatus.CanAdjusted;
+			_selectedBitmap.RotateFlip(RotateFlipType.RotateNoneFlipX);
 		}
 
 		public override void FlipVertical()
 		{
-
+			drawStatus = DrawStatus.CanAdjusted;
+			_selectedBitmap.RotateFlip(RotateFlipType.RotateNoneFlipY);
 		}
-
+		
 	}
 }

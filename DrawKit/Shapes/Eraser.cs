@@ -43,7 +43,6 @@ namespace DrawKit.Shapes
 				DrawEraserPath(ConvertPoint(EndPoint), ConvertPoint(e.Location));
 				drawStatus = DrawStatus.Creating;
 			}
-
 		}
 
 		private void MouseRightButtonDownHandle(MouseEventArgs e)
@@ -92,13 +91,11 @@ namespace DrawKit.Shapes
 		private void DrawEraserPath(Point start, Point end)
 		{
 			if (newCanvas == null) return;
-			float eraserSize = Size; // 橡皮擦大小
+			float eraserSize = Size; 
 			using (Graphics g = Graphics.FromImage(newCanvas))
 			{
-				// 计算两点之间的距离
 				double distance = Math.Sqrt(Math.Pow(end.X - start.X, 2) + Math.Pow(end.Y - start.Y, 2));
 
-				// 如果距离小于1，则直接绘制一个点
 				if (distance < 1)
 				{
 					g.FillRectangle(new SolidBrush(ForeColor),
@@ -109,13 +106,11 @@ namespace DrawKit.Shapes
 					return;
 				}
 
-				// 插值计算中间点
 				for (double t = 0; t <= 1; t += 1 / distance)
 				{
 					int x = (int)(start.X + t * (end.X - start.X));
 					int y = (int)(start.Y + t * (end.Y - start.Y));
 
-					// 绘制橡皮擦区域
 					g.FillRectangle(new SolidBrush(ForeColor),
 						x - eraserSize / 2,
 						y - eraserSize / 2,
@@ -123,8 +118,6 @@ namespace DrawKit.Shapes
 						eraserSize);
 				}
 			}
-
-			// 刷新 Panel 显示
 			panel.Invalidate();
 		}
 

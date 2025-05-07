@@ -347,8 +347,7 @@ namespace DrawKit.Shapes
 		{
 			if (bitmap != null)
 			{
-				var ss = GetCanvasRegion();
-				graphics.DrawImage(bitmap, ss.X,ss.Y);
+				graphics.DrawImage(bitmap, GetCanvasRegion());
 				DrawCanvasEditPoint(graphics);
 			}
 		}
