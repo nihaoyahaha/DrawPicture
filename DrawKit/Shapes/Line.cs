@@ -36,6 +36,7 @@ namespace DrawKit.Shapes
 				}
 			}
 			EndPoint = new Point();
+			SelectionRect = Rectangle.Empty;
 			panel.Invalidate();
 		}
 		public override void MouseDown(MouseEventArgs e)
@@ -144,8 +145,6 @@ namespace DrawKit.Shapes
 				int width = Math.Abs(StartPoint.X - EndPoint.X);
 				int height = Math.Abs(StartPoint.Y - EndPoint.Y);
 				SelectionRect = new Rectangle(x, y, width, height);
-
-
 				panel.Invalidate();
 			}
 			else if (drawStatus == DrawStatus.CanvasAdjusting)
@@ -186,10 +185,8 @@ namespace DrawKit.Shapes
 			}
 		}
 
-		//绘图中描绘
 		public override void InPainting(Graphics graphics)
 		{
-			//将位图缓存绘制到panel上
 			if (canvas != null)
 			{
 				BitmapDrawShape(canvas, graphics);
@@ -300,20 +297,46 @@ namespace DrawKit.Shapes
 
 		public override void RotateRight()
 		{
-			
+			drawStatus = DrawStatus.CanAdjusted;
+			UpdateLinePoints();
 		}
 
 		public override void RotateLeft()
 		{
-			
+			drawStatus = DrawStatus.CanAdjusted;
+			UpdateLinePoints();
 		}
 
 		public override void Rotate180()
 		{
-			
+			drawStatus = DrawStatus.CanAdjusted;
 		}
-		public override void FlipHorizontal() { }
+		public override void FlipHorizontal() {
+			drawStatus = DrawStatus.CanAdjusted;
+		}
 
-		public override void FlipVertical() { }
+		public override void FlipVertical() {
+			drawStatus = DrawStatus.CanAdjusted;
+		}
+
+		private void UpdateLinePoints()
+		{
+			int centerX = (StartPoint.X + EndPoint.X) / 2;
+			int centerY = (StartPoint.Y + EndPoint.Y) / 2;
+
+			int deltaX = EndPoint.X - StartPoint.X;
+			int deltaY = EndPoint.Y - StartPoint.Y;
+
+			int rotatedDeltaX = deltaY;
+			int rotatedDeltaY = -deltaX;
+
+			StartPoint = new Point(
+				centerX - rotatedDeltaX / 2,
+				centerY - rotatedDeltaY / 2);
+
+			EndPoint = new Point(
+				centerX + rotatedDeltaX / 2,
+				centerY + rotatedDeltaY / 2);
+		}
 	}
 }

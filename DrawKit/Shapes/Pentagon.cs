@@ -129,7 +129,7 @@ namespace DrawKit.Shapes
 				SelectionRect.Offset(deltaX, deltaY);
 				Offset = e.Location;
 				//CalculatePentagonPoints();
-				UpdateTrianglePoints();
+				UpdatePentagonPoints();
 				panel.Invalidate();
 			}
 			else if (drawStatus == DrawStatus.Adjusting)
@@ -139,7 +139,7 @@ namespace DrawKit.Shapes
 				SelectionAdjusting(deltaX, deltaY, ref SelectionRect);
 				Offset = e.Location;
 				//CalculatePentagonPoints();
-				UpdateTrianglePoints();
+				UpdatePentagonPoints();
 				panel.Invalidate();
 			}
 			else if (drawStatus == DrawStatus.CanvasAdjusting)
@@ -291,7 +291,7 @@ namespace DrawKit.Shapes
 			drawStatus = DrawStatus.CanAdjusted;
 			SelectionRect = RotateRectangle90Degrees();
 			RotationCount = (RotationCount + 1) % 4;
-			UpdateTrianglePoints();
+			UpdatePentagonPoints();
 		}
 
 		public override void RotateLeft()
@@ -299,31 +299,31 @@ namespace DrawKit.Shapes
 			drawStatus = DrawStatus.CanAdjusted;
 			SelectionRect = RotateRectangle90Degrees();
 			RotationCount = (RotationCount + 3) % 4;
-			UpdateTrianglePoints();
+			UpdatePentagonPoints();
 		}
 
 		public override void Rotate180()
 		{
 			drawStatus = DrawStatus.CanAdjusted;
 			RotationCount = (RotationCount + 2) % 4;
-			UpdateTrianglePoints();
+			UpdatePentagonPoints();
 		}
 
 		public override void FlipHorizontal()
 		{
 			drawStatus = DrawStatus.CanAdjusted;
 			IsFlippedHorizontally = !IsFlippedHorizontally;
-			UpdateTrianglePoints();
+			UpdatePentagonPoints();
 		}
 
 		public override void FlipVertical()
 		{
 			drawStatus = DrawStatus.CanAdjusted;
 			IsFlippedVertically = !IsFlippedVertically;
-			UpdateTrianglePoints();
+			UpdatePentagonPoints();
 		}
 
-		private void UpdateTrianglePoints()
+		private void UpdatePentagonPoints()
 		{
 			_vertexs.Clear();
 			Point point;
@@ -426,11 +426,11 @@ namespace DrawKit.Shapes
 
 					break;
 			}
-			if (IsFlippedVertically) FlippedVerticallyTrianglePoints();
-			if (IsFlippedHorizontally) FlipHorizontalTrianglePoints();
+			if (IsFlippedVertically) FlippedVerticallyPentagonPoints();
+			if (IsFlippedHorizontally) FlipHorizontalPentagonPoints();
 		}
 
-		private void FlippedVerticallyTrianglePoints()
+		private void FlippedVerticallyPentagonPoints()
 		{
 			_vertexs.Clear();
 			Point point;
@@ -535,7 +535,7 @@ namespace DrawKit.Shapes
 					break;
 			}
 		}
-		private void FlipHorizontalTrianglePoints()
+		private void FlipHorizontalPentagonPoints()
 		{
 			_vertexs.Clear();
 			Point point;

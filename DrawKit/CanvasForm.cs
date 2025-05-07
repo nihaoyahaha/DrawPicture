@@ -541,40 +541,30 @@ namespace DrawKit
 
 		private void btn_RightRotate90_Click(object sender, EventArgs e)
 		{
-			if (_shape is Eraser) return;
-			if (_shape is OilTank) return;
 			_shape.RotateRight();
 			panel_main.Refresh();
 		}
 
 		private void btn_LeftRotate90_Click(object sender, EventArgs e)
 		{
-			if (_shape is Eraser) return;
-			if (_shape is OilTank) return;
 			_shape.RotateLeft();
 			panel_main.Refresh();
 		}
 
 		private void btn_Rotate180_Click(object sender, EventArgs e)
 		{
-			if (_shape is Eraser) return;
-			if (_shape is OilTank) return;
 			_shape.Rotate180();
 			panel_main.Refresh();
 		}
 
 		private void btn_FlipVertical_Click(object sender, EventArgs e)
 		{
-			if (_shape is Eraser) return;
-			if (_shape is OilTank) return;
 			_shape.FlipVertical();
 			panel_main.Refresh();
 		}
 
 		private void btn_FlipHorizontal_Click(object sender, EventArgs e)
 		{
-			if (_shape is Eraser) return;
-			if (_shape is OilTank) return;
 			_shape.FlipHorizontal();
 			panel_main.Refresh();
 		}

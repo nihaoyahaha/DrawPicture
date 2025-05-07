@@ -124,7 +124,7 @@ namespace DrawKit.Shapes
 				SelectionRect.Offset(deltaX, deltaY);
 				Offset = e.Location;
 				//CalculateRightTrianglePoints();
-				UpdateTrianglePoints();
+				UpdateRightTrianglePoints();
 				panel.Invalidate();
 			}
 			else if (drawStatus == DrawStatus.Adjusting)
@@ -134,7 +134,7 @@ namespace DrawKit.Shapes
 				SelectionAdjusting(deltaX, deltaY, ref SelectionRect);
 				Offset = e.Location;
 				//CalculateRightTrianglePoints();
-				UpdateTrianglePoints();
+				UpdateRightTrianglePoints();
 				panel.Invalidate();
 			}
 			else if (drawStatus == DrawStatus.CanvasAdjusting)
@@ -274,7 +274,7 @@ namespace DrawKit.Shapes
 			drawStatus = DrawStatus.CanAdjusted;
 			SelectionRect = RotateRectangle90Degrees();
 			RotationCount = (RotationCount + 1) % 4;
-			UpdateTrianglePoints();
+			UpdateRightTrianglePoints();
 		}
 
 		public override void RotateLeft()
@@ -282,29 +282,29 @@ namespace DrawKit.Shapes
 			drawStatus = DrawStatus.CanAdjusted;
 			SelectionRect = RotateRectangle90Degrees();
 			RotationCount = (RotationCount + 3) % 4;
-			UpdateTrianglePoints();
+			UpdateRightTrianglePoints();
 		}
 
 		public override void Rotate180()
 		{
 			drawStatus = DrawStatus.CanAdjusted;
 			RotationCount = (RotationCount + 2) % 4;
-			UpdateTrianglePoints();
+			UpdateRightTrianglePoints();
 		}
 		public override void FlipHorizontal()
 		{
 			drawStatus = DrawStatus.CanAdjusted;
 			IsFlippedHorizontally = !IsFlippedHorizontally;
-			UpdateTrianglePoints();
+			UpdateRightTrianglePoints();
 		}
 
 		public override void FlipVertical()
 		{
 			drawStatus = DrawStatus.CanAdjusted;
 			IsFlippedVertically = !IsFlippedVertically;
-			UpdateTrianglePoints();
+			UpdateRightTrianglePoints();
 		}
-		private void UpdateTrianglePoints()
+		private void UpdateRightTrianglePoints()
 		{
 			_vertexs.Clear();
 
@@ -339,11 +339,11 @@ namespace DrawKit.Shapes
 					_vertexs.Add(p3); 
 					break;
 			}
-			if (IsFlippedVertically) FlippedVerticallyTrianglePoints();
-			if (IsFlippedHorizontally) FlipHorizontalTrianglePoints();
+			if (IsFlippedVertically) FlippedVerticallyRightTrianglePoints();
+			if (IsFlippedHorizontally) FlipHorizontalRightTrianglePoints();
 		}
 
-		private void FlippedVerticallyTrianglePoints()
+		private void FlippedVerticallyRightTrianglePoints()
 		{
 			_vertexs.Clear();
 
@@ -380,7 +380,7 @@ namespace DrawKit.Shapes
 			}
 		}
 
-		private void FlipHorizontalTrianglePoints()
+		private void FlipHorizontalRightTrianglePoints()
 		{
 			_vertexs.Clear();
 

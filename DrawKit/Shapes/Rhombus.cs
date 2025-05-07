@@ -123,7 +123,7 @@ namespace DrawKit.Shapes
 				SelectionRect.Offset(deltaX, deltaY);
 				Offset = e.Location;
 				//CalculateRhombusPoints();
-				UpdateTrianglePoints();
+				UpdateRhombusPoints();
 				panel.Invalidate();
 			}
 			else if (drawStatus == DrawStatus.Adjusting)
@@ -133,7 +133,7 @@ namespace DrawKit.Shapes
 				SelectionAdjusting(deltaX, deltaY, ref SelectionRect);
 				Offset = e.Location;
 				//CalculateRhombusPoints();
-				UpdateTrianglePoints();
+				UpdateRhombusPoints();
 				panel.Invalidate();
 			}
 			else if (drawStatus == DrawStatus.CanvasAdjusting)
@@ -278,7 +278,7 @@ namespace DrawKit.Shapes
 			drawStatus = DrawStatus.CanAdjusted;
 			SelectionRect = RotateRectangle90Degrees();
 			RotationCount = (RotationCount + 1) % 4;
-			UpdateTrianglePoints();
+			UpdateRhombusPoints();
 		}
 
 		public override void RotateLeft()
@@ -286,7 +286,7 @@ namespace DrawKit.Shapes
 			drawStatus = DrawStatus.CanAdjusted;
 			SelectionRect = RotateRectangle90Degrees();
 			RotationCount = (RotationCount + 3) % 4;
-			UpdateTrianglePoints();
+			UpdateRhombusPoints();
 		}
 
 		public override void Rotate180(){}
@@ -295,7 +295,7 @@ namespace DrawKit.Shapes
 
 		public override void FlipVertical(){}
 
-		private void UpdateTrianglePoints()
+		private void UpdateRhombusPoints()
 		{
 			_vertexs.Clear();
 
