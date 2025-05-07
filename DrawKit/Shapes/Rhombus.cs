@@ -32,8 +32,6 @@ namespace DrawKit.Shapes
 			drawStatus = DrawStatus.CannotMovedOrAdjusted;
 			SelectionRect = Rectangle.Empty;
 			RotationCount = 0;
-			IsFlippedHorizontally = false;
-			IsFlippedVertically = false;
 			panel.Invalidate();
 		}
 		public override void MouseDown(MouseEventArgs e)
@@ -289,11 +287,20 @@ namespace DrawKit.Shapes
 			UpdateRhombusPoints();
 		}
 
-		public override void Rotate180(){}
+		public override void Rotate180()
+		{
+			drawStatus = DrawStatus.CanAdjusted;
+		}
 
-		public override void FlipHorizontal(){}
+		public override void FlipHorizontal()
+		{
+			drawStatus = DrawStatus.CanAdjusted;
+		}
 
-		public override void FlipVertical(){}
+		public override void FlipVertical()
+		{
+			drawStatus = DrawStatus.CanAdjusted;
+		}
 
 		private void UpdateRhombusPoints()
 		{

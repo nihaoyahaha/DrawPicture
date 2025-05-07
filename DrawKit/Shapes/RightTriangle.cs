@@ -33,8 +33,6 @@ namespace DrawKit.Shapes
 			drawStatus = DrawStatus.CannotMovedOrAdjusted;
 			SelectionRect = Rectangle.Empty;
 			RotationCount = 0;
-			IsFlippedHorizontally = false;
-			IsFlippedVertically = false;
 			panel.Invalidate();
 		}
 		public override void MouseDown(MouseEventArgs e)
@@ -294,20 +292,17 @@ namespace DrawKit.Shapes
 		public override void FlipHorizontal()
 		{
 			drawStatus = DrawStatus.CanAdjusted;
-			IsFlippedHorizontally = !IsFlippedHorizontally;
-			UpdateRightTrianglePoints();
+			_vertexs = FlipPointsHorizontally(_vertexs);
 		}
 
 		public override void FlipVertical()
 		{
 			drawStatus = DrawStatus.CanAdjusted;
-			IsFlippedVertically = !IsFlippedVertically;
-			UpdateRightTrianglePoints();
+			_vertexs = FlipPointsVertically(_vertexs);
 		}
 		private void UpdateRightTrianglePoints()
 		{
 			_vertexs.Clear();
-
 			Point p1 = new Point(SelectionRect.Left, SelectionRect.Top);         // 左上
 			Point p2 = new Point(SelectionRect.Right, SelectionRect.Bottom);     // 右下
 			Point p3 = new Point(SelectionRect.Left, SelectionRect.Bottom);      // 左下
@@ -339,82 +334,7 @@ namespace DrawKit.Shapes
 					_vertexs.Add(p3); 
 					break;
 			}
-			if (IsFlippedVertically) FlippedVerticallyRightTrianglePoints();
-			if (IsFlippedHorizontally) FlipHorizontalRightTrianglePoints();
 		}
 
-		private void FlippedVerticallyRightTrianglePoints()
-		{
-			_vertexs.Clear();
-
-			Point p1 = new Point(SelectionRect.Left, SelectionRect.Top);         // 左上
-			Point p2 = new Point(SelectionRect.Right, SelectionRect.Bottom);     // 右下
-			Point p3 = new Point(SelectionRect.Left, SelectionRect.Bottom);      // 左下
-			Point p4 = new Point(SelectionRect.Right, SelectionRect.Top);        // 右上
-
-			switch (RotationCount)
-			{
-				case 0:
-					_vertexs.Add(p1);
-					_vertexs.Add(p4);
-					_vertexs.Add(p3);
-					break;
-
-				case 1:
-					_vertexs.Add(p1);
-					_vertexs.Add(p2);
-					_vertexs.Add(p3);
-					break;
-
-				case 2:
-					_vertexs.Add(p4);
-					_vertexs.Add(p2);
-					_vertexs.Add(p3);
-					break;
-
-				case 3:
-					_vertexs.Add(p1);
-					_vertexs.Add(p4);
-					_vertexs.Add(p2);
-					break;
-			}
-		}
-
-		private void FlipHorizontalRightTrianglePoints()
-		{
-			_vertexs.Clear();
-
-			Point p1 = new Point(SelectionRect.Left, SelectionRect.Top);         // 左上
-			Point p2 = new Point(SelectionRect.Right, SelectionRect.Bottom);     // 右下
-			Point p3 = new Point(SelectionRect.Left, SelectionRect.Bottom);      // 左下
-			Point p4 = new Point(SelectionRect.Right, SelectionRect.Top);        // 右上
-
-			switch (RotationCount)
-			{
-				case 0:
-					_vertexs.Add(p4);
-					_vertexs.Add(p2);
-					_vertexs.Add(p3);
-					break;
-
-				case 1:
-					_vertexs.Add(p1);
-					_vertexs.Add(p4);
-					_vertexs.Add(p2);
-					break;
-
-				case 2:
-					_vertexs.Add(p1);
-					_vertexs.Add(p4);
-					_vertexs.Add(p3);
-					break;
-
-				case 3:
-					_vertexs.Add(p1);
-					_vertexs.Add(p2);
-					_vertexs.Add(p3);
-					break;
-			}
-		}
 	}
 }

@@ -7,8 +7,6 @@ using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Net.Mime.MediaTypeNames;
-using static System.Windows.Forms.AxHost;
 
 namespace DrawKit.Shapes
 {
@@ -66,12 +64,6 @@ namespace DrawKit.Shapes
 
 		//時計回りの回転数を記録する
 		protected int RotationCount = 0;
-
-		//水平反転するかどうか
-		protected bool IsFlippedHorizontally = false; 
-
-		//垂直反転するかどうか
-		protected bool IsFlippedVertically = false; 
 
 		public abstract void MouseMove(MouseEventArgs e);
 		public abstract void MouseDown(MouseEventArgs e);
@@ -323,8 +315,6 @@ namespace DrawKit.Shapes
 			SelectionRect = Rectangle.Empty;
 			drawStatus = DrawStatus.CannotMovedOrAdjusted;
 			RotationCount = 0;
-			IsFlippedHorizontally = false;
-			IsFlippedVertically = false;
 			panel.Invalidate();
 		}
 
@@ -336,8 +326,6 @@ namespace DrawKit.Shapes
 			drawStatus = DrawStatus.CannotMovedOrAdjusted;
 			SelectionRect = Rectangle.Empty;
 			RotationCount = 0;
-			IsFlippedHorizontally = false;
-			IsFlippedVertically = false;
 			panel.Invalidate();
 		}
 
@@ -617,6 +605,31 @@ namespace DrawKit.Shapes
 			return new Rectangle(newLeft, newTop, newWidth, newHeight);
 		}
 
-	
+		protected List<Point> FlipPointsHorizontally(List<Point> points)
+		{
+			int flipAxis = SelectionRect.Left + SelectionRect.Width / 2;
+			var flippedPoints = new List<Point>();
+			foreach (var point in points)
+			{
+				int flippedX = flipAxis - (point.X - flipAxis);
+				int y = point.Y;
+				flippedPoints.Add(new Point(flippedX, y));
+			}
+			return flippedPoints;
+		}
+
+		protected List<Point> FlipPointsVertically(List<Point> points)
+		{
+			int flipAxis = SelectionRect.Top + SelectionRect.Height / 2;
+			var flippedPoints = new List<Point>();
+			foreach (var point in points)
+			{
+				int x = point.X;
+				int flippedY = flipAxis - (point.Y - flipAxis);
+				flippedPoints.Add(new Point(x, flippedY));
+			}
+			return flippedPoints;
+		}
+
 	}
 }
