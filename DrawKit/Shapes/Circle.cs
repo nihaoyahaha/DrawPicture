@@ -231,9 +231,7 @@ namespace DrawKit.Shapes
 					(int)ResizerPointSize));
 			}
 		}
-
-		
-		
+	
 		public override void Clear(Color color)
 		{
 			ClearBitmap(color);

@@ -87,8 +87,6 @@ namespace DrawKit.Shapes
 		
 		}
 
-
-
 		//右に90度回転
 		public abstract void RotateRight();
 
@@ -368,7 +366,6 @@ namespace DrawKit.Shapes
 			if (offsetY <=0)
 			{
 				offsetY = Math.Abs(offsetY);
-
 			} 
 
 			return new Rectangle(
@@ -378,7 +375,6 @@ namespace DrawKit.Shapes
 				canvas.Height
 			);
 		}
-
 
 		public Rectangle ConvertSelectionRectToCanvasRect(Rectangle rect)
 		{
@@ -406,8 +402,6 @@ namespace DrawKit.Shapes
 			int offsetY = (panel.Height - canvas.Height) / 2;
 			return new Point(point.X-offsetX,point.Y-offsetY);
 		}
-
-		
 
 		public bool IsValidLocation(Point point)
 		{
@@ -535,7 +529,6 @@ namespace DrawKit.Shapes
 			}
 		}
 
-
 		public Rectangle SetRichTextBoxMinSize(float size,ref Rectangle rectangle)
 		{
 			int width = rectangle.Width;
@@ -624,7 +617,6 @@ namespace DrawKit.Shapes
 			return new Rectangle(newLeft, newTop, newWidth, newHeight);
 		}
 
-		
-
+	
 	}
 }

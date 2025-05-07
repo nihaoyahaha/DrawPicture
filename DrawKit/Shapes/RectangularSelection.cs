@@ -123,7 +123,6 @@ namespace DrawKit.Shapes
 				//if (EndPoint.X == 0 && EndPoint.Y == 0) return;
 				MouseOverResizeHandle(e.Location);
 			}
-
 		}
 		private void MouseMoveLeftButtonHandle(MouseEventArgs e)
 		{
@@ -259,35 +258,6 @@ namespace DrawKit.Shapes
 			graphics.DrawImage(_selectedBitmap, SelectionRect);
 			graphics.ResetClip();
 
-			// 保存当前绘图状态
-			//GraphicsState state = graphics.Save();
-
-			//try
-			//{
-			//	// 设置旋转中心（_selectionRect 的中心点）
-			//	float centerX = _selectionRect.X + _selectionRect.Width / 2f;
-			//	float centerY = _selectionRect.Y + _selectionRect.Height / 2f;
-
-			//	// 平移到旋转中心
-			//	graphics.TranslateTransform(centerX, centerY);
-
-			//	// 旋转 90 度（顺时针）
-			//	graphics.RotateTransform(_angle);
-
-			//	// 平移回原点
-			//	//graphics.TranslateTransform(-centerX, -centerY);
-
-			//	// 绘制图像
-			//	graphics.DrawImage(_selectedBitmap,Point.Empty);
-			//	graphics.ResetTransform();
-			//}
-			//finally
-			//{
-			//	// 恢复原始状态
-			//	//graphics.Restore(state);
-			//}
-
-
 			using (Pen selectionPen = new Pen(ResizerPointColor, 0.5f))
 			{
 				selectionPen.DashStyle = DashStyle.Dash;
@@ -354,49 +324,6 @@ namespace DrawKit.Shapes
 			}
 		}
 
-		public  void Rotate(float angle)
-		{
-			drawStatus = DrawStatus.CanAdjusted;
-			var center = GetCenter();
-			var matrix = new Matrix();
-			matrix.RotateAt(angle, center);
-			ApplyTransform(matrix);			
-		}
-		public PointF GetCenter()
-		{
-			return new PointF(SelectionRect.X + SelectionRect.Width / 2f, SelectionRect.Y + SelectionRect.Height / 2f);
-		}
-		// 应用变换并更新边界
-		public void ApplyTransform(Matrix transform)
-		{
-			var points = GetPoints();
-			transform.TransformPoints(points);
-
-			// 更新边界为变换后顶点的包围盒
-			float minX = points.Min(p => p.X);
-			float maxX = points.Max(p => p.X);
-			float minY = points.Min(p => p.Y);
-			float maxY = points.Max(p => p.Y);
-
-			SelectionRect = Rectangle.FromLTRB((int)Math.Round(minX), (int)Math.Round(minY),
-										(int)Math.Round(maxX), (int)Math.Round(maxY));
-		}
-
-		// 获取矩形的四个顶点
-		public PointF[] GetPoints()
-		{
-			return new PointF[]
-			{
-			new PointF(SelectionRect.Left, SelectionRect.Top),
-			new PointF(SelectionRect.Right, SelectionRect.Top),
-			new PointF(SelectionRect.Right, SelectionRect.Bottom),
-			new PointF(SelectionRect.Left, SelectionRect.Bottom)
-			};
-		}
-
-
-		
-
 		public override void Clear(Color color)
 		{
 			ClearBitmap(color);
@@ -438,6 +365,5 @@ namespace DrawKit.Shapes
 			drawStatus = DrawStatus.CanAdjusted;
 			_selectedBitmap.RotateFlip(RotateFlipType.RotateNoneFlipY);
 		}
-		
 	}
 }
