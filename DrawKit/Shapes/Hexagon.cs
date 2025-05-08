@@ -306,13 +306,11 @@ namespace DrawKit.Shapes
 		public override void FlipHorizontal()
 		{
 			drawStatus = DrawStatus.CanAdjusted;
-			_vertexs = FlipPointsHorizontally(_vertexs);
 		}
 
 		public override void FlipVertical()
 		{
 			drawStatus = DrawStatus.CanAdjusted;
-			_vertexs = FlipPointsVertically(_vertexs);
 		}
 
 		private void UpdateHexagonPoints()

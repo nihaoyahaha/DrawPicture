@@ -65,6 +65,12 @@ namespace DrawKit.Shapes
 		//時計回りの回転数を記録する
 		protected int RotationCount = 0;
 
+		//水平反転するかどうか
+		protected bool IsFlippedHorizontally = false;
+
+		//垂直反転するかどうか
+		protected bool IsFlippedVertically = false;
+
 		public abstract void MouseMove(MouseEventArgs e);
 		public abstract void MouseDown(MouseEventArgs e);
 		public abstract void MouseUp(MouseEventArgs e);
@@ -315,6 +321,8 @@ namespace DrawKit.Shapes
 			SelectionRect = Rectangle.Empty;
 			drawStatus = DrawStatus.CannotMovedOrAdjusted;
 			RotationCount = 0;
+			IsFlippedHorizontally = false;
+			IsFlippedVertically = false;
 			panel.Invalidate();
 		}
 
@@ -326,6 +334,8 @@ namespace DrawKit.Shapes
 			drawStatus = DrawStatus.CannotMovedOrAdjusted;
 			SelectionRect = Rectangle.Empty;
 			RotationCount = 0;
+			IsFlippedHorizontally = false;
+			IsFlippedVertically = false;
 			panel.Invalidate();
 		}
 

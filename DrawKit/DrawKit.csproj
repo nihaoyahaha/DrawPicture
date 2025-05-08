@@ -62,6 +62,7 @@
     <Compile Include="Shapes\DrawStatus.cs" />
     <Compile Include="Shapes\Eraser.cs" />
     <Compile Include="Shapes\Hexagon.cs" />
+    <Compile Include="Shapes\LastRotationOperation.cs" />
     <Compile Include="Shapes\Line.cs" />
     <Compile Include="Shapes\OilTank.cs" />
     <Compile Include="Shapes\Pentagon.cs" />

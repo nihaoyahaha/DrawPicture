@@ -310,16 +310,18 @@ namespace DrawKit.Shapes
 		public override void FlipHorizontal()
 		{
 			drawStatus = DrawStatus.CanAdjusted;
-			_vertexs = FlipPointsHorizontally(_vertexs);
+			IsFlippedHorizontally = !IsFlippedHorizontally;
+			UpdatePentagonPoints();
 		}
 
 		public override void FlipVertical()
 		{
 			drawStatus = DrawStatus.CanAdjusted;
-			_vertexs = FlipPointsVertically(_vertexs);
+			IsFlippedVertically = !IsFlippedVertically;
+			UpdatePentagonPoints();
 		}
 
-		private void UpdatePentagonPoints()
+		private void UpdatePentagonPoints2()
 		{
 			_vertexs.Clear();
 			Point point;
@@ -420,6 +422,410 @@ namespace DrawKit.Shapes
 					point = new Point(SelectionRect.Left+ middleVertexDistance,SelectionRect.Bottom);
 					_vertexs.Add(point);
 
+					break;
+			}
+		}
+
+		private void UpdatePentagonPoints()
+		{
+			_vertexs.Clear();
+			Point point;
+			int middleVertexDistance;
+			int bottomVertexDistance;
+			switch (RotationCount)
+			{
+				case 0:
+					if (IsFlippedVertically == false && IsFlippedHorizontally == false)
+					{
+						//上部頂点
+						point = new Point(SelectionRect.X + SelectionRect.Width / 2, SelectionRect.Y);
+						_vertexs.Add(point);
+
+						//右上の頂点
+						middleVertexDistance = (int)(SelectionRect.Height * _middleVertexRatio);
+						point = new Point(SelectionRect.Right, SelectionRect.Top + middleVertexDistance);
+						_vertexs.Add(point);
+
+						//右下の頂点
+						bottomVertexDistance = (int)(SelectionRect.Width * _bottomVertexRatio);
+						point = new Point(SelectionRect.Right - bottomVertexDistance, SelectionRect.Bottom);
+						_vertexs.Add(point);
+
+						//左下の頂点
+						point = new Point(SelectionRect.Left + bottomVertexDistance, SelectionRect.Bottom);
+						_vertexs.Add(point);
+
+						//左上の頂点
+						point = new Point(SelectionRect.Left, SelectionRect.Top + middleVertexDistance);
+						_vertexs.Add(point);
+					}
+					else if (IsFlippedVertically == true && IsFlippedHorizontally == false)
+					{
+						//下中
+						point = new Point(SelectionRect.Left + SelectionRect.Width / 2, SelectionRect.Bottom);
+						_vertexs.Add(point);
+
+						//頂点左
+						middleVertexDistance = (int)(SelectionRect.Height * _middleVertexRatio);
+						point = new Point(SelectionRect.Left, SelectionRect.Bottom - middleVertexDistance);
+						_vertexs.Add(point);
+
+						//頂点左上
+						bottomVertexDistance = (int)(SelectionRect.Width * _bottomVertexRatio);
+						point = new Point(SelectionRect.Left + bottomVertexDistance, SelectionRect.Top);
+						_vertexs.Add(point);
+
+						//頂点右上
+						point = new Point(SelectionRect.Right - bottomVertexDistance, SelectionRect.Top);
+						_vertexs.Add(point);
+
+						//頂点右
+						point = new Point(SelectionRect.Right, SelectionRect.Bottom - middleVertexDistance);
+						_vertexs.Add(point);
+					}
+					else if (IsFlippedVertically == false && IsFlippedHorizontally == true)
+					{
+						//上部頂点
+						point = new Point(SelectionRect.X + SelectionRect.Width / 2, SelectionRect.Y);
+						_vertexs.Add(point);
+
+						//右上の頂点
+						middleVertexDistance = (int)(SelectionRect.Height * _middleVertexRatio);
+						point = new Point(SelectionRect.Right, SelectionRect.Top + middleVertexDistance);
+						_vertexs.Add(point);
+
+						//右下の頂点
+						bottomVertexDistance = (int)(SelectionRect.Width * _bottomVertexRatio);
+						point = new Point(SelectionRect.Right - bottomVertexDistance, SelectionRect.Bottom);
+						_vertexs.Add(point);
+
+						//左下の頂点
+						point = new Point(SelectionRect.Left + bottomVertexDistance, SelectionRect.Bottom);
+						_vertexs.Add(point);
+
+						//左上の頂点
+						point = new Point(SelectionRect.Left, SelectionRect.Top + middleVertexDistance);
+						_vertexs.Add(point);
+					}
+					else if (IsFlippedVertically == true && IsFlippedHorizontally == true)
+					{
+						//下中
+						point = new Point(SelectionRect.Left + SelectionRect.Width / 2, SelectionRect.Bottom);
+						_vertexs.Add(point);
+
+						//頂点左
+						middleVertexDistance = (int)(SelectionRect.Height * _middleVertexRatio);
+						point = new Point(SelectionRect.Left, SelectionRect.Bottom - middleVertexDistance);
+						_vertexs.Add(point);
+
+						//頂点左上
+						bottomVertexDistance = (int)(SelectionRect.Width * _bottomVertexRatio);
+						point = new Point(SelectionRect.Left + bottomVertexDistance, SelectionRect.Top);
+						_vertexs.Add(point);
+
+						//頂点右上
+						point = new Point(SelectionRect.Right - bottomVertexDistance, SelectionRect.Top);
+						_vertexs.Add(point);
+
+						//頂点右
+						point = new Point(SelectionRect.Right, SelectionRect.Bottom - middleVertexDistance);
+						_vertexs.Add(point);
+					}
+					break;
+				case 1:
+					if (IsFlippedVertically == false && IsFlippedHorizontally == false)
+					{
+						//右中
+						point = new Point(SelectionRect.Right, SelectionRect.Top + SelectionRect.Height / 2);
+						_vertexs.Add(point);
+
+						//頂点下
+						middleVertexDistance = (int)(SelectionRect.Width * _middleVertexRatio);
+						point = new Point(SelectionRect.Right - middleVertexDistance, SelectionRect.Bottom);
+						_vertexs.Add(point);
+
+						//頂点左下
+						bottomVertexDistance = (int)(SelectionRect.Height * _bottomVertexRatio);
+						point = new Point(SelectionRect.Left, SelectionRect.Bottom - bottomVertexDistance);
+						_vertexs.Add(point);
+
+						//頂点左上
+						point = new Point(SelectionRect.Left, SelectionRect.Top + bottomVertexDistance);
+						_vertexs.Add(point);
+
+						//頂点上
+						point = new Point(SelectionRect.Right - middleVertexDistance, SelectionRect.Top);
+						_vertexs.Add(point);
+					}
+					else if (IsFlippedVertically == true && IsFlippedHorizontally == false)
+					{
+						//右中
+						point = new Point(SelectionRect.Right, SelectionRect.Top + SelectionRect.Height / 2);
+						_vertexs.Add(point);
+
+						//頂点下
+						middleVertexDistance = (int)(SelectionRect.Width * _middleVertexRatio);
+						point = new Point(SelectionRect.Right - middleVertexDistance, SelectionRect.Bottom);
+						_vertexs.Add(point);
+
+						//頂点左下
+						bottomVertexDistance = (int)(SelectionRect.Height * _bottomVertexRatio);
+						point = new Point(SelectionRect.Left, SelectionRect.Bottom - bottomVertexDistance);
+						_vertexs.Add(point);
+
+						//頂点左上
+						point = new Point(SelectionRect.Left, SelectionRect.Top + bottomVertexDistance);
+						_vertexs.Add(point);
+
+						//頂点上
+						point = new Point(SelectionRect.Right - middleVertexDistance, SelectionRect.Top);
+						_vertexs.Add(point);
+					}
+					else if (IsFlippedVertically == false && IsFlippedHorizontally == true)
+					{
+						//頂点左中
+						point = new Point(SelectionRect.Left, SelectionRect.Top + SelectionRect.Height / 2);
+						_vertexs.Add(point);
+
+						//頂点上
+						middleVertexDistance = (int)(SelectionRect.Width * _middleVertexRatio);
+						point = new Point(SelectionRect.Left + middleVertexDistance, SelectionRect.Top);
+						_vertexs.Add(point);
+
+						//頂点右上
+						bottomVertexDistance = (int)(SelectionRect.Height * _bottomVertexRatio);
+						point = new Point(SelectionRect.Right, SelectionRect.Top + bottomVertexDistance);
+						_vertexs.Add(point);
+
+						//頂点右下
+						point = new Point(SelectionRect.Right, SelectionRect.Bottom - bottomVertexDistance);
+						_vertexs.Add(point);
+
+						//頂点下
+						point = new Point(SelectionRect.Left + middleVertexDistance, SelectionRect.Bottom);
+						_vertexs.Add(point);
+					}
+					else if (IsFlippedVertically == true && IsFlippedHorizontally == true)
+					{
+						//頂点左中
+						point = new Point(SelectionRect.Left, SelectionRect.Top + SelectionRect.Height / 2);
+						_vertexs.Add(point);
+
+						//頂点上
+						middleVertexDistance = (int)(SelectionRect.Width * _middleVertexRatio);
+						point = new Point(SelectionRect.Left + middleVertexDistance, SelectionRect.Top);
+						_vertexs.Add(point);
+
+						//頂点右上
+						bottomVertexDistance = (int)(SelectionRect.Height * _bottomVertexRatio);
+						point = new Point(SelectionRect.Right, SelectionRect.Top + bottomVertexDistance);
+						_vertexs.Add(point);
+
+						//頂点右下
+						point = new Point(SelectionRect.Right, SelectionRect.Bottom - bottomVertexDistance);
+						_vertexs.Add(point);
+
+						//頂点下
+						point = new Point(SelectionRect.Left + middleVertexDistance, SelectionRect.Bottom);
+						_vertexs.Add(point);
+					}
+					break;
+				case 2:
+					if (IsFlippedVertically == false && IsFlippedHorizontally == false)
+					{
+						//下中
+						point = new Point(SelectionRect.Left + SelectionRect.Width / 2, SelectionRect.Bottom);
+						_vertexs.Add(point);
+
+						//頂点左
+						middleVertexDistance = (int)(SelectionRect.Height * _middleVertexRatio);
+						point = new Point(SelectionRect.Left, SelectionRect.Bottom - middleVertexDistance);
+						_vertexs.Add(point);
+
+						//頂点左上
+						bottomVertexDistance = (int)(SelectionRect.Width * _bottomVertexRatio);
+						point = new Point(SelectionRect.Left + bottomVertexDistance, SelectionRect.Top);
+						_vertexs.Add(point);
+
+						//頂点右上
+						point = new Point(SelectionRect.Right - bottomVertexDistance, SelectionRect.Top);
+						_vertexs.Add(point);
+
+						//頂点右
+						point = new Point(SelectionRect.Right, SelectionRect.Bottom - middleVertexDistance);
+						_vertexs.Add(point);
+					}
+					else if (IsFlippedVertically == true && IsFlippedHorizontally == false)
+					{
+						//上部頂点
+						point = new Point(SelectionRect.X + SelectionRect.Width / 2, SelectionRect.Y);
+						_vertexs.Add(point);
+
+						//右上の頂点
+						middleVertexDistance = (int)(SelectionRect.Height * _middleVertexRatio);
+						point = new Point(SelectionRect.Right, SelectionRect.Top + middleVertexDistance);
+						_vertexs.Add(point);
+
+						//右下の頂点
+						bottomVertexDistance = (int)(SelectionRect.Width * _bottomVertexRatio);
+						point = new Point(SelectionRect.Right - bottomVertexDistance, SelectionRect.Bottom);
+						_vertexs.Add(point);
+
+						//左下の頂点
+						point = new Point(SelectionRect.Left + bottomVertexDistance, SelectionRect.Bottom);
+						_vertexs.Add(point);
+
+						//左上の頂点
+						point = new Point(SelectionRect.Left, SelectionRect.Top + middleVertexDistance);
+						_vertexs.Add(point);
+					}
+					else if (IsFlippedVertically == false && IsFlippedHorizontally == true)
+					{
+						//下中
+						point = new Point(SelectionRect.Left + SelectionRect.Width / 2, SelectionRect.Bottom);
+						_vertexs.Add(point);
+
+						//頂点左
+						middleVertexDistance = (int)(SelectionRect.Height * _middleVertexRatio);
+						point = new Point(SelectionRect.Left, SelectionRect.Bottom - middleVertexDistance);
+						_vertexs.Add(point);
+
+						//頂点左上
+						bottomVertexDistance = (int)(SelectionRect.Width * _bottomVertexRatio);
+						point = new Point(SelectionRect.Left + bottomVertexDistance, SelectionRect.Top);
+						_vertexs.Add(point);
+
+						//頂点右上
+						point = new Point(SelectionRect.Right - bottomVertexDistance, SelectionRect.Top);
+						_vertexs.Add(point);
+
+						//頂点右
+						point = new Point(SelectionRect.Right, SelectionRect.Bottom - middleVertexDistance);
+						_vertexs.Add(point);
+					}
+					else if (IsFlippedVertically == true && IsFlippedHorizontally == true)
+					{
+						//上部頂点
+						point = new Point(SelectionRect.X + SelectionRect.Width / 2, SelectionRect.Y);
+						_vertexs.Add(point);
+
+						//右上の頂点
+						middleVertexDistance = (int)(SelectionRect.Height * _middleVertexRatio);
+						point = new Point(SelectionRect.Right, SelectionRect.Top + middleVertexDistance);
+						_vertexs.Add(point);
+
+						//右下の頂点
+						bottomVertexDistance = (int)(SelectionRect.Width * _bottomVertexRatio);
+						point = new Point(SelectionRect.Right - bottomVertexDistance, SelectionRect.Bottom);
+						_vertexs.Add(point);
+
+						//左下の頂点
+						point = new Point(SelectionRect.Left + bottomVertexDistance, SelectionRect.Bottom);
+						_vertexs.Add(point);
+
+						//左上の頂点
+						point = new Point(SelectionRect.Left, SelectionRect.Top + middleVertexDistance);
+						_vertexs.Add(point);
+					}
+
+					break;
+				case 3:
+					if (IsFlippedVertically == false && IsFlippedHorizontally == false)
+					{
+						//頂点左中
+						point = new Point(SelectionRect.Left, SelectionRect.Top + SelectionRect.Height / 2);
+						_vertexs.Add(point);
+
+						//頂点上
+						middleVertexDistance = (int)(SelectionRect.Width * _middleVertexRatio);
+						point = new Point(SelectionRect.Left + middleVertexDistance, SelectionRect.Top);
+						_vertexs.Add(point);
+
+						//頂点右上
+						bottomVertexDistance = (int)(SelectionRect.Height * _bottomVertexRatio);
+						point = new Point(SelectionRect.Right, SelectionRect.Top + bottomVertexDistance);
+						_vertexs.Add(point);
+
+						//頂点右下
+						point = new Point(SelectionRect.Right, SelectionRect.Bottom - bottomVertexDistance);
+						_vertexs.Add(point);
+
+						//頂点下
+						point = new Point(SelectionRect.Left + middleVertexDistance, SelectionRect.Bottom);
+						_vertexs.Add(point);
+					}
+					else if (IsFlippedVertically == true && IsFlippedHorizontally == false)
+					{
+						//頂点左中
+						point = new Point(SelectionRect.Left, SelectionRect.Top + SelectionRect.Height / 2);
+						_vertexs.Add(point);
+
+						//頂点上
+						middleVertexDistance = (int)(SelectionRect.Width * _middleVertexRatio);
+						point = new Point(SelectionRect.Left + middleVertexDistance, SelectionRect.Top);
+						_vertexs.Add(point);
+
+						//頂点右上
+						bottomVertexDistance = (int)(SelectionRect.Height * _bottomVertexRatio);
+						point = new Point(SelectionRect.Right, SelectionRect.Top + bottomVertexDistance);
+						_vertexs.Add(point);
+
+						//頂点右下
+						point = new Point(SelectionRect.Right, SelectionRect.Bottom - bottomVertexDistance);
+						_vertexs.Add(point);
+
+						//頂点下
+						point = new Point(SelectionRect.Left + middleVertexDistance, SelectionRect.Bottom);
+						_vertexs.Add(point);
+					}
+					else if (IsFlippedVertically == false && IsFlippedHorizontally == true)
+					{
+						//右中
+						point = new Point(SelectionRect.Right, SelectionRect.Top + SelectionRect.Height / 2);
+						_vertexs.Add(point);
+
+						//頂点下
+						middleVertexDistance = (int)(SelectionRect.Width * _middleVertexRatio);
+						point = new Point(SelectionRect.Right - middleVertexDistance, SelectionRect.Bottom);
+						_vertexs.Add(point);
+
+						//頂点左下
+						bottomVertexDistance = (int)(SelectionRect.Height * _bottomVertexRatio);
+						point = new Point(SelectionRect.Left, SelectionRect.Bottom - bottomVertexDistance);
+						_vertexs.Add(point);
+
+						//頂点左上
+						point = new Point(SelectionRect.Left, SelectionRect.Top + bottomVertexDistance);
+						_vertexs.Add(point);
+
+						//頂点上
+						point = new Point(SelectionRect.Right - middleVertexDistance, SelectionRect.Top);
+						_vertexs.Add(point);
+					}
+					else if (IsFlippedVertically == true && IsFlippedHorizontally == true)
+					{
+						//右中
+						point = new Point(SelectionRect.Right, SelectionRect.Top + SelectionRect.Height / 2);
+						_vertexs.Add(point);
+
+						//頂点下
+						middleVertexDistance = (int)(SelectionRect.Width * _middleVertexRatio);
+						point = new Point(SelectionRect.Right - middleVertexDistance, SelectionRect.Bottom);
+						_vertexs.Add(point);
+
+						//頂点左下
+						bottomVertexDistance = (int)(SelectionRect.Height * _bottomVertexRatio);
+						point = new Point(SelectionRect.Left, SelectionRect.Bottom - bottomVertexDistance);
+						_vertexs.Add(point);
+
+						//頂点左上
+						point = new Point(SelectionRect.Left, SelectionRect.Top + bottomVertexDistance);
+						_vertexs.Add(point);
+
+						//頂点上
+						point = new Point(SelectionRect.Right - middleVertexDistance, SelectionRect.Top);
+						_vertexs.Add(point);
+					}
 					break;
 			}
 		}

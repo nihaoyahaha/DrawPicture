@@ -14,6 +14,7 @@ namespace DrawKit.Shapes
 	/// </summary>
 	public class RightTriangle : Shape
 	{
+		
 		//頂点の集合
 		private List<Point> _vertexs = new List<Point>();
 		public RightTriangle(Bitmap bitmap, Panel panel) : base(bitmap, panel) { }
@@ -33,6 +34,8 @@ namespace DrawKit.Shapes
 			drawStatus = DrawStatus.CannotMovedOrAdjusted;
 			SelectionRect = Rectangle.Empty;
 			RotationCount = 0;
+			IsFlippedHorizontally = false;
+			IsFlippedVertically = false;
 			panel.Invalidate();
 		}
 		public override void MouseDown(MouseEventArgs e)
@@ -121,7 +124,6 @@ namespace DrawKit.Shapes
 				int deltaY = e.Y - Offset.Y;
 				SelectionRect.Offset(deltaX, deltaY);
 				Offset = e.Location;
-				//CalculateRightTrianglePoints();
 				UpdateRightTrianglePoints();
 				panel.Invalidate();
 			}
@@ -131,7 +133,6 @@ namespace DrawKit.Shapes
 				int deltaY = e.Y - Offset.Y;
 				SelectionAdjusting(deltaX, deltaY, ref SelectionRect);
 				Offset = e.Location;
-				//CalculateRightTrianglePoints();
 				UpdateRightTrianglePoints();
 				panel.Invalidate();
 			}
@@ -292,49 +293,131 @@ namespace DrawKit.Shapes
 		public override void FlipHorizontal()
 		{
 			drawStatus = DrawStatus.CanAdjusted;
-			_vertexs = FlipPointsHorizontally(_vertexs);
+			IsFlippedHorizontally = !IsFlippedHorizontally;
+			UpdateRightTrianglePoints();
 		}
 
 		public override void FlipVertical()
 		{
 			drawStatus = DrawStatus.CanAdjusted;
-			_vertexs = FlipPointsVertically(_vertexs);
+			IsFlippedVertically = !IsFlippedVertically;
+			UpdateRightTrianglePoints();
 		}
 		private void UpdateRightTrianglePoints()
 		{
 			_vertexs.Clear();
 			Point p1 = new Point(SelectionRect.Left, SelectionRect.Top);         // 左上
+			Point p4 = new Point(SelectionRect.Right, SelectionRect.Top);        // 右上
 			Point p2 = new Point(SelectionRect.Right, SelectionRect.Bottom);     // 右下
 			Point p3 = new Point(SelectionRect.Left, SelectionRect.Bottom);      // 左下
-			Point p4 = new Point(SelectionRect.Right, SelectionRect.Top);        // 右上
-
+			
 			switch (RotationCount)
 			{
-				case 0: 
-					_vertexs.Add(p1); 
-					_vertexs.Add(p2); 
-					_vertexs.Add(p3); 
+				case 0:
+					if (IsFlippedVertically == false && IsFlippedHorizontally == false)
+					{
+						_vertexs.Add(p1);
+						_vertexs.Add(p2);
+						_vertexs.Add(p3);
+					}
+					else if (IsFlippedVertically == true && IsFlippedHorizontally == false)
+					{
+						_vertexs.Add(p1);
+						_vertexs.Add(p4);
+						_vertexs.Add(p3);
+					}
+					else if (IsFlippedVertically == false && IsFlippedHorizontally == true)
+					{
+						_vertexs.Add(p4);
+						_vertexs.Add(p2);
+						_vertexs.Add(p3);
+					}
+					else if (IsFlippedVertically == true && IsFlippedHorizontally == true)
+					{
+						_vertexs.Add(p1);
+						_vertexs.Add(p4);
+						_vertexs.Add(p2);
+					}
+						break;
+				case 1:
+					if (IsFlippedVertically == false && IsFlippedHorizontally == false)
+					{
+						_vertexs.Add(p1);
+						_vertexs.Add(p4);
+						_vertexs.Add(p3);
+					}
+					else if (IsFlippedVertically == true && IsFlippedHorizontally == false)
+					{
+						_vertexs.Add(p1);
+						_vertexs.Add(p2);
+						_vertexs.Add(p3);
+					}
+					else if (IsFlippedVertically == false && IsFlippedHorizontally == true)
+					{
+						_vertexs.Add(p1);
+						_vertexs.Add(p4);
+						_vertexs.Add(p2);
+					}
+					else if (IsFlippedVertically == true && IsFlippedHorizontally == true)
+					{
+						_vertexs.Add(p4);
+						_vertexs.Add(p2);
+						_vertexs.Add(p3);
+					}
 					break;
-
-				case 1: 
-					_vertexs.Add(p1); 
-					_vertexs.Add(p4); 
-					_vertexs.Add(p3); 
+				case 2:
+					if (IsFlippedVertically == false && IsFlippedHorizontally == false)
+					{
+						_vertexs.Add(p1);
+						_vertexs.Add(p4);
+						_vertexs.Add(p2);
+					}
+					else if (IsFlippedVertically == true && IsFlippedHorizontally == false)
+					{
+						_vertexs.Add(p4);
+						_vertexs.Add(p2);
+						_vertexs.Add(p3);
+					}
+					else if (IsFlippedVertically == false && IsFlippedHorizontally == true)
+					{
+						_vertexs.Add(p1);
+						_vertexs.Add(p4);
+						_vertexs.Add(p3);
+					}
+					else if (IsFlippedVertically == true && IsFlippedHorizontally == true)
+					{
+						_vertexs.Add(p1);
+						_vertexs.Add(p2);
+						_vertexs.Add(p3);
+					}
 					break;
-
-				case 2: 
-					_vertexs.Add(p1); 
-					_vertexs.Add(p4); 
-					_vertexs.Add(p2); 
-					break;
-
-				case 3: 
-					_vertexs.Add(p4); 
-					_vertexs.Add(p2); 
-					_vertexs.Add(p3); 
+				case 3:
+					if (IsFlippedVertically == false && IsFlippedHorizontally == false)
+					{
+						_vertexs.Add(p4);
+						_vertexs.Add(p2);
+						_vertexs.Add(p3);
+					}
+					else if (IsFlippedVertically == true && IsFlippedHorizontally == false)
+					{
+						_vertexs.Add(p1);
+						_vertexs.Add(p4);
+						_vertexs.Add(p2);
+					}
+					else if (IsFlippedVertically == false && IsFlippedHorizontally == true)
+					{
+						_vertexs.Add(p1);
+						_vertexs.Add(p2);
+						_vertexs.Add(p3);
+					}
+					else if (IsFlippedVertically == true && IsFlippedHorizontally == true)
+					{
+						_vertexs.Add(p1);
+						_vertexs.Add(p4);
+						_vertexs.Add(p3);
+					}
 					break;
 			}
 		}
-
 	}
 }
