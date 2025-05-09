@@ -615,30 +615,34 @@ namespace DrawKit.Shapes
 			return new Rectangle(newLeft, newTop, newWidth, newHeight);
 		}
 
-		protected List<Point> FlipPointsHorizontally(List<Point> points)
+		public void CanvasRotateRight()
 		{
-			int flipAxis = SelectionRect.Left + SelectionRect.Width / 2;
-			var flippedPoints = new List<Point>();
-			foreach (var point in points)
-			{
-				int flippedX = flipAxis - (point.X - flipAxis);
-				int y = point.Y;
-				flippedPoints.Add(new Point(flippedX, y));
-			}
-			return flippedPoints;
+			canvas.RotateFlip(RotateFlipType.Rotate90FlipNone);
+			panel.Invalidate();
 		}
 
-		protected List<Point> FlipPointsVertically(List<Point> points)
+		public void CanvasRotateLeft()
 		{
-			int flipAxis = SelectionRect.Top + SelectionRect.Height / 2;
-			var flippedPoints = new List<Point>();
-			foreach (var point in points)
-			{
-				int x = point.X;
-				int flippedY = flipAxis - (point.Y - flipAxis);
-				flippedPoints.Add(new Point(x, flippedY));
-			}
-			return flippedPoints;
+			canvas.RotateFlip(RotateFlipType.Rotate270FlipNone);
+			panel.Invalidate();
+		}
+
+		public void CanvasRotate180()
+		{
+			canvas.RotateFlip(RotateFlipType.Rotate180FlipNone);
+			panel.Invalidate();
+		}
+
+		public void CanvasFlipHorizontal()
+		{
+			canvas.RotateFlip(RotateFlipType.RotateNoneFlipX);
+			panel.Invalidate();
+		}
+
+		public void CanvasFlipVertical()
+		{
+			canvas.RotateFlip(RotateFlipType.RotateNoneFlipY);
+			panel.Invalidate();
 		}
 
 	}

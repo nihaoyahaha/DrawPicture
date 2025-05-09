@@ -541,32 +541,77 @@ namespace DrawKit
 
 		private void btn_RightRotate90_Click(object sender, EventArgs e)
 		{
-			_shape.RotateRight();
-			panel_main.Refresh();
+			if (_shape is TextBoxArea) return;
+			if (_shape.SelectionRect == Rectangle.Empty || _shape.SelectionRect.Width == 0 || _shape.SelectionRect.Height ==0)
+			{
+				_shape.CanvasRotateRight();
+				CreateNewBitmap(_canvas.Width, _canvas.Height);
+			}
+			else
+			{
+				_shape.RotateRight();
+				panel_main.Refresh();
+			}	
 		}
 
 		private void btn_LeftRotate90_Click(object sender, EventArgs e)
 		{
-			_shape.RotateLeft();
-			panel_main.Refresh();
+			if (_shape is TextBoxArea) return;
+			if (_shape.SelectionRect == Rectangle.Empty || _shape.SelectionRect.Width == 0 || _shape.SelectionRect.Height == 0)
+			{
+				_shape.CanvasRotateLeft();
+				CreateNewBitmap(_canvas.Width, _canvas.Height);
+			}
+			else
+			{
+				_shape.RotateLeft();
+				panel_main.Refresh();
+			}
 		}
 
 		private void btn_Rotate180_Click(object sender, EventArgs e)
 		{
-			_shape.Rotate180();
-			panel_main.Refresh();
+			if (_shape is TextBoxArea) return;
+			if (_shape.SelectionRect == Rectangle.Empty || _shape.SelectionRect.Width == 0 || _shape.SelectionRect.Height == 0)
+			{
+				_shape.CanvasRotate180();
+				CreateNewBitmap(_canvas.Width, _canvas.Height);
+			}
+			else
+			{
+				_shape.Rotate180();
+				panel_main.Refresh();
+			}
 		}
 
 		private void btn_FlipVertical_Click(object sender, EventArgs e)
 		{
-			_shape.FlipVertical();
-			panel_main.Refresh();
+			if (_shape is TextBoxArea) return;
+			if (_shape.SelectionRect == Rectangle.Empty || _shape.SelectionRect.Width == 0 || _shape.SelectionRect.Height == 0)
+			{
+				_shape.CanvasFlipVertical();
+				CreateNewBitmap(_canvas.Width, _canvas.Height);
+			}
+			else
+			{
+				_shape.FlipVertical();
+				panel_main.Refresh();
+			}
 		}
 
 		private void btn_FlipHorizontal_Click(object sender, EventArgs e)
 		{
-			_shape.FlipHorizontal();
-			panel_main.Refresh();
+			if (_shape is TextBoxArea) return;
+			if (_shape.SelectionRect == Rectangle.Empty || _shape.SelectionRect.Width == 0 || _shape.SelectionRect.Height == 0)
+			{
+				_shape.CanvasFlipHorizontal();
+				CreateNewBitmap(_canvas.Width, _canvas.Height);
+			}
+			else
+			{
+				_shape.FlipHorizontal();
+				panel_main.Refresh();
+			}
 		}
 
 		private void btn_ClearAll_Click(object sender, EventArgs e)

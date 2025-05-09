@@ -44,9 +44,7 @@ namespace DrawKit.Shapes
 			SelectionRect = Rectangle.Empty;
 			drawStatus = DrawStatus.CompleteDrawText;
 			richTextBox.Text = "";
-			panel.Invalidate();
-
-		
+			panel.Invalidate();	
 		}
 		public override void MouseDown(MouseEventArgs e)
 		{
@@ -120,12 +118,9 @@ namespace DrawKit.Shapes
 				if (y + height >= rect.Bottom)
 				{
 					height = rect.Bottom - y;
-					Debug.WriteLine($"height:{height}");
 				} 
 
-
 				_rectCreating = new Rectangle(x, y, width, height);
-				Debug.WriteLine($"x:{_rectCreating.X},y:{_rectCreating.Y},width:{_rectCreating.Width},height:{_rectCreating.Height}");
 				panel.Invalidate();
 			}
 			else if (drawStatus == DrawStatus.Moving)
@@ -326,7 +321,6 @@ namespace DrawKit.Shapes
 				MouseLeftButtonUpHandel(e);
 			}
 		}
-
 		
 		private void MouseLeftButtonUpHandel(MouseEventArgs e)
 		{
@@ -346,7 +340,6 @@ namespace DrawKit.Shapes
 
 				drawStatus = DrawStatus.CanAdjusted;
 				SelectionRect = _rectCreating;
-				Debug.WriteLine($"mouseup height:{SelectionRect.Height}");
 				panel.Invalidate();
 				_rectCreating = Rectangle.Empty;
 			}
@@ -370,7 +363,6 @@ namespace DrawKit.Shapes
 		{
 			if (canvas != null)
 			{
-				Debug.WriteLine($"in painting height:{SelectionRect.Height}");
 				BitmapDrawShape(canvas, graphics);
 			}
 			if (drawStatus == DrawStatus.Creating)
@@ -424,13 +416,10 @@ namespace DrawKit.Shapes
 						(int)ResizerPointSize));
 				}
 			}
-
-			Debug.WriteLine($"creating height:{_rectCreating.Height}");
 		}
 
 		private void DrawCanMoveOrAdjusted(Graphics graphics)
 		{
-			Debug.WriteLine($"x:{SelectionRect.X},y:{SelectionRect.Y},width:{SelectionRect.Width},height:{SelectionRect.Height}");
 			using (Pen selectionPen = new Pen(ResizerPointColor, 0.5f))
 			{
 				selectionPen.DashStyle = DashStyle.Dash;
@@ -453,35 +442,20 @@ namespace DrawKit.Shapes
 			ClearBitmap(color);
 		}
 
-		
-
 		public override void CommitCurrentShape()
 		{
 			BitmapDrawText();
 		}
 
-		public override void RotateRight()
-		{
-			
-		}
+		public override void RotateRight(){}
 
-		public override void RotateLeft()
-		{
-			
-		}
+		public override void RotateLeft(){}
 
-		public override void Rotate180()
-		{
-			
-		}
+		public override void Rotate180(){}
 
-		public override void FlipHorizontal()
-		{
-		}
+		public override void FlipHorizontal(){}
 
-		public override void FlipVertical()
-		{
-		}
+		public override void FlipVertical(){}
 
 	}
 }
