@@ -22,6 +22,8 @@ namespace DrawKit.Shapes
 				using (Pen selectionPen = new Pen(ForeColor, Size))
 				{
 					selectionPen.DashStyle = DashStyle.Solid;
+					g.SmoothingMode = SmoothingMode.HighQuality;
+					g.PixelOffsetMode = PixelOffsetMode.HighQuality;
 					g.DrawEllipse(selectionPen, ConvertSelectionRectToCanvasRect(SelectionRect));
 				}
 			}

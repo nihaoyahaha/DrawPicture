@@ -25,6 +25,8 @@ namespace DrawKit.Shapes
 				using (Pen selectionPen = new Pen(ForeColor, Size))
 				{
 					selectionPen.DashStyle = DashStyle.Solid;
+					g.SmoothingMode = SmoothingMode.HighQuality;
+					g.PixelOffsetMode = PixelOffsetMode.HighQuality;
 					g.DrawRectangle(selectionPen,ConvertSelectionRectToCanvasRect(SelectionRect));
 				}
 			}

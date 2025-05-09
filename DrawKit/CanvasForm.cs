@@ -97,8 +97,15 @@ namespace DrawKit
 					pic_reduce_Click(null, null);
 				}
 			}
+			if (panel_main.DisplayRectangle.Width > panel_main.ClientSize.Width)
+			{
+				CreateNewBitmap(_canvas.Width, _canvas.Height);
+			}
+			if (panel_main.DisplayRectangle.Height > panel_main.ClientSize.Height)
+			{
+				CreateNewBitmap(_canvas.Width, _canvas.Height);
+			}
 		}
-
 
 		private void panel_main_MouseDown(object sender, MouseEventArgs e)
 		{
@@ -209,8 +216,8 @@ namespace DrawKit
 
 		private void panel_main_Paint(object sender, PaintEventArgs e)
 		{
-			if (panel_main.AutoScrollPosition.X != 0) return;
-			if (panel_main.AutoScrollPosition.Y != 0) return;
+		//	if (panel_main.AutoScrollPosition.X != 0) return;
+		//	if (panel_main.AutoScrollPosition.Y != 0) return;
 			if (_canvas != null)
 			{
 
@@ -734,12 +741,7 @@ namespace DrawKit
 
 		private void panel_main_Scroll(object sender, ScrollEventArgs e)
 		{
-			//panel_main.Invalidate();
-		}
-
-		private void panel_main_Leave(object sender, EventArgs e)
-		{
-
+			CreateNewBitmap(_canvas.Width, _canvas.Height);
 		}
 	}
 }

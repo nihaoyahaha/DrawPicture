@@ -343,32 +343,40 @@ namespace DrawKit.Shapes
 		{
 			if (bitmap != null)
 			{
-				graphics.DrawImage(bitmap, GetCanvasRegion());
+				graphics.DrawImage(bitmap,GetCanvasRegion());
 				DrawCanvasEditPoint(graphics);
 			}
 		}
 
-		public Rectangle GetCanvasRegion()
+		/// <summary>
+		/// bitmapの場所を取得
+		/// </summary>
+		/// <returns></returns>
+		private (int X,int Y) GetCanvasLocation()
 		{
 			int offsetX = (panel.Width - canvas.Width) / 2;
 			int offsetY = (panel.Height - canvas.Height) / 2;
 			// 考虑滚动条的偏移量
-			offsetX -= panel.AutoScrollPosition.X;
-			offsetY -= panel.AutoScrollPosition.Y;
+			offsetX += panel.AutoScrollPosition.X;
+			offsetY += panel.AutoScrollPosition.Y;
 
-			if (offsetX <=0)
+			if (offsetX <= 0 && panel.AutoScrollPosition.X == 0)
 			{
-				offsetX =Math.Abs(offsetX);
-
-			} 
-			if (offsetY <=0)
+				offsetX = 10;
+			}
+			if (offsetY <= 0 && panel.AutoScrollPosition.Y == 0)
 			{
-				offsetY = Math.Abs(offsetY);
-			} 
+				offsetY = 10;
+			}
+			return (offsetX,offsetY);
+		}
 
+		public Rectangle GetCanvasRegion()
+		{
+			var canvaslocation = GetCanvasLocation();
 			return new Rectangle(
-				offsetX,
-				offsetY,
+				canvaslocation.X,
+				canvaslocation.Y,
 				canvas.Width,
 				canvas.Height
 			);
@@ -376,38 +384,33 @@ namespace DrawKit.Shapes
 
 		public Rectangle ConvertSelectionRectToCanvasRect(Rectangle rect)
 		{
-			int offsetX = (panel.Width - canvas.Width) / 2;
-			int offsetY = (panel.Height - canvas.Height) / 2;
-
+			var canvaslocation = GetCanvasLocation();
 			return new Rectangle(
-				rect.X - offsetX,
-				rect.Y - offsetY,
-				rect.Width,
-				rect.Height
-			);
+					rect.X - canvaslocation.X,
+					rect.Y - canvaslocation.Y,
+					rect.Width,
+					rect.Height
+				);
 		}
 
 		protected Point[] ConvertVertexs(List<Point> points)
 		{
-			int offsetX = (panel.Width - canvas.Width) / 2;
-			int offsetY = (panel.Height - canvas.Height) / 2;
-			return points.Select(v => new Point(v.X - offsetX, v.Y - offsetY)).ToArray();
+			var canvaslocation = GetCanvasLocation();
+			return points.Select(v => new Point(v.X - canvaslocation.X, v.Y - canvaslocation.Y)).ToArray();
 		}
 
 		public Point ConvertPoint(Point point)
 		{
-			int offsetX = (panel.Width - canvas.Width) / 2;
-			int offsetY = (panel.Height - canvas.Height) / 2;
-			return new Point(point.X-offsetX,point.Y-offsetY);
+			var canvaslocation = GetCanvasLocation();
+			return new Point(point.X - canvaslocation.X, point.Y - canvaslocation.Y);
 		}
 
 		public bool IsValidLocation(Point point)
 		{
-			int offsetX = (panel.Width - canvas.Width) / 2;
-			int offsetY = (panel.Height - canvas.Height) / 2;
+			var canvaslocation = GetCanvasLocation();
 			Rectangle canvasRect = new Rectangle(
-				offsetX,
-				offsetY,
+				canvaslocation.X,
+				canvaslocation.Y,
 				canvas.Width,
 				canvas.Height
 			);

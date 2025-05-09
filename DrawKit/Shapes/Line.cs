@@ -30,8 +30,6 @@ namespace DrawKit.Shapes
 				{
 					g.SmoothingMode = SmoothingMode.HighQuality;
 					g.PixelOffsetMode = PixelOffsetMode.HighQuality;
-					int offsetX = (panel.Width - canvas.Width) / 2;
-					int offsetY = (panel.Height - canvas.Height) / 2;
 					g.DrawLine(pen,ConvertPoint(StartPoint),ConvertPoint(EndPoint));
 				}
 			}

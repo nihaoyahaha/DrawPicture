@@ -34,6 +34,9 @@ namespace DrawKit.Shapes
 					StringFormat format = (StringFormat)StringFormat.GenericTypographic.Clone();
 					format.FormatFlags |= StringFormatFlags.MeasureTrailingSpaces;
 					selectionPen.DashStyle = DashStyle.Solid;
+					g.SmoothingMode = SmoothingMode.HighQuality;
+					g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+					g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
 					g.DrawString(richTextBox.Text, richTextBox.Font, new SolidBrush(ForeColor), ConvertPoint(richTextBox.Location), format);
 
 					

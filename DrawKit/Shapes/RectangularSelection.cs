@@ -35,6 +35,8 @@ namespace DrawKit.Shapes
 				//g.FillRectangle(new SolidBrush(_FillRectColor), _fillRect);
 				//g.DrawImage(_selectedBitmap, SelectionRect);
 				g.FillRectangle(new SolidBrush(_FillRectColor), ConvertSelectionRectToCanvasRect( _fillRect));
+				g.SmoothingMode = SmoothingMode.HighQuality;
+				g.PixelOffsetMode = PixelOffsetMode.HighQuality;
 				g.DrawImage(_selectedBitmap, ConvertSelectionRectToCanvasRect( SelectionRect));
 			}
 			drawStatus = DrawStatus.CannotMovedOrAdjusted;
