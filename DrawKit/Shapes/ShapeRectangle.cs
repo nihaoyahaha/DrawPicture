@@ -14,6 +14,7 @@ namespace DrawKit.Shapes
 	/// </summary>
 	public class ShapeRectangle : Shape
 	{
+		public ShapeRectangle() { }
 		public ShapeRectangle(Bitmap bitmap, Panel panel,float scale) : base(bitmap, panel, scale){}
 
 		private void BitmapDrawRectangle()

@@ -19,7 +19,8 @@ namespace DrawKit.Shapes
 		private Rectangle _rectBeforeAdjust;
 		private Rectangle _fillRect = Rectangle.Empty;
 		private Color _FillRectColor;
-		
+
+		public RectangularSelection() { }
 		public RectangularSelection(Bitmap bitmap, Panel panel,float scale) : base(bitmap, panel, scale){}
 		private void BitmapDrawImage()
 		{

@@ -10,6 +10,7 @@ namespace DrawKit.Shapes
 	/// </summary>
 	public class Circle : Shape
 	{
+		public Circle() { }
 		public Circle(Bitmap bitmap, Panel panel,float scale) : base(bitmap, panel,scale){}
 
 		private void BitmapDrawCircle()

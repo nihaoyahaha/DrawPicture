@@ -29,6 +29,7 @@
 		private void InitializeComponent()
 		{
 			this.panel_main = new System.Windows.Forms.Panel();
+			this.rtb_Text = new DrawKit.UserControl.TransparentRichTextBox();
 			this.lb_Penposition = new System.Windows.Forms.Label();
 			this.lb_CanvasSize = new System.Windows.Forms.Label();
 			this.lb_SelectionSize = new System.Windows.Forms.Label();
@@ -81,7 +82,6 @@
 			this.pic_amplify = new System.Windows.Forms.PictureBox();
 			this.pic_reduce = new System.Windows.Forms.PictureBox();
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
-			this.rtb_Text = new DrawKit.UserControl.TransparentRichTextBox();
 			this.panel_main.SuspendLayout();
 			this.toolStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.trackBar_scale)).BeginInit();
@@ -111,6 +111,16 @@
 			this.panel_main.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel_main_MouseDown);
 			this.panel_main.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel_main_MouseMove);
 			this.panel_main.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panel_main_MouseUp);
+			// 
+			// rtb_Text
+			// 
+			this.rtb_Text.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.rtb_Text.EmptyTextTip = null;
+			this.rtb_Text.Location = new System.Drawing.Point(78, 210);
+			this.rtb_Text.Name = "rtb_Text";
+			this.rtb_Text.Size = new System.Drawing.Size(100, 96);
+			this.rtb_Text.TabIndex = 0;
+			this.rtb_Text.Text = "";
 			// 
 			// lb_Penposition
 			// 
@@ -308,35 +318,35 @@
 			// btn_RightRotate90
 			// 
 			this.btn_RightRotate90.Name = "btn_RightRotate90";
-			this.btn_RightRotate90.Size = new System.Drawing.Size(150, 22);
+			this.btn_RightRotate90.Size = new System.Drawing.Size(180, 22);
 			this.btn_RightRotate90.Text = "向右旋转90度";
 			this.btn_RightRotate90.Click += new System.EventHandler(this.btn_RightRotate90_Click);
 			// 
 			// btn_LeftRotate90
 			// 
 			this.btn_LeftRotate90.Name = "btn_LeftRotate90";
-			this.btn_LeftRotate90.Size = new System.Drawing.Size(150, 22);
+			this.btn_LeftRotate90.Size = new System.Drawing.Size(180, 22);
 			this.btn_LeftRotate90.Text = "向左旋转90度";
 			this.btn_LeftRotate90.Click += new System.EventHandler(this.btn_LeftRotate90_Click);
 			// 
 			// btn_Rotate180
 			// 
 			this.btn_Rotate180.Name = "btn_Rotate180";
-			this.btn_Rotate180.Size = new System.Drawing.Size(150, 22);
+			this.btn_Rotate180.Size = new System.Drawing.Size(180, 22);
 			this.btn_Rotate180.Text = "旋转180度";
 			this.btn_Rotate180.Click += new System.EventHandler(this.btn_Rotate180_Click);
 			// 
 			// btn_FlipVertical
 			// 
 			this.btn_FlipVertical.Name = "btn_FlipVertical";
-			this.btn_FlipVertical.Size = new System.Drawing.Size(150, 22);
+			this.btn_FlipVertical.Size = new System.Drawing.Size(180, 22);
 			this.btn_FlipVertical.Text = "垂直翻转";
 			this.btn_FlipVertical.Click += new System.EventHandler(this.btn_FlipVertical_Click);
 			// 
 			// btn_FlipHorizontal
 			// 
 			this.btn_FlipHorizontal.Name = "btn_FlipHorizontal";
-			this.btn_FlipHorizontal.Size = new System.Drawing.Size(150, 22);
+			this.btn_FlipHorizontal.Size = new System.Drawing.Size(180, 22);
 			this.btn_FlipHorizontal.Text = "水平翻转";
 			this.btn_FlipHorizontal.Click += new System.EventHandler(this.btn_FlipHorizontal_Click);
 			// 
@@ -624,7 +634,7 @@
 			this.pic_amplify.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.pic_amplify.BackgroundImage = global::DrawKit.Properties.Resources.ZoomIn;
 			this.pic_amplify.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-			this.pic_amplify.Location = new System.Drawing.Point(623, 427);
+			this.pic_amplify.Location = new System.Drawing.Point(619, 427);
 			this.pic_amplify.Name = "pic_amplify";
 			this.pic_amplify.Size = new System.Drawing.Size(26, 26);
 			this.pic_amplify.TabIndex = 0;
@@ -636,7 +646,7 @@
 			this.pic_reduce.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.pic_reduce.BackgroundImage = global::DrawKit.Properties.Resources.ZoomOut;
 			this.pic_reduce.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-			this.pic_reduce.Location = new System.Drawing.Point(508, 427);
+			this.pic_reduce.Location = new System.Drawing.Point(511, 427);
 			this.pic_reduce.Name = "pic_reduce";
 			this.pic_reduce.Size = new System.Drawing.Size(26, 26);
 			this.pic_reduce.TabIndex = 0;
@@ -653,16 +663,6 @@
 			this.pictureBox1.Size = new System.Drawing.Size(26, 26);
 			this.pictureBox1.TabIndex = 0;
 			this.pictureBox1.TabStop = false;
-			// 
-			// rtb_Text
-			// 
-			this.rtb_Text.BorderStyle = System.Windows.Forms.BorderStyle.None;
-			this.rtb_Text.EmptyTextTip = null;
-			this.rtb_Text.Location = new System.Drawing.Point(78, 210);
-			this.rtb_Text.Name = "rtb_Text";
-			this.rtb_Text.Size = new System.Drawing.Size(100, 96);
-			this.rtb_Text.TabIndex = 0;
-			this.rtb_Text.Text = "";
 			// 
 			// CanvasForm
 			// 

@@ -15,6 +15,7 @@ namespace DrawKit.Shapes
 	public class OilTank : Shape
 	{
 		private Bitmap _tempCanvas;
+		public OilTank() { }
 		public OilTank(Bitmap bitmap, Panel panel,float scale) : base(bitmap, panel, scale) {}
 
 		public override void MouseDown(MouseEventArgs e)

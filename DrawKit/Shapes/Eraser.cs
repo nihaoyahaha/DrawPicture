@@ -16,6 +16,8 @@ namespace DrawKit.Shapes
 	public class Eraser : Shape
 	{
 		Bitmap newCanvas;
+
+		public Eraser() { }
 		public Eraser(Bitmap canvas, Panel panel,float scale) : base(canvas, panel,scale) {}
 		public override void MouseDown(MouseEventArgs e)
 		{

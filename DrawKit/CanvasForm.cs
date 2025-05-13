@@ -1,22 +1,12 @@
 ﻿using DrawKit.Shapes;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.IO;
-using System.Linq;
-using System.Net;
-using System.Reflection;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Net.Mime.MediaTypeNames;
-using static System.Windows.Forms.AxHost;
 
 namespace DrawKit
 {
@@ -62,8 +52,6 @@ namespace DrawKit
 		{
 			if (_shape.IsValidLocation(point))
 			{
-				int offsetX = (panel_main.Width - _canvas.Width) / 2;
-				int offsetY = (panel_main.Height - _canvas.Height) / 2;
 				var canvaslocation = _shape.GetCanvasRegion();
 				lb_Penposition.Text = $"{(int)(point.X/ _scales[trackBar_scale.Value]) -(int)( canvaslocation.X/ _scales[trackBar_scale.Value])}, {(int)(point.Y/ _scales[trackBar_scale.Value]) - (int)(canvaslocation.Y/ _scales[trackBar_scale.Value])}ピクセル";
 			}
@@ -101,11 +89,11 @@ namespace DrawKit
 			}
 			if (panel_main.DisplayRectangle.Width > panel_main.ClientSize.Width)
 			{
-				CreateNewBitmap(_canvas.Width, _canvas.Height);
+				CreateNewBitmap();
 			}
 			if (panel_main.DisplayRectangle.Height > panel_main.ClientSize.Height)
 			{
-				CreateNewBitmap(_canvas.Width, _canvas.Height);
+				CreateNewBitmap();
 			}
 		}
 
@@ -175,9 +163,9 @@ namespace DrawKit
 			}
 		}
 
-		private void CreateNewBitmap(int width, int height)
+		private void CreateNewBitmap()
 		{
-			Bitmap newCanvas = new Bitmap(width, height);
+			Bitmap newCanvas = new Bitmap(_canvas.Width, _canvas.Height);
 			if (_canvas != null)
 			{
 				//将现在bitmap其绘制到新的bitmap上
@@ -195,26 +183,6 @@ namespace DrawKit
 			var rect = _shape.GetCanvasRegion();
 			panel_main.AutoScrollMinSize = new Size(rect.Width ,rect.Height );
 			panel_main.Invalidate();
-		}
-
-		private Bitmap GetNonScaledBitmap()
-		{
-			int width = (int)(_canvas.Width / _shape.Scale);
-			int height = (int)(_canvas.Height / _shape.Scale);
-			Bitmap newCanvas = new Bitmap(width, height);
-			if (_canvas != null)
-			{
-				using (Graphics g = Graphics.FromImage(newCanvas))
-				{
-					g.Clear(_canvasBackgroundColor);
-					var offsetPoint = _shape.BitmapStretchOffsetPoint;
-					Point point = new Point((int)(offsetPoint.X / _shape.Scale), (int)(offsetPoint.Y / _shape.Scale));
-					g.DrawImage(_canvas, point);
-				}
-				_canvas.Dispose();
-				_canvas = newCanvas;
-			}
-			return _canvas;
 		}
 
 		private void GenerateStretchedBitmap()
@@ -263,12 +231,7 @@ namespace DrawKit
 		private void btn_Line_Click(object sender, EventArgs e)
 		{
 			_shape.CommitCurrentShape();
-			//var bitmap = GetNonScaledBitmap();
-			_shape = new Line(_canvas, panel_main, _scales[trackBar_scale.Value])
-			{
-				ForeColor = btn_showColor.BackColor,
-				Size = float.Parse(cmb_size.Text.Substring(0, 1))
-			};
+			_shape = _shape.InitializeShape<Line>();
 			panel_main.Invalidate();
 		}
 
@@ -276,11 +239,7 @@ namespace DrawKit
 		private void btn_Erase_Click(object sender, EventArgs e)
 		{
 			_shape.CommitCurrentShape();
-			_shape = new Eraser(_canvas, panel_main, _scales[trackBar_scale.Value])
-			{
-				ForeColor = btn_showColor.BackColor,
-				Size = float.Parse(cmb_size.Text.Substring(0, 1))
-			};
+			_shape = _shape.InitializeShape<Eraser>();
 			panel_main.Invalidate();
 		}
 
@@ -288,10 +247,7 @@ namespace DrawKit
 		private void btn_select_Click(object sender, EventArgs e)
 		{
 			_shape.CommitCurrentShape();
-			_shape = new RectangularSelection(_canvas, panel_main, _scales[trackBar_scale.Value])
-			{
-				ForeColor = btn_showColor.BackColor
-			};
+			_shape = _shape.InitializeShape<RectangularSelection>();
 			panel_main.Invalidate();
 		}
 
@@ -299,10 +255,7 @@ namespace DrawKit
 		private void btn_Fill_Click(object sender, EventArgs e)
 		{
 			_shape.CommitCurrentShape();
-			_shape = new OilTank(_canvas, panel_main, _scales[trackBar_scale.Value])
-			{
-				ForeColor = btn_showColor.BackColor
-			};
+			_shape = _shape.InitializeShape<OilTank>();
 			panel_main.Invalidate();
 		}
 
@@ -310,11 +263,7 @@ namespace DrawKit
 		private void btn_rectangle_Click(object sender, EventArgs e)
 		{
 			_shape.CommitCurrentShape();
-			_shape = new ShapeRectangle(_canvas, panel_main, _scales[trackBar_scale.Value])
-			{
-				ForeColor = btn_showColor.BackColor,
-				Size = float.Parse(cmb_size.Text.Substring(0, 1))
-			};
+			_shape = _shape.InitializeShape<ShapeRectangle>();
 			panel_main.Invalidate();
 		}
 
@@ -322,11 +271,7 @@ namespace DrawKit
 		private void btn_pentagon_Click(object sender, EventArgs e)
 		{
 			_shape.CommitCurrentShape();
-			_shape = new Pentagon(_canvas, panel_main, _scales[trackBar_scale.Value])
-			{
-				ForeColor = btn_showColor.BackColor,
-				Size = float.Parse(cmb_size.Text.Substring(0, 1))
-			};
+			_shape = _shape.InitializeShape<Pentagon>();
 			panel_main.Invalidate();
 		}
 
@@ -334,11 +279,7 @@ namespace DrawKit
 		private void btn_circle_Click(object sender, EventArgs e)
 		{
 			_shape.CommitCurrentShape();
-			_shape = new Circle(_canvas, panel_main, _scales[trackBar_scale.Value])
-			{
-				ForeColor = btn_showColor.BackColor,
-				Size = float.Parse(cmb_size.Text.Substring(0, 1))
-			};
+			_shape = _shape.InitializeShape<Circle>();
 			panel_main.Invalidate();
 		}
 
@@ -346,11 +287,7 @@ namespace DrawKit
 		private void btn_triangle_Click(object sender, EventArgs e)
 		{
 			_shape.CommitCurrentShape();
-			_shape = new Triangle(_canvas, panel_main, _scales[trackBar_scale.Value])
-			{
-				ForeColor = btn_showColor.BackColor,
-				Size = float.Parse(cmb_size.Text.Substring(0, 1))
-			};
+			_shape = _shape.InitializeShape<Triangle>();
 			panel_main.Invalidate();
 		}
 
@@ -358,11 +295,7 @@ namespace DrawKit
 		private void btn_RightTriangle_Click(object sender, EventArgs e)
 		{
 			_shape.CommitCurrentShape();
-			_shape = new RightTriangle(_canvas, panel_main, _scales[trackBar_scale.Value])
-			{
-				ForeColor = btn_showColor.BackColor,
-				Size = float.Parse(cmb_size.Text.Substring(0, 1))
-			};
+			_shape = _shape.InitializeShape<RightTriangle>();
 			panel_main.Invalidate();
 		}
 
@@ -370,49 +303,33 @@ namespace DrawKit
 		private void btn_rhombus_Click(object sender, EventArgs e)
 		{
 			_shape.CommitCurrentShape();
-			_shape = new Rhombus(_canvas, panel_main, _scales[trackBar_scale.Value])
-			{
-				ForeColor = btn_showColor.BackColor,
-				Size = float.Parse(cmb_size.Text.Substring(0, 1))
-			};
+			_shape = _shape.InitializeShape<Rhombus>();
 			panel_main.Invalidate();
 		}
 		//六角形
 		private void btn_hexagon_Click(object sender, EventArgs e)
 		{
 			_shape.CommitCurrentShape();
-			_shape = new Hexagon(_canvas, panel_main, _scales[trackBar_scale.Value])
-			{
-				ForeColor = btn_showColor.BackColor,
-				Size = float.Parse(cmb_size.Text.Substring(0, 1))
-			};
+			_shape = _shape.InitializeShape<Hexagon>();
 			panel_main.Invalidate();
 		}
 		//フィレット長方形
 		private void btn_roundedRectangle_Click(object sender, EventArgs e)
 		{
 			_shape.CommitCurrentShape();
-			_shape = new RoundedRectangle(_canvas, panel_main, _scales[trackBar_scale.Value])
-			{
-				ForeColor = btn_showColor.BackColor,
-				Size = float.Parse(cmb_size.Text.Substring(0, 1))
-			};
+			_shape = _shape.InitializeShape<RoundedRectangle>();
 			panel_main.Invalidate();
 		}
 		//テキスト
 		private void btn_Text_Click(object sender, EventArgs e)
 		{
 			_shape.CommitCurrentShape();
-			_shape = new TextBoxArea(_canvas, panel_main, _scales[trackBar_scale.Value])
-			{
-				ForeColor = btn_showColor.BackColor,
-				Size = float.Parse(cmb_size.Text.Substring(0, 1))
-			};
+			_shape = _shape.InitializeShape<TextBoxArea>();
 			panel_main.Invalidate();
 		}
 		private void Form1_Resize(object sender, EventArgs e)
 		{
-			CreateNewBitmap(_canvas.Width, _canvas.Height);
+			CreateNewBitmap();
 		}
 
 		private void btn_save_Click(object sender, EventArgs e)
@@ -583,7 +500,7 @@ namespace DrawKit
 			if (_shape.SelectionRect == Rectangle.Empty || _shape.SelectionRect.Width == 0 || _shape.SelectionRect.Height ==0)
 			{
 				_shape.CanvasRotateRight();
-				CreateNewBitmap(_canvas.Width, _canvas.Height);
+				CreateNewBitmap();
 			}
 			else
 			{
@@ -598,7 +515,7 @@ namespace DrawKit
 			if (_shape.SelectionRect == Rectangle.Empty || _shape.SelectionRect.Width == 0 || _shape.SelectionRect.Height == 0)
 			{
 				_shape.CanvasRotateLeft();
-				CreateNewBitmap(_canvas.Width, _canvas.Height);
+				CreateNewBitmap();
 			}
 			else
 			{
@@ -613,7 +530,7 @@ namespace DrawKit
 			if (_shape.SelectionRect == Rectangle.Empty || _shape.SelectionRect.Width == 0 || _shape.SelectionRect.Height == 0)
 			{
 				_shape.CanvasRotate180();
-				CreateNewBitmap(_canvas.Width, _canvas.Height);
+				CreateNewBitmap();
 			}
 			else
 			{
@@ -628,7 +545,7 @@ namespace DrawKit
 			if (_shape.SelectionRect == Rectangle.Empty || _shape.SelectionRect.Width == 0 || _shape.SelectionRect.Height == 0)
 			{
 				_shape.CanvasFlipVertical();
-				CreateNewBitmap(_canvas.Width, _canvas.Height);
+				CreateNewBitmap();
 			}
 			else
 			{
@@ -643,7 +560,7 @@ namespace DrawKit
 			if (_shape.SelectionRect == Rectangle.Empty || _shape.SelectionRect.Width == 0 || _shape.SelectionRect.Height == 0)
 			{
 				_shape.CanvasFlipHorizontal();
-				CreateNewBitmap(_canvas.Width, _canvas.Height);
+				CreateNewBitmap();
 			}
 			else
 			{
@@ -736,9 +653,9 @@ namespace DrawKit
 			Save();
 			OnConfirm?.Invoke();
 		}
-		
+
 		/// <summary>
-		/// 拡大
+		/// 縮小
 		/// </summary>
 		private void pic_reduce_Click(object sender, EventArgs e)
 		{
@@ -747,9 +664,9 @@ namespace DrawKit
 				UpdateLabel(trackBar_scale.Value -= 1);
 			}
 		}
-	
+
 		/// <summary>
-		/// 縮小
+		///  拡大
 		/// </summary>
 		private void pic_amplify_Click(object sender, EventArgs e)
 		{
@@ -776,7 +693,7 @@ namespace DrawKit
 
 		private void panel_main_Scroll(object sender, ScrollEventArgs e)
 		{
-			CreateNewBitmap(_canvas.Width,_canvas.Height);
+			CreateNewBitmap();
 		}
 	}
 }

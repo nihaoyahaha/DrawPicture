@@ -12,6 +12,7 @@ namespace DrawKit.Shapes
 	//ひし形
 	public class Rhombus : Shape
 	{
+		public Rhombus() { }
 		public Rhombus(Bitmap bitmap, Panel panel,float scale) : base(bitmap, panel, scale){}
 
 		//頂点の集合

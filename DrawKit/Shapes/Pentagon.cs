@@ -20,6 +20,8 @@ namespace DrawKit.Shapes
 		private float _middleVertexRatio = 0.37f;
 		//下部頂点スケール
 		private float _bottomVertexRatio = 0.19f;
+
+		public Pentagon() { }
 		public Pentagon(Bitmap bitmap, Panel panel,float scale) : base(bitmap, panel, scale){}
 
 		private void BitmapDrawPentagon()

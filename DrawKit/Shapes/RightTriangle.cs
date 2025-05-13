@@ -17,6 +17,8 @@ namespace DrawKit.Shapes
 		
 		//頂点の集合
 		private List<Point> _vertexs = new List<Point>();
+
+		public RightTriangle() { }
 		public RightTriangle(Bitmap bitmap, Panel panel,float scale) : base(bitmap, panel, scale) { }
 
 		private void BitmapDrawRightTriangle()

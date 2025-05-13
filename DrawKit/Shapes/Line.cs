@@ -21,6 +21,9 @@ namespace DrawKit.Shapes
 		{
 			
 		}
+
+		public Line() { }
+
 		private void BitmapDrawLine()
 		{
 			if (EndPoint.X == 0 && EndPoint.Y == 0) return;

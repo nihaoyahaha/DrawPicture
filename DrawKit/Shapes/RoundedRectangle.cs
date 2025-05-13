@@ -15,6 +15,7 @@ namespace DrawKit.Shapes
 	/// </summary>
 	public class RoundedRectangle : Shape
 	{
+		public RoundedRectangle() { }
 		public RoundedRectangle(Bitmap bitmap, Panel panel,float scale) : base(bitmap, panel, scale) { }
 
 		//頂点の集合

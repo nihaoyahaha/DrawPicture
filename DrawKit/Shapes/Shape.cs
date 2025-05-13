@@ -12,9 +12,8 @@ namespace DrawKit.Shapes
 {
 	public abstract class Shape
 	{
-		public Bitmap canvas;
-		protected Panel panel;
-		
+		public Shape() { }
+
 		public Shape(Bitmap bitmap, Panel panel,float scale=1f)
 		{
 			canvas = bitmap;
@@ -22,11 +21,12 @@ namespace DrawKit.Shapes
 			Scale = scale;
 		}
 
-		public float Scale { get; set; } 
+		
 
 		//キャンバス調整点コレクション
 		private List<(Rectangle rect, RectangleShapeFocusType focusType)> _canvasEditPoints = new List<(Rectangle rect, RectangleShapeFocusType focusType)>();
 
+		protected Panel panel;
 		//開始点
 		protected Point StartPoint { get; set; }
 
@@ -39,14 +39,27 @@ namespace DrawKit.Shapes
 		//ポイント寸法を編集するには
 		protected float ResizerPointSize = 10;
 
-		//選択範囲
-		public Rectangle SelectionRect = Rectangle.Empty;
-
 		//ポイントタイプを編集する
 		protected RectangleShapeFocusType FocusType;
 
 		//オフセットポイント
 		protected Point Offset = new Point();
+
+		//時計回りの回転数を記録する
+		protected int RotationCount = 0;
+
+		//水平反転するかどうか
+		protected bool IsFlippedHorizontally = false;
+
+		//垂直反転するかどうか
+		protected bool IsFlippedVertically = false;
+
+		public Bitmap canvas;
+		//ズーム倍率
+		public float Scale { get; set; }
+
+		//選択範囲
+		public Rectangle SelectionRect = Rectangle.Empty;
 
 		//調整中のbitmap範囲
 		public Rectangle AdjustingCanvasRect = Rectangle.Empty;
@@ -63,15 +76,6 @@ namespace DrawKit.Shapes
 		//ビットマップストレッチオフセットポイント
 		public Point BitmapStretchOffsetPoint = Point.Empty;
 
-		//時計回りの回転数を記録する
-		protected int RotationCount = 0;
-
-		//水平反転するかどうか
-		protected bool IsFlippedHorizontally = false;
-
-		//垂直反転するかどうか
-		protected bool IsFlippedVertically = false;
-
 		public abstract void MouseMove(MouseEventArgs e);
 		public abstract void MouseDown(MouseEventArgs e);
 		public abstract void MouseUp(MouseEventArgs e);
@@ -81,9 +85,18 @@ namespace DrawKit.Shapes
 		//編集状態の図を保存
 		public abstract void CommitCurrentShape();
 
-		public void MouseWheel(object sender, MouseEventArgs e)
+		//インスタンスの作成
+		public T InitializeShape<T>() where T : Shape, new()
 		{
-		
+			T t = new T
+			{
+				canvas = canvas,
+				panel = panel,
+				Scale = Scale,
+				ForeColor = ForeColor,
+				Size = Size
+			};
+			return t;
 		}
 
 		//右に90度回転
