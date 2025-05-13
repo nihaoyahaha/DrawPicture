@@ -17,7 +17,7 @@ namespace DrawKit.Shapes
 		
 		//頂点の集合
 		private List<Point> _vertexs = new List<Point>();
-		public RightTriangle(Bitmap bitmap, Panel panel) : base(bitmap, panel) { }
+		public RightTriangle(Bitmap bitmap, Panel panel,float scale) : base(bitmap, panel, scale) { }
 
 		private void BitmapDrawRightTriangle()
 		{
@@ -225,7 +225,7 @@ namespace DrawKit.Shapes
 		}
 		private void DrawCreating(Graphics graphics)
 		{
-			using (Pen selectionPen = new Pen(ForeColor, Size))
+			using (Pen selectionPen = new Pen(ForeColor, Size * Scale))
 			{
 				selectionPen.DashStyle = DashStyle.Solid;
 				Rectangle bitmapArea = GetCanvasRegion();
@@ -236,7 +236,7 @@ namespace DrawKit.Shapes
 		}
 		private void DrawCanMoveOrAdjusted(Graphics graphics)
 		{
-			using (Pen selectionPen = new Pen(ForeColor, Size))
+			using (Pen selectionPen = new Pen(ForeColor, Size * Scale))
 			{
 				selectionPen.DashStyle = DashStyle.Solid;
 				Rectangle bitmapArea = GetCanvasRegion();

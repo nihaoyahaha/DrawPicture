@@ -20,7 +20,7 @@ namespace DrawKit.Shapes
 		private float _middleVertexRatio = 0.37f;
 		//下部頂点スケール
 		private float _bottomVertexRatio = 0.19f;
-		public Pentagon(Bitmap bitmap, Panel panel) : base(bitmap, panel){}
+		public Pentagon(Bitmap bitmap, Panel panel,float scale) : base(bitmap, panel, scale){}
 
 		private void BitmapDrawPentagon()
 		{
@@ -240,7 +240,7 @@ namespace DrawKit.Shapes
 
 		private void DrawCreating(Graphics graphics)
 		{
-			using (Pen selectionPen = new Pen(ForeColor, Size))
+			using (Pen selectionPen = new Pen(ForeColor, Size* Scale))
 			{
 				selectionPen.DashStyle = DashStyle.Solid;
 				Rectangle bitmapArea = GetCanvasRegion();
@@ -252,7 +252,7 @@ namespace DrawKit.Shapes
 
 		private void DrawCanMoveOrAdjusted(Graphics graphics)
 		{
-			using (Pen selectionPen = new Pen(ForeColor, Size))
+			using (Pen selectionPen = new Pen(ForeColor, Size * Scale))
 			{
 				selectionPen.DashStyle = DashStyle.Solid;
 				Rectangle bitmapArea = GetCanvasRegion();

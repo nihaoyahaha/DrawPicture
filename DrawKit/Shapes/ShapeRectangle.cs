@@ -14,7 +14,7 @@ namespace DrawKit.Shapes
 	/// </summary>
 	public class ShapeRectangle : Shape
 	{
-		public ShapeRectangle(Bitmap bitmap, Panel panel) : base(bitmap, panel){}
+		public ShapeRectangle(Bitmap bitmap, Panel panel,float scale) : base(bitmap, panel, scale){}
 
 		private void BitmapDrawRectangle()
 		{
@@ -203,7 +203,7 @@ namespace DrawKit.Shapes
 		}
 		private void DrawCreating(Graphics graphics)
 		{
-			using (Pen selectionPen = new Pen(ForeColor, Size))
+			using (Pen selectionPen = new Pen(ForeColor, Size * Scale))
 			{
 				selectionPen.DashStyle = DashStyle.Solid;
 				Rectangle bitmapArea = GetCanvasRegion();
@@ -220,7 +220,7 @@ namespace DrawKit.Shapes
 		}
 		private void DrawCanMoveOrAdjusted(Graphics graphics)
 		{
-			using (Pen selectionPen = new Pen(ForeColor, Size))
+			using (Pen selectionPen = new Pen(ForeColor, Size * Scale))
 			{
 				selectionPen.DashStyle = DashStyle.Solid;
 				Rectangle bitmapArea = GetCanvasRegion();

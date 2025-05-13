@@ -17,7 +17,7 @@ namespace DrawKit.Shapes
 	{
 		private int _handleSize = 15; // 控制点矩形的大小
 		private bool _startPointSelected = false;
-		public Line(Bitmap canvas, Panel panel) : base(canvas,panel)
+		public Line(Bitmap canvas, Panel panel,float scale) : base(canvas,panel, scale)
 		{
 			
 		}
@@ -210,7 +210,7 @@ namespace DrawKit.Shapes
 
 		private void DrawCreating(Graphics graphics)
 		{
-			using (Pen pen = new Pen(ForeColor, Size) { DashStyle = DashStyle.Solid, StartCap = LineCap.Round, EndCap = LineCap.Round })
+			using (Pen pen = new Pen(ForeColor, Size * Scale) { DashStyle = DashStyle.Solid, StartCap = LineCap.Round, EndCap = LineCap.Round })
 			{
 				Rectangle bitmapArea = GetCanvasRegion();
 				graphics.SetClip(bitmapArea);
@@ -221,7 +221,7 @@ namespace DrawKit.Shapes
 
 		private void DrawMoveOrAdjusted(Graphics graphics)
 		{
-			using (Pen pen = new Pen(ForeColor, Size) { DashStyle = DashStyle.Solid, StartCap = LineCap.Round, EndCap = LineCap.Round })
+			using (Pen pen = new Pen(ForeColor, Size * Scale) { DashStyle = DashStyle.Solid, StartCap = LineCap.Round, EndCap = LineCap.Round })
 			{
 				Rectangle bitmapArea = GetCanvasRegion();
 				graphics.SetClip(bitmapArea);

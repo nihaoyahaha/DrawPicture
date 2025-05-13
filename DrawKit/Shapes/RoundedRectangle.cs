@@ -15,7 +15,7 @@ namespace DrawKit.Shapes
 	/// </summary>
 	public class RoundedRectangle : Shape
 	{
-		public RoundedRectangle(Bitmap bitmap, Panel panel) : base(bitmap, panel) { }
+		public RoundedRectangle(Bitmap bitmap, Panel panel,float scale) : base(bitmap, panel, scale) { }
 
 		//頂点の集合
 		private GraphicsPath _path = new GraphicsPath();
@@ -155,12 +155,10 @@ namespace DrawKit.Shapes
 			_path = new GraphicsPath();
 			_pathInBitmap = new GraphicsPath();
 			_radius = Math.Min(SelectionRect.Width, SelectionRect.Height) / 2;
-
 			if (_radius < 1)
 			{
 				_radius = 1;
 			}
-			
 			_path.AddArc(SelectionRect.Left, SelectionRect.Top, _radius, _radius, 180, 90);
 			_path.AddArc(SelectionRect.Right - _radius, SelectionRect.Y, _radius, _radius, 270, 90); // 右上角
 			_path.AddArc(SelectionRect.Right - _radius, SelectionRect.Bottom - _radius, _radius, _radius, 0, 90); // 右下角
@@ -168,6 +166,11 @@ namespace DrawKit.Shapes
 			_path.CloseFigure(); // 闭合路径
 
 			var rect = ConvertSelectionRectToCanvasRect(SelectionRect);
+			_radius = (int)(_radius / Scale);
+			if (_radius < 1)
+			{
+				_radius = 1;
+			}
 			_pathInBitmap.AddArc(rect.Left, rect.Top, _radius, _radius, 180, 90);
 			_pathInBitmap.AddArc(rect.Right - _radius, rect.Y, _radius, _radius, 270, 90); // 右上角
 			_pathInBitmap.AddArc(rect.Right - _radius, rect.Bottom - _radius, _radius, _radius, 0, 90); // 右下角
@@ -233,7 +236,7 @@ namespace DrawKit.Shapes
 		}
 		private void DrawCreating(Graphics graphics)
 		{
-			using (Pen selectionPen = new Pen(ForeColor, Size))
+			using (Pen selectionPen = new Pen(ForeColor, Size * Scale))
 			{
 				selectionPen.DashStyle = DashStyle.Solid;
 				Rectangle bitmapArea = GetCanvasRegion();
@@ -244,7 +247,7 @@ namespace DrawKit.Shapes
 		}
 		private void DrawCanMoveOrAdjusted(Graphics graphics)
 		{
-			using (Pen selectionPen = new Pen(ForeColor, Size))
+			using (Pen selectionPen = new Pen(ForeColor, Size * Scale))
 			{
 				selectionPen.DashStyle = DashStyle.Solid;
 				Rectangle bitmapArea = GetCanvasRegion();

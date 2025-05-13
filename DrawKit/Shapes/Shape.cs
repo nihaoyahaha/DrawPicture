@@ -15,13 +15,14 @@ namespace DrawKit.Shapes
 		public Bitmap canvas;
 		protected Panel panel;
 		
-		public Shape(Bitmap bitmap, Panel panel)
+		public Shape(Bitmap bitmap, Panel panel,float scale=1f)
 		{
 			canvas = bitmap;
 			this.panel = panel;
+			Scale = scale;
 		}
 
-		public float Scale = 1f;
+		public float Scale { get; set; } 
 
 		//キャンバス調整点コレクション
 		private List<(Rectangle rect, RectangleShapeFocusType focusType)> _canvasEditPoints = new List<(Rectangle rect, RectangleShapeFocusType focusType)>();
@@ -198,6 +199,7 @@ namespace DrawKit.Shapes
 		{
 			int width = rect.Width;
 			int height = rect.Height;
+			var canvasRegion = GetCanvasRegion();
 			switch (FocusType)
 			{
 				case RectangleShapeFocusType.TopLeft:
@@ -209,7 +211,8 @@ namespace DrawKit.Shapes
 					rect.Width -= horizontalDistance;
 					rect.Height -= verticalDistance;
 
-					BitmapStretchOffsetPoint = new Point(rect.Width-canvas.Width, rect.Height-canvas.Height);
+					//BitmapStretchOffsetPoint = new Point(rect.Width-canvas.Width, rect.Height-canvas.Height);
+					BitmapStretchOffsetPoint = new Point(rect.Width - canvasRegion.Width, rect.Height - canvasRegion.Height);
 					break;
 				case RectangleShapeFocusType.TopCenter:
 					if (height - verticalDistance <= 2) return;
@@ -217,7 +220,8 @@ namespace DrawKit.Shapes
 					rect.Y += verticalDistance;
 					rect.Height -= verticalDistance;
 
-					BitmapStretchOffsetPoint = new Point(0, rect.Height-canvas.Height);
+					//BitmapStretchOffsetPoint = new Point(0, rect.Height-canvas.Height);
+					BitmapStretchOffsetPoint = new Point(0, rect.Height - canvasRegion.Height);
 					break;
 				case RectangleShapeFocusType.TopRight:
 					if (width + horizontalDistance <= 2) return;
@@ -227,7 +231,8 @@ namespace DrawKit.Shapes
 					rect.Width += horizontalDistance;
 					rect.Height -= verticalDistance;
 
-					BitmapStretchOffsetPoint = new Point(0, rect.Height-canvas.Height);
+					//BitmapStretchOffsetPoint = new Point(0, rect.Height-canvas.Height);
+					BitmapStretchOffsetPoint = new Point(0, rect.Height - canvasRegion.Height);
 					break;
 				case RectangleShapeFocusType.MiddleLeft:
 					if (width - horizontalDistance <= 2) return;
@@ -235,7 +240,8 @@ namespace DrawKit.Shapes
 					rect.X += horizontalDistance;
 					rect.Width -= horizontalDistance;
 
-					BitmapStretchOffsetPoint = new Point(rect.Width-canvas.Width,0);
+					//BitmapStretchOffsetPoint = new Point(rect.Width-canvas.Width,0);
+					BitmapStretchOffsetPoint = new Point(rect.Width - canvasRegion.Width, 0);
 					break;
 				case RectangleShapeFocusType.MiddleRight:
 					if (width + horizontalDistance <= 2) return;
@@ -252,7 +258,8 @@ namespace DrawKit.Shapes
 					rect.Width -= horizontalDistance;
 					rect.Height += verticalDistance;
 
-					BitmapStretchOffsetPoint = new Point(rect.Width-canvas.Width,0);
+					//BitmapStretchOffsetPoint = new Point(rect.Width-canvas.Width,0);
+					BitmapStretchOffsetPoint = new Point(rect.Width - canvasRegion.Width, 0);
 					break;
 				case RectangleShapeFocusType.BottomCenter:
 					if (height + verticalDistance <= 2) return;
@@ -338,11 +345,21 @@ namespace DrawKit.Shapes
 			IsFlippedVertically = false;
 			panel.Invalidate();
 		}
-
+		/*
+		 * 				var canvaslocation = GetCanvasLocation();
+				var  rect = new Rectangle(
+					canvaslocation.X,
+					canvaslocation.Y,
+					(int)(canvas.Width*Scale),
+					(int)(canvas.Height*Scale)
+				);
+				graphics.DrawImage(bitmap, rect);
+		 */
 		protected void BitmapDrawShape(Bitmap bitmap, Graphics graphics)
 		{
 			if (bitmap != null)
 			{
+				var canvaslocation = GetCanvasLocation();
 				graphics.DrawImage(bitmap,GetCanvasRegion());
 				DrawCanvasEditPoint(graphics);
 			}
@@ -354,8 +371,8 @@ namespace DrawKit.Shapes
 		/// <returns></returns>
 		private (int X,int Y) GetCanvasLocation()
 		{
-			int offsetX = (panel.Width - canvas.Width) / 2;
-			int offsetY = (panel.Height - canvas.Height) / 2;
+			int offsetX = (panel.Width - (int)(canvas.Width*Scale)) / 2;
+			int offsetY = (panel.Height - (int)(canvas.Height*Scale)) / 2;
 			// 考虑滚动条的偏移量
 			offsetX += panel.AutoScrollPosition.X;
 			offsetY += panel.AutoScrollPosition.Y;
@@ -377,8 +394,8 @@ namespace DrawKit.Shapes
 			return new Rectangle(
 				canvaslocation.X,
 				canvaslocation.Y,
-				canvas.Width,
-				canvas.Height
+		        (int)(canvas.Width*Scale) ,
+			    (int)(canvas.Height*Scale)
 			);
 		}
 
@@ -386,23 +403,23 @@ namespace DrawKit.Shapes
 		{
 			var canvaslocation = GetCanvasLocation();
 			return new Rectangle(
-					rect.X - canvaslocation.X,
-					rect.Y - canvaslocation.Y,
-					rect.Width,
-					rect.Height
+					(int)(rect.X/Scale) - (int)(canvaslocation.X/Scale),
+					(int)(rect.Y/Scale) - (int)(canvaslocation.Y/Scale),
+					(int)(rect.Width / Scale),
+					(int)(rect.Height / Scale)
 				);
 		}
 
 		protected Point[] ConvertVertexs(List<Point> points)
 		{
 			var canvaslocation = GetCanvasLocation();
-			return points.Select(v => new Point(v.X - canvaslocation.X, v.Y - canvaslocation.Y)).ToArray();
+			return points.Select(v => new Point((int)(v.X/Scale) -(int) (canvaslocation.X/Scale), (int)(v.Y/Scale) - (int)(canvaslocation.Y/Scale))).ToArray();
 		}
 
 		public Point ConvertPoint(Point point)
 		{
 			var canvaslocation = GetCanvasLocation();
-			return new Point(point.X - canvaslocation.X, point.Y - canvaslocation.Y);
+			return new Point((int)(point.X/Scale) - (int)(canvaslocation.X/Scale),(int)( point.Y/Scale) - (int)(canvaslocation.Y/Scale));
 		}
 
 		public bool IsValidLocation(Point point)
@@ -411,8 +428,8 @@ namespace DrawKit.Shapes
 			Rectangle canvasRect = new Rectangle(
 				canvaslocation.X,
 				canvaslocation.Y,
-				canvas.Width,
-				canvas.Height
+				(int)(canvas.Width*Scale),
+				(int)(canvas.Height*Scale)
 			);
 			if (canvasRect.Contains(point)) return true;
 			return false;

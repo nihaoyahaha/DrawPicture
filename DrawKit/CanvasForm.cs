@@ -27,7 +27,7 @@ namespace DrawKit
 		private Bitmap _canvas;
 		private Shape _shape;
 		private Color _canvasBackgroundColor = Color.White;
-		private float[] customValues = { 0.125f, 0.25f, 0.5f, 1, 2, 3, 4, 5, 6, 7, 8 };
+		private float[] _scales = { 0.125f, 0.25f, 0.5f, 1, 2, 3, 4, 5, 6, 7, 8 };
 
 		public CanvasForm()
 		{
@@ -36,14 +36,15 @@ namespace DrawKit
 			panel_main.BackColor = Color.AliceBlue;
 			panel_main.MouseWheel += Panel_MouseWheel;
 			rtb_Text.Visible = false;
+			
 			InitializeCanvas();
 			LoadInstalledFonts();
-			_shape = new Circle(_canvas, this.panel_main);
+			_shape = new Circle(_canvas, this.panel_main, _scales[trackBar_scale.Value]);
 		}
 
 		private void Form1_Load(object sender, EventArgs e)
 		{
-			cmb_size.SelectedIndex = 3;
+			cmb_size.SelectedIndex = 0;
 			cmb_TextSize.SelectedIndex = 0;
 			cmb_FontFamily.SelectedIndex = 0;
 			SetTextFont();
@@ -63,7 +64,8 @@ namespace DrawKit
 			{
 				int offsetX = (panel_main.Width - _canvas.Width) / 2;
 				int offsetY = (panel_main.Height - _canvas.Height) / 2;
-				lb_Penposition.Text = $"{point.X - offsetX}, {point.Y - offsetY}ピクセル";
+				var canvaslocation = _shape.GetCanvasRegion();
+				lb_Penposition.Text = $"{(int)(point.X/ _scales[trackBar_scale.Value]) -(int)( canvaslocation.X/ _scales[trackBar_scale.Value])}, {(int)(point.Y/ _scales[trackBar_scale.Value]) - (int)(canvaslocation.Y/ _scales[trackBar_scale.Value])}ピクセル";
 			}
 			else
 			{
@@ -75,12 +77,12 @@ namespace DrawKit
 		{
 			if (_shape.drawStatus == DrawStatus.CanvasAdjusting)
 			{
-				lb_CanvasSize.Text = $"{_shape.AdjustingCanvasRect.Width},{_shape.AdjustingCanvasRect.Height}ピクセル";
+				lb_CanvasSize.Text = $"{(int)(_shape.AdjustingCanvasRect.Width/_shape.Scale)},{(int)(_shape.AdjustingCanvasRect.Height/_shape.Scale)}ピクセル";
 			}
 			else if (_shape.drawStatus == DrawStatus.Creating ||
 				_shape.drawStatus == DrawStatus.Adjusting)
 			{
-				lb_SelectionSize.Text = $"{_shape.SelectionRect.Width},{_shape.SelectionRect.Height}ピクセル";
+				lb_SelectionSize.Text = $"{(int)(_shape.SelectionRect.Width/_shape.Scale)},{(int)(_shape.SelectionRect.Height/_shape.Scale)}ピクセル";
 			}
 		}
 
@@ -126,9 +128,7 @@ namespace DrawKit
 
 			if (_shape.drawStatus == DrawStatus.CompleteCanvasAdjustment)
 			{
-				int width = _shape.AdjustingCanvasRect.Width;
-				int height = _shape.AdjustingCanvasRect.Height;
-				GenerateStretchedBitmap(width, height);
+				GenerateStretchedBitmap();
 			}
 			SetRichTextBoxLocation();
 		}
@@ -192,26 +192,56 @@ namespace DrawKit
 			}
 			SetRichTextBoxLocation();
 			_shape.drawStatus = DrawStatus.CanAdjusted;
-			panel_main.AutoScrollMinSize = new Size(_canvas.Width , _canvas.Height );
+			var rect = _shape.GetCanvasRegion();
+			panel_main.AutoScrollMinSize = new Size(rect.Width ,rect.Height );
 			panel_main.Invalidate();
 		}
 
-		private void GenerateStretchedBitmap(int width, int height)
+		private Bitmap GetNonScaledBitmap()
 		{
+			int width = (int)(_canvas.Width / _shape.Scale);
+			int height = (int)(_canvas.Height / _shape.Scale);
 			Bitmap newCanvas = new Bitmap(width, height);
 			if (_canvas != null)
 			{
 				using (Graphics g = Graphics.FromImage(newCanvas))
 				{
 					g.Clear(_canvasBackgroundColor);
-					g.DrawImage(_canvas, _shape.BitmapStretchOffsetPoint);
+					var offsetPoint = _shape.BitmapStretchOffsetPoint;
+					Point point = new Point((int)(offsetPoint.X / _shape.Scale), (int)(offsetPoint.Y / _shape.Scale));
+					g.DrawImage(_canvas, point);
+				}
+				_canvas.Dispose();
+				_canvas = newCanvas;
+			}
+			return _canvas;
+		}
+
+		private void GenerateStretchedBitmap()
+		{
+			//int width = _shape.AdjustingCanvasRect.Width;
+		    //int height = _shape.AdjustingCanvasRect.Height;
+			int width = (int)(_shape.AdjustingCanvasRect.Width / _shape.Scale);
+			int height = (int)(_shape.AdjustingCanvasRect.Height / _shape.Scale);
+			Bitmap newCanvas = new Bitmap(width, height);
+			if (_canvas != null)
+			{
+				using (Graphics g = Graphics.FromImage(newCanvas))
+				{
+					g.Clear(_canvasBackgroundColor);
+					//g.DrawImage(_canvas, _shape.BitmapStretchOffsetPoint);
+					var offsetPoint = _shape.BitmapStretchOffsetPoint;
+					Point point = new Point((int)(offsetPoint.X / _shape.Scale), (int)(offsetPoint.Y / _shape.Scale));
+					g.DrawImage(_canvas,point);
 				}
 				_canvas.Dispose();
 				_canvas = newCanvas;
 				_shape.canvas = _canvas;
 			}
-			panel_main.AutoScrollMinSize = new Size(_canvas.Width, _canvas.Height);
+			//panel_main.AutoScrollMinSize = new Size(_canvas.Width, _canvas.Height);
 			panel_main.Invalidate();
+			var rect = _shape.GetCanvasRegion();
+			panel_main.AutoScrollMinSize = new Size(rect.Width, rect.Height);
 		}
 
 		private void panel_main_Paint(object sender, PaintEventArgs e)
@@ -233,7 +263,8 @@ namespace DrawKit
 		private void btn_Line_Click(object sender, EventArgs e)
 		{
 			_shape.CommitCurrentShape();
-			_shape = new Line(_canvas, panel_main)
+			//var bitmap = GetNonScaledBitmap();
+			_shape = new Line(_canvas, panel_main, _scales[trackBar_scale.Value])
 			{
 				ForeColor = btn_showColor.BackColor,
 				Size = float.Parse(cmb_size.Text.Substring(0, 1))
@@ -245,7 +276,7 @@ namespace DrawKit
 		private void btn_Erase_Click(object sender, EventArgs e)
 		{
 			_shape.CommitCurrentShape();
-			_shape = new Eraser(_canvas, panel_main)
+			_shape = new Eraser(_canvas, panel_main, _scales[trackBar_scale.Value])
 			{
 				ForeColor = btn_showColor.BackColor,
 				Size = float.Parse(cmb_size.Text.Substring(0, 1))
@@ -257,7 +288,7 @@ namespace DrawKit
 		private void btn_select_Click(object sender, EventArgs e)
 		{
 			_shape.CommitCurrentShape();
-			_shape = new RectangularSelection(_canvas, panel_main)
+			_shape = new RectangularSelection(_canvas, panel_main, _scales[trackBar_scale.Value])
 			{
 				ForeColor = btn_showColor.BackColor
 			};
@@ -268,7 +299,7 @@ namespace DrawKit
 		private void btn_Fill_Click(object sender, EventArgs e)
 		{
 			_shape.CommitCurrentShape();
-			_shape = new OilTank(_canvas, panel_main)
+			_shape = new OilTank(_canvas, panel_main, _scales[trackBar_scale.Value])
 			{
 				ForeColor = btn_showColor.BackColor
 			};
@@ -279,7 +310,7 @@ namespace DrawKit
 		private void btn_rectangle_Click(object sender, EventArgs e)
 		{
 			_shape.CommitCurrentShape();
-			_shape = new ShapeRectangle(_canvas, panel_main)
+			_shape = new ShapeRectangle(_canvas, panel_main, _scales[trackBar_scale.Value])
 			{
 				ForeColor = btn_showColor.BackColor,
 				Size = float.Parse(cmb_size.Text.Substring(0, 1))
@@ -291,7 +322,7 @@ namespace DrawKit
 		private void btn_pentagon_Click(object sender, EventArgs e)
 		{
 			_shape.CommitCurrentShape();
-			_shape = new Pentagon(_canvas, panel_main)
+			_shape = new Pentagon(_canvas, panel_main, _scales[trackBar_scale.Value])
 			{
 				ForeColor = btn_showColor.BackColor,
 				Size = float.Parse(cmb_size.Text.Substring(0, 1))
@@ -303,7 +334,7 @@ namespace DrawKit
 		private void btn_circle_Click(object sender, EventArgs e)
 		{
 			_shape.CommitCurrentShape();
-			_shape = new Circle(_canvas, panel_main)
+			_shape = new Circle(_canvas, panel_main, _scales[trackBar_scale.Value])
 			{
 				ForeColor = btn_showColor.BackColor,
 				Size = float.Parse(cmb_size.Text.Substring(0, 1))
@@ -315,7 +346,7 @@ namespace DrawKit
 		private void btn_triangle_Click(object sender, EventArgs e)
 		{
 			_shape.CommitCurrentShape();
-			_shape = new Triangle(_canvas, panel_main)
+			_shape = new Triangle(_canvas, panel_main, _scales[trackBar_scale.Value])
 			{
 				ForeColor = btn_showColor.BackColor,
 				Size = float.Parse(cmb_size.Text.Substring(0, 1))
@@ -327,7 +358,7 @@ namespace DrawKit
 		private void btn_RightTriangle_Click(object sender, EventArgs e)
 		{
 			_shape.CommitCurrentShape();
-			_shape = new RightTriangle(_canvas, panel_main)
+			_shape = new RightTriangle(_canvas, panel_main, _scales[trackBar_scale.Value])
 			{
 				ForeColor = btn_showColor.BackColor,
 				Size = float.Parse(cmb_size.Text.Substring(0, 1))
@@ -339,7 +370,7 @@ namespace DrawKit
 		private void btn_rhombus_Click(object sender, EventArgs e)
 		{
 			_shape.CommitCurrentShape();
-			_shape = new Rhombus(_canvas, panel_main)
+			_shape = new Rhombus(_canvas, panel_main, _scales[trackBar_scale.Value])
 			{
 				ForeColor = btn_showColor.BackColor,
 				Size = float.Parse(cmb_size.Text.Substring(0, 1))
@@ -350,7 +381,7 @@ namespace DrawKit
 		private void btn_hexagon_Click(object sender, EventArgs e)
 		{
 			_shape.CommitCurrentShape();
-			_shape = new Hexagon(_canvas, panel_main)
+			_shape = new Hexagon(_canvas, panel_main, _scales[trackBar_scale.Value])
 			{
 				ForeColor = btn_showColor.BackColor,
 				Size = float.Parse(cmb_size.Text.Substring(0, 1))
@@ -361,7 +392,7 @@ namespace DrawKit
 		private void btn_roundedRectangle_Click(object sender, EventArgs e)
 		{
 			_shape.CommitCurrentShape();
-			_shape = new RoundedRectangle(_canvas, panel_main)
+			_shape = new RoundedRectangle(_canvas, panel_main, _scales[trackBar_scale.Value])
 			{
 				ForeColor = btn_showColor.BackColor,
 				Size = float.Parse(cmb_size.Text.Substring(0, 1))
@@ -372,7 +403,7 @@ namespace DrawKit
 		private void btn_Text_Click(object sender, EventArgs e)
 		{
 			_shape.CommitCurrentShape();
-			_shape = new TextBoxArea(_canvas, panel_main)
+			_shape = new TextBoxArea(_canvas, panel_main, _scales[trackBar_scale.Value])
 			{
 				ForeColor = btn_showColor.BackColor,
 				Size = float.Parse(cmb_size.Text.Substring(0, 1))
@@ -427,7 +458,7 @@ namespace DrawKit
 			panel_main,
 			new object[] { true });
 			lb_SelectionSize.Text = "";
-			lb_CanvasSize.Text = $"{_canvas.Width},{_canvas.Height}ピクセル";
+			lb_CanvasSize.Text = $"{(int)(_canvas.Width/ _scales[trackBar_scale.Value])},{(int)(_canvas.Height/ _scales[trackBar_scale.Value])}ピクセル";
 			panel_main.AutoScrollMinSize = new Size(_canvas.Width, _canvas.Height);
 		}
 
@@ -734,14 +765,18 @@ namespace DrawKit
 		}
 		private void UpdateLabel(int index)
 		{
-			float currentValue = customValues[index];
+			float currentValue = _scales[index];
 			lb_scale.Text = $"{currentValue*100}%";
 			_shape.Scale = currentValue;
+			//panel_main.AutoScrollMinSize = new Size(_canvas.Width,_canvas.Height);
+			panel_main.Invalidate();
+			var rect = _shape.GetCanvasRegion();
+			panel_main.AutoScrollMinSize = new Size(rect.Width,rect.Height);
 		}
 
 		private void panel_main_Scroll(object sender, ScrollEventArgs e)
 		{
-			CreateNewBitmap(_canvas.Width, _canvas.Height);
+			CreateNewBitmap(_canvas.Width,_canvas.Height);
 		}
 	}
 }

@@ -10,7 +10,7 @@ namespace DrawKit.Shapes
 	/// </summary>
 	public class Circle : Shape
 	{
-		public Circle(Bitmap bitmap, Panel panel) : base(bitmap, panel){}
+		public Circle(Bitmap bitmap, Panel panel,float scale) : base(bitmap, panel,scale){}
 
 		private void BitmapDrawCircle()
 		{
@@ -21,9 +21,11 @@ namespace DrawKit.Shapes
 			{
 				using (Pen selectionPen = new Pen(ForeColor, Size))
 				{
+					selectionPen.Alignment = System.Drawing.Drawing2D.PenAlignment.Center;
 					selectionPen.DashStyle = DashStyle.Solid;
 					g.SmoothingMode = SmoothingMode.HighQuality;
 					g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+
 					g.DrawEllipse(selectionPen, ConvertSelectionRectToCanvasRect(SelectionRect));
 				}
 			}
@@ -109,7 +111,7 @@ namespace DrawKit.Shapes
 				int y = Math.Min(StartPoint.Y, EndPoint.Y);
 				int width = Math.Abs(StartPoint.X - EndPoint.X);
 				int height = Math.Abs(StartPoint.Y - EndPoint.Y);
-				SelectionRect = new Rectangle(x, y, width, height);
+				SelectionRect = new Rectangle(x, y,width, height);
 				panel.Invalidate();
 			}
 			else if (drawStatus == DrawStatus.Moving)
@@ -198,7 +200,7 @@ namespace DrawKit.Shapes
 		}
 		private void DrawCreating(Graphics graphics)
 		{
-			using (Pen selectionPen = new Pen(ForeColor, Size))
+			using (Pen selectionPen = new Pen(ForeColor, Size*Scale))
 			{
 				selectionPen.DashStyle = DashStyle.Solid;
 				Rectangle bitmapArea = GetCanvasRegion();
@@ -210,7 +212,7 @@ namespace DrawKit.Shapes
 
 		private void DrawCanMoveOrAdjusted(Graphics graphics)
 		{
-			using (Pen selectionPen = new Pen(ForeColor, Size))
+			using (Pen selectionPen = new Pen(ForeColor, Size*Scale))
 			{
 				selectionPen.DashStyle = DashStyle.Solid;
 				Rectangle bitmapArea = GetCanvasRegion();

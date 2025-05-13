@@ -20,7 +20,7 @@ namespace DrawKit.Shapes
 	{
 		private Rectangle _rectCreating = Rectangle.Empty;
 		public RichTextBox richTextBox { get; set; }
-		public TextBoxArea(Bitmap bitmap, Panel panel) : base(bitmap, panel) { }
+		public TextBoxArea(Bitmap bitmap, Panel panel,float scale) : base(bitmap, panel, scale) { }
 		private void BitmapDrawText()
 		{
 			if (canvas == null) return;
