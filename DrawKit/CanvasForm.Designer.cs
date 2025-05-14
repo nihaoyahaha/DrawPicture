@@ -103,7 +103,7 @@
 			this.panel_main.Controls.Add(this.rtb_Text);
 			this.panel_main.Location = new System.Drawing.Point(0, 83);
 			this.panel_main.Name = "panel_main";
-			this.panel_main.Size = new System.Drawing.Size(750, 320);
+			this.panel_main.Size = new System.Drawing.Size(750, 330);
 			this.panel_main.TabIndex = 1;
 			this.panel_main.TabStop = true;
 			this.panel_main.Scroll += new System.Windows.Forms.ScrollEventHandler(this.panel_main_Scroll);
@@ -318,35 +318,35 @@
 			// btn_RightRotate90
 			// 
 			this.btn_RightRotate90.Name = "btn_RightRotate90";
-			this.btn_RightRotate90.Size = new System.Drawing.Size(180, 22);
+			this.btn_RightRotate90.Size = new System.Drawing.Size(150, 22);
 			this.btn_RightRotate90.Text = "向右旋转90度";
 			this.btn_RightRotate90.Click += new System.EventHandler(this.btn_RightRotate90_Click);
 			// 
 			// btn_LeftRotate90
 			// 
 			this.btn_LeftRotate90.Name = "btn_LeftRotate90";
-			this.btn_LeftRotate90.Size = new System.Drawing.Size(180, 22);
+			this.btn_LeftRotate90.Size = new System.Drawing.Size(150, 22);
 			this.btn_LeftRotate90.Text = "向左旋转90度";
 			this.btn_LeftRotate90.Click += new System.EventHandler(this.btn_LeftRotate90_Click);
 			// 
 			// btn_Rotate180
 			// 
 			this.btn_Rotate180.Name = "btn_Rotate180";
-			this.btn_Rotate180.Size = new System.Drawing.Size(180, 22);
+			this.btn_Rotate180.Size = new System.Drawing.Size(150, 22);
 			this.btn_Rotate180.Text = "旋转180度";
 			this.btn_Rotate180.Click += new System.EventHandler(this.btn_Rotate180_Click);
 			// 
 			// btn_FlipVertical
 			// 
 			this.btn_FlipVertical.Name = "btn_FlipVertical";
-			this.btn_FlipVertical.Size = new System.Drawing.Size(180, 22);
+			this.btn_FlipVertical.Size = new System.Drawing.Size(150, 22);
 			this.btn_FlipVertical.Text = "垂直翻转";
 			this.btn_FlipVertical.Click += new System.EventHandler(this.btn_FlipVertical_Click);
 			// 
 			// btn_FlipHorizontal
 			// 
 			this.btn_FlipHorizontal.Name = "btn_FlipHorizontal";
-			this.btn_FlipHorizontal.Size = new System.Drawing.Size(180, 22);
+			this.btn_FlipHorizontal.Size = new System.Drawing.Size(150, 22);
 			this.btn_FlipHorizontal.Text = "水平翻转";
 			this.btn_FlipHorizontal.Click += new System.EventHandler(this.btn_FlipHorizontal_Click);
 			// 

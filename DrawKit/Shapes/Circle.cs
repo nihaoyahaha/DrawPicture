@@ -27,7 +27,8 @@ namespace DrawKit.Shapes
 					g.SmoothingMode = SmoothingMode.HighQuality;
 					g.PixelOffsetMode = PixelOffsetMode.HighQuality;
 
-					g.DrawEllipse(selectionPen, ConvertSelectionRectToCanvasRect(SelectionRect));
+					var rect = ConvertSelectionRectToCanvasRect(SelectionRect);
+					g.DrawEllipse(selectionPen, rect);
 				}
 			}
 			drawStatus = DrawStatus.CannotMovedOrAdjusted;

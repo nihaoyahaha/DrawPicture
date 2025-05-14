@@ -14,6 +14,7 @@ namespace DrawKit.Shapes
 	/// </summary>
 	public class OilTank : Shape
 	{
+		private bool isFilling = false;
 		private Bitmap _tempCanvas;
 		public OilTank() { }
 		public OilTank(Bitmap bitmap, Panel panel,float scale) : base(bitmap, panel, scale) {}
@@ -32,8 +33,8 @@ namespace DrawKit.Shapes
 				return;
 			}
 		}
-
-		private void MouseLeftButtonDownHandle(MouseEventArgs e)
+		
+		private  void MouseLeftButtonDownHandle(MouseEventArgs e)
 		{
 			if (drawStatus == DrawStatus.CanvasAdjustable)
 			{
@@ -43,12 +44,21 @@ namespace DrawKit.Shapes
 			}
 			else
 			{
+				if (isFilling) return;
 				_tempCanvas = (Bitmap)canvas.Clone();
 				StartPoint = e.Location;
 				Point pointIncanvas = ConvertPoint(e.Location);
-				Color pixelColor = canvas.GetPixel(pointIncanvas.X, pointIncanvas.Y);
-				FloodFillScanline(_tempCanvas, pointIncanvas.X, pointIncanvas.Y, pixelColor.ToArgb() , ForeColor.ToArgb());
-				panel.Invalidate();
+				isFilling = true;
+				try
+				{
+					Color replacementColor = ForeColor;  
+					SeedFillNonRecursive(Color.Black, pointIncanvas, replacementColor, _tempCanvas);
+					panel.Invalidate(); 
+				}
+				finally
+				{
+					isFilling = false; 
+				}
 			}
 		}
 
@@ -115,7 +125,6 @@ namespace DrawKit.Shapes
 			if (_tempCanvas != null)
 			{
 				BitmapDrawShape(_tempCanvas,graphics);
-				//graphics.DrawImage(_tempCanvas, 0, 0);
 			}
 			if (drawStatus == DrawStatus.CanvasAdjusting)
 			{
@@ -123,78 +132,37 @@ namespace DrawKit.Shapes
 			}
 		}
 
-		/// <summary>
-		/// 洪水填充算法，扫描线填充
-		/// </summary>
-		/// <param name="bmp">目标位图</param>
-		/// <param name="x">起始点的 X 坐标</param>
-		/// <param name="y">起始点的 Y 坐标</param>
-		/// <param name="targetColor">需要替换的目标颜色（ARGB 格式）</param>
-		/// <param name="replacementColor">新颜色（ARGB 格式）</param>
-		unsafe void FloodFillScanline(Bitmap bmp, int x, int y, int targetColor, int replacementColor)
+		private static void SeedFillNonRecursive(Color boundColor, Point seedPoint, Color fillColor, Bitmap bitmap)
 		{
-			Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
-			BitmapData bmpData = bmp.LockBits(rect, ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+			Color targetColor = bitmap.GetPixel(seedPoint.X, seedPoint.Y);
+			if (targetColor == fillColor || targetColor == boundColor) return;
 
-			try
+			int width = bitmap.Width;
+			int height = bitmap.Height;
+
+			Stack<Point> stack = new Stack<Point>();
+			bool[,] visited = new bool[width, height];
+
+			stack.Push(seedPoint);
+
+			while (stack.Count > 0)
 			{
-				byte* ptr = (byte*)bmpData.Scan0;
-				int stride = bmpData.Stride;
+				Point p = stack.Pop();
 
-				int width = bmp.Width;
-				int height = bmp.Height;
+				if (p.X < 0 || p.Y < 0 || p.X >= width || p.Y >= height || visited[p.X, p.Y])
+					continue;
 
-				Queue<(int, int)> queue = new Queue<(int, int)>();
-				queue.Enqueue((x, y));
+				visited[p.X, p.Y] = true;
 
-				while (queue.Count > 0)
-				{
-					var (startX, startY) = queue.Dequeue();
-					int currentLineIndex = startY * stride + startX * 4;
+				if (bitmap.GetPixel(p.X, p.Y) != targetColor)
+					continue;
 
-					// 向左填充
-					int leftX = startX;
-					while (leftX >= 0 && *(int*)(ptr + (startY * stride + leftX * 4)) == targetColor)
-					{
-						*(int*)(ptr + (startY * stride + leftX * 4)) = replacementColor;
-						leftX--;
-					}
+				bitmap.SetPixel(p.X, p.Y, fillColor);
 
-					// 向右填充
-					int rightX = startX + 1;
-					while (rightX < width && *(int*)(ptr + (startY * stride + rightX * 4)) == targetColor)
-					{
-						*(int*)(ptr + (startY * stride + rightX * 4)) = replacementColor;
-						rightX++;
-					}
-
-					// 检查上下两行是否有需要填充的像素
-					if (startY > 0)
-					{
-						for (int i = leftX + 1; i < rightX; i++)
-						{
-							if (*(int*)(ptr + ((startY - 1) * stride + i * 4)) == targetColor)
-							{
-								queue.Enqueue((i, startY - 1));
-							}
-						}
-					}
-
-					if (startY < height - 1)
-					{
-						for (int i = leftX + 1; i < rightX; i++)
-						{
-							if (*(int*)(ptr + ((startY + 1) * stride + i * 4)) == targetColor)
-							{
-								queue.Enqueue((i, startY + 1));
-							}
-						}
-					}
-				}
-			}
-			finally
-			{
-				bmp.UnlockBits(bmpData);
+				stack.Push(new Point(p.X - 1, p.Y));
+				stack.Push(new Point(p.X + 1, p.Y));
+				stack.Push(new Point(p.X, p.Y - 1));
+				stack.Push(new Point(p.X, p.Y + 1));
 			}
 		}
 

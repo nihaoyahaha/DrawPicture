@@ -21,8 +21,6 @@ namespace DrawKit.Shapes
 			Scale = scale;
 		}
 
-		
-
 		//キャンバス調整点コレクション
 		private List<(Rectangle rect, RectangleShapeFocusType focusType)> _canvasEditPoints = new List<(Rectangle rect, RectangleShapeFocusType focusType)>();
 
@@ -358,21 +356,11 @@ namespace DrawKit.Shapes
 			IsFlippedVertically = false;
 			panel.Invalidate();
 		}
-		/*
-		 * 				var canvaslocation = GetCanvasLocation();
-				var  rect = new Rectangle(
-					canvaslocation.X,
-					canvaslocation.Y,
-					(int)(canvas.Width*Scale),
-					(int)(canvas.Height*Scale)
-				);
-				graphics.DrawImage(bitmap, rect);
-		 */
+
 		protected void BitmapDrawShape(Bitmap bitmap, Graphics graphics)
 		{
 			if (bitmap != null)
 			{
-				var canvaslocation = GetCanvasLocation();
 				graphics.DrawImage(bitmap,GetCanvasRegion());
 				DrawCanvasEditPoint(graphics);
 			}
@@ -386,7 +374,7 @@ namespace DrawKit.Shapes
 		{
 			int offsetX = (panel.Width - (int)(canvas.Width*Scale)) / 2;
 			int offsetY = (panel.Height - (int)(canvas.Height*Scale)) / 2;
-			// 考虑滚动条的偏移量
+
 			offsetX += panel.AutoScrollPosition.X;
 			offsetY += panel.AutoScrollPosition.Y;
 

@@ -22,11 +22,11 @@ namespace DrawKit
 		public CanvasForm()
 		{
 			InitializeComponent();
-			
+
 			panel_main.BackColor = Color.AliceBlue;
 			panel_main.MouseWheel += Panel_MouseWheel;
 			rtb_Text.Visible = false;
-			
+
 			InitializeCanvas();
 			LoadInstalledFonts();
 			_shape = new Circle(_canvas, this.panel_main, _scales[trackBar_scale.Value]);
@@ -53,7 +53,7 @@ namespace DrawKit
 			if (_shape.IsValidLocation(point))
 			{
 				var canvaslocation = _shape.GetCanvasRegion();
-				lb_Penposition.Text = $"{(int)(point.X/ _scales[trackBar_scale.Value]) -(int)( canvaslocation.X/ _scales[trackBar_scale.Value])}, {(int)(point.Y/ _scales[trackBar_scale.Value]) - (int)(canvaslocation.Y/ _scales[trackBar_scale.Value])}ピクセル";
+				lb_Penposition.Text = $"{(int)(point.X / _scales[trackBar_scale.Value]) - (int)(canvaslocation.X / _scales[trackBar_scale.Value])}, {(int)(point.Y / _scales[trackBar_scale.Value]) - (int)(canvaslocation.Y / _scales[trackBar_scale.Value])}ピクセル";
 			}
 			else
 			{
@@ -65,12 +65,12 @@ namespace DrawKit
 		{
 			if (_shape.drawStatus == DrawStatus.CanvasAdjusting)
 			{
-				lb_CanvasSize.Text = $"{(int)(_shape.AdjustingCanvasRect.Width/_shape.Scale)},{(int)(_shape.AdjustingCanvasRect.Height/_shape.Scale)}ピクセル";
+				lb_CanvasSize.Text = $"{(int)(_shape.AdjustingCanvasRect.Width / _shape.Scale)},{(int)(_shape.AdjustingCanvasRect.Height / _shape.Scale)}ピクセル";
 			}
 			else if (_shape.drawStatus == DrawStatus.Creating ||
 				_shape.drawStatus == DrawStatus.Adjusting)
 			{
-				lb_SelectionSize.Text = $"{(int)(_shape.SelectionRect.Width/_shape.Scale)},{(int)(_shape.SelectionRect.Height/_shape.Scale)}ピクセル";
+				lb_SelectionSize.Text = $"{(int)(_shape.SelectionRect.Width / _shape.Scale)},{(int)(_shape.SelectionRect.Height / _shape.Scale)}ピクセル";
 			}
 		}
 
@@ -181,14 +181,15 @@ namespace DrawKit
 			SetRichTextBoxLocation();
 			_shape.drawStatus = DrawStatus.CanAdjusted;
 			var rect = _shape.GetCanvasRegion();
-			panel_main.AutoScrollMinSize = new Size(rect.Width ,rect.Height );
+			panel_main.AutoScrollMinSize = new Size(rect.Width, rect.Height);
+
 			panel_main.Invalidate();
 		}
 
 		private void GenerateStretchedBitmap()
 		{
 			//int width = _shape.AdjustingCanvasRect.Width;
-		    //int height = _shape.AdjustingCanvasRect.Height;
+			//int height = _shape.AdjustingCanvasRect.Height;
 			int width = (int)(_shape.AdjustingCanvasRect.Width / _shape.Scale);
 			int height = (int)(_shape.AdjustingCanvasRect.Height / _shape.Scale);
 			Bitmap newCanvas = new Bitmap(width, height);
@@ -200,7 +201,7 @@ namespace DrawKit
 					//g.DrawImage(_canvas, _shape.BitmapStretchOffsetPoint);
 					var offsetPoint = _shape.BitmapStretchOffsetPoint;
 					Point point = new Point((int)(offsetPoint.X / _shape.Scale), (int)(offsetPoint.Y / _shape.Scale));
-					g.DrawImage(_canvas,point);
+					g.DrawImage(_canvas, point);
 				}
 				_canvas.Dispose();
 				_canvas = newCanvas;
@@ -214,11 +215,10 @@ namespace DrawKit
 
 		private void panel_main_Paint(object sender, PaintEventArgs e)
 		{
-		//	if (panel_main.AutoScrollPosition.X != 0) return;
-		//	if (panel_main.AutoScrollPosition.Y != 0) return;
+			//	if (panel_main.AutoScrollPosition.X != 0) return;
+			//	if (panel_main.AutoScrollPosition.Y != 0) return;
 			if (_canvas != null)
 			{
-
 				e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
 				e.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
 				e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
@@ -375,7 +375,7 @@ namespace DrawKit
 			panel_main,
 			new object[] { true });
 			lb_SelectionSize.Text = "";
-			lb_CanvasSize.Text = $"{(int)(_canvas.Width/ _scales[trackBar_scale.Value])},{(int)(_canvas.Height/ _scales[trackBar_scale.Value])}ピクセル";
+			lb_CanvasSize.Text = $"{(int)(_canvas.Width / _scales[trackBar_scale.Value])},{(int)(_canvas.Height / _scales[trackBar_scale.Value])}ピクセル";
 			panel_main.AutoScrollMinSize = new Size(_canvas.Width, _canvas.Height);
 		}
 
@@ -497,7 +497,7 @@ namespace DrawKit
 		private void btn_RightRotate90_Click(object sender, EventArgs e)
 		{
 			if (_shape is TextBoxArea) return;
-			if (_shape.SelectionRect == Rectangle.Empty || _shape.SelectionRect.Width == 0 || _shape.SelectionRect.Height ==0)
+			if (_shape.SelectionRect == Rectangle.Empty || _shape.SelectionRect.Width == 0 || _shape.SelectionRect.Height == 0)
 			{
 				_shape.CanvasRotateRight();
 				CreateNewBitmap();
@@ -506,7 +506,7 @@ namespace DrawKit
 			{
 				_shape.RotateRight();
 				panel_main.Refresh();
-			}	
+			}
 		}
 
 		private void btn_LeftRotate90_Click(object sender, EventArgs e)
@@ -683,12 +683,12 @@ namespace DrawKit
 		private void UpdateLabel(int index)
 		{
 			float currentValue = _scales[index];
-			lb_scale.Text = $"{currentValue*100}%";
+			lb_scale.Text = $"{currentValue * 100}%";
 			_shape.Scale = currentValue;
 			//panel_main.AutoScrollMinSize = new Size(_canvas.Width,_canvas.Height);
 			panel_main.Invalidate();
 			var rect = _shape.GetCanvasRegion();
-			panel_main.AutoScrollMinSize = new Size(rect.Width,rect.Height);
+			panel_main.AutoScrollMinSize = new Size(rect.Width, rect.Height);
 		}
 
 		private void panel_main_Scroll(object sender, ScrollEventArgs e)
