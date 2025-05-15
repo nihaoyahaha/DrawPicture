@@ -31,8 +31,9 @@ namespace DrawKit.Shapes
 			{
 				using (Pen pen = new Pen(ForeColor, Size) { DashStyle = DashStyle.Solid, StartCap = LineCap.Round, EndCap = LineCap.Round })
 				{
-					g.SmoothingMode = SmoothingMode.HighQuality;
-					g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+					g.CompositingQuality = CompositingQuality.HighQuality;
+					g.InterpolationMode = InterpolationMode.NearestNeighbor;
+					g.SmoothingMode = SmoothingMode.None;
 					g.DrawLine(pen,ConvertPoint(StartPoint),ConvertPoint(EndPoint));
 				}
 			}

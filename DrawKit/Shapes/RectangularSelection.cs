@@ -74,6 +74,10 @@ namespace DrawKit.Shapes
 			}
 		}
 
+		public void Cancel()
+		{
+			CancelDrawing();
+		}
 		protected override void  CancelDrawing()
 		{
 			drawStatus = DrawStatus.CannotMovedOrAdjusted;

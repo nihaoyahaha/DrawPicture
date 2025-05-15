@@ -31,8 +31,9 @@ namespace DrawKit.Shapes
 				using (Pen selectionPen = new Pen(ForeColor, Size))
 				{
 					selectionPen.DashStyle = DashStyle.Solid;
-					g.SmoothingMode = SmoothingMode.HighQuality;
-					g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+					g.CompositingQuality = CompositingQuality.HighQuality;
+					g.InterpolationMode = InterpolationMode.NearestNeighbor;
+					g.SmoothingMode = SmoothingMode.None;
 					g.DrawPath(selectionPen, _pathInBitmap);
 				}
 			}

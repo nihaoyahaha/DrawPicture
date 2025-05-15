@@ -22,9 +22,10 @@ namespace DrawKit
 		public CanvasForm()
 		{
 			InitializeComponent();
-
+			
 			panel_main.BackColor = Color.AliceBlue;
 			panel_main.MouseWheel += Panel_MouseWheel;
+
 			rtb_Text.Visible = false;
 
 			InitializeCanvas();
@@ -76,6 +77,7 @@ namespace DrawKit
 
 		private void Panel_MouseWheel(object sender, MouseEventArgs e)
 		{
+			if (_shape is RectangularSelection rectSelection) rectSelection.Cancel();
 			if (ModifierKeys == Keys.Control)
 			{
 				if (e.Delta > 0)
@@ -215,13 +217,11 @@ namespace DrawKit
 
 		private void panel_main_Paint(object sender, PaintEventArgs e)
 		{
-			//	if (panel_main.AutoScrollPosition.X != 0) return;
-			//	if (panel_main.AutoScrollPosition.Y != 0) return;
 			if (_canvas != null)
 			{
-				e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
-				e.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
-				e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+				e.Graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+				e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
+				e.Graphics.SmoothingMode = SmoothingMode.None;//HighQuality;
 
 				_shape.InPainting(e.Graphics);
 			}
@@ -682,10 +682,12 @@ namespace DrawKit
 		}
 		private void UpdateLabel(int index)
 		{
+			if (_shape.SelectionRect.Width != 0 && _shape.SelectionRect.Height != 0) {
+				_shape.drawStatus = DrawStatus.CanAdjusted;
+			}
 			float currentValue = _scales[index];
 			lb_scale.Text = $"{currentValue * 100}%";
 			_shape.Scale = currentValue;
-			//panel_main.AutoScrollMinSize = new Size(_canvas.Width,_canvas.Height);
 			panel_main.Invalidate();
 			var rect = _shape.GetCanvasRegion();
 			panel_main.AutoScrollMinSize = new Size(rect.Width, rect.Height);
@@ -693,6 +695,7 @@ namespace DrawKit
 
 		private void panel_main_Scroll(object sender, ScrollEventArgs e)
 		{
+			if (_shape is RectangularSelection rectSelection) rectSelection.Cancel();
 			CreateNewBitmap();
 		}
 	}

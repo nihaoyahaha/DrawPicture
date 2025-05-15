@@ -22,10 +22,11 @@ namespace DrawKit.Shapes
 			{
 				using (Pen selectionPen = new Pen(ForeColor, Size))
 				{
-					selectionPen.Alignment = System.Drawing.Drawing2D.PenAlignment.Center;
+					selectionPen.Alignment = PenAlignment.Center;
 					selectionPen.DashStyle = DashStyle.Solid;
-					g.SmoothingMode = SmoothingMode.HighQuality;
-					g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+					g.CompositingQuality = CompositingQuality.HighQuality;
+					g.InterpolationMode = InterpolationMode.NearestNeighbor;
+					g.SmoothingMode = SmoothingMode.None; 
 
 					var rect = ConvertSelectionRectToCanvasRect(SelectionRect);
 					g.DrawEllipse(selectionPen, rect);
@@ -114,6 +115,7 @@ namespace DrawKit.Shapes
 				int width = Math.Abs(StartPoint.X - EndPoint.X);
 				int height = Math.Abs(StartPoint.Y - EndPoint.Y);
 				SelectionRect = new Rectangle(x, y,width, height);
+
 				panel.Invalidate();
 			}
 			else if (drawStatus == DrawStatus.Moving)
@@ -204,6 +206,9 @@ namespace DrawKit.Shapes
 		{
 			using (Pen selectionPen = new Pen(ForeColor, Size*Scale))
 			{
+				graphics.CompositingQuality = CompositingQuality.HighQuality;
+				graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
+				graphics.SmoothingMode = SmoothingMode.None;
 				selectionPen.DashStyle = DashStyle.Solid;
 				Rectangle bitmapArea = GetCanvasRegion();
 				graphics.SetClip(bitmapArea);
@@ -214,8 +219,11 @@ namespace DrawKit.Shapes
 
 		private void DrawCanMoveOrAdjusted(Graphics graphics)
 		{
-			using (Pen selectionPen = new Pen(ForeColor, Size*Scale))
+			using (Pen selectionPen = new Pen(ForeColor, Size *Scale))
 			{
+				graphics.CompositingQuality = CompositingQuality.HighQuality;
+				graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
+				graphics.SmoothingMode = SmoothingMode.None;
 				selectionPen.DashStyle = DashStyle.Solid;
 				Rectangle bitmapArea = GetCanvasRegion();
 				graphics.SetClip(bitmapArea);

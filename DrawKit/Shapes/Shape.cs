@@ -214,8 +214,8 @@ namespace DrawKit.Shapes
 			switch (FocusType)
 			{
 				case RectangleShapeFocusType.TopLeft:
-					if (width - horizontalDistance <= 2) return;
-					if (height - verticalDistance <= 2) return;
+					if (width - horizontalDistance <= 9) return;
+					if (height - verticalDistance <= 9) return;
 
 					rect.X += horizontalDistance;
 					rect.Y += verticalDistance;
@@ -226,7 +226,7 @@ namespace DrawKit.Shapes
 					BitmapStretchOffsetPoint = new Point(rect.Width - canvasRegion.Width, rect.Height - canvasRegion.Height);
 					break;
 				case RectangleShapeFocusType.TopCenter:
-					if (height - verticalDistance <= 2) return;
+					if (height - verticalDistance <= 9) return;
 
 					rect.Y += verticalDistance;
 					rect.Height -= verticalDistance;
@@ -235,8 +235,8 @@ namespace DrawKit.Shapes
 					BitmapStretchOffsetPoint = new Point(0, rect.Height - canvasRegion.Height);
 					break;
 				case RectangleShapeFocusType.TopRight:
-					if (width + horizontalDistance <= 2) return;
-					if (height - verticalDistance <= 2) return;
+					if (width + horizontalDistance <= 9) return;
+					if (height - verticalDistance <= 9) return;
 
 					rect.Y += verticalDistance;
 					rect.Width += horizontalDistance;
@@ -246,7 +246,7 @@ namespace DrawKit.Shapes
 					BitmapStretchOffsetPoint = new Point(0, rect.Height - canvasRegion.Height);
 					break;
 				case RectangleShapeFocusType.MiddleLeft:
-					if (width - horizontalDistance <= 2) return;
+					if (width - horizontalDistance <= 9) return;
 
 					rect.X += horizontalDistance;
 					rect.Width -= horizontalDistance;
@@ -255,15 +255,15 @@ namespace DrawKit.Shapes
 					BitmapStretchOffsetPoint = new Point(rect.Width - canvasRegion.Width, 0);
 					break;
 				case RectangleShapeFocusType.MiddleRight:
-					if (width + horizontalDistance <= 2) return;
+					if (width + horizontalDistance <= 9) return;
 
 					rect.Width += horizontalDistance;
 
 					BitmapStretchOffsetPoint = Point.Empty;
 					break;
 				case RectangleShapeFocusType.BottomLeft:
-					if (width - horizontalDistance <= 2) return;
-					if (height + verticalDistance <= 2) return;
+					if (width - horizontalDistance <= 9) return;
+					if (height + verticalDistance <= 9) return;
 
 					rect.X += horizontalDistance;
 					rect.Width -= horizontalDistance;
@@ -273,15 +273,15 @@ namespace DrawKit.Shapes
 					BitmapStretchOffsetPoint = new Point(rect.Width - canvasRegion.Width, 0);
 					break;
 				case RectangleShapeFocusType.BottomCenter:
-					if (height + verticalDistance <= 2) return;
+					if (height + verticalDistance <= 9) return;
 
 					rect.Height += verticalDistance;
 
 					BitmapStretchOffsetPoint = Point.Empty;
 					break;
 				case RectangleShapeFocusType.BottomRight:
-					if (width + horizontalDistance <= 2) return;
-					if (height + verticalDistance <= 2) return;
+					if (width + horizontalDistance <= 9) return;
+					if (height + verticalDistance <= 9) return;
 
 					rect.Width += horizontalDistance;
 					rect.Height += verticalDistance;
@@ -317,7 +317,7 @@ namespace DrawKit.Shapes
 			foreach (var focusPoint in GetResizerPoints(SelectionRect))
 			{
 				double distance = Math.Sqrt(Math.Pow(mouseLocation.X - focusPoint.editPoint.X, 2) + Math.Pow(mouseLocation.Y - focusPoint.editPoint.Y, 2));
-				if (distance <= Size)
+				if (distance <= 15)
 				{
 					SetFoucsCursorType(focusPoint.focusType);
 					drawStatus = DrawStatus.CanAdjusted;
