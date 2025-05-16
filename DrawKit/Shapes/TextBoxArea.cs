@@ -37,7 +37,8 @@ namespace DrawKit.Shapes
 					g.CompositingQuality = CompositingQuality.HighQuality;
 					g.InterpolationMode = InterpolationMode.NearestNeighbor;
 					g.SmoothingMode = SmoothingMode.None;
-					g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+					g.TextRenderingHint = TextRenderingHint.SingleBitPerPixel;
+
 					g.DrawString(richTextBox.Text, richTextBox.Font, new SolidBrush(ForeColor), ConvertPoint(richTextBox.Location), format);
 
 					

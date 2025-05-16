@@ -28,11 +28,11 @@ namespace DrawKit.Shapes
 			if (SelectionRect == Rectangle.Empty) return;
 			//using (Graphics g = Graphics.FromImage(canvas))
 			//{
-			//	g.FillRectangle(new SolidBrush(_FillRectColor), ConvertSelectionRectToCanvasRect( _fillRect));
+			//	g.FillRectangle(new SolidBrush(_FillRectColor), ConvertSelectionRectToCanvasRect(_fillRect));
 			//	g.CompositingQuality = CompositingQuality.HighQuality;
 			//	g.InterpolationMode = InterpolationMode.NearestNeighbor;
 			//	g.SmoothingMode = SmoothingMode.None;
-			//	g.DrawImage(_selectedBitmap, ConvertSelectionRectToCanvasRect( SelectionRect));
+			//	g.DrawImage(_selectedBitmap, ConvertSelectionRectToCanvasRect(SelectionRect));
 			//}
 
 			DrawTempCanvasOnMain();
@@ -240,6 +240,7 @@ namespace DrawKit.Shapes
 			else if (drawStatus == DrawStatus.CompleteAdjustment)
 			{
 				DrawAdjustComplate(graphics);
+				//BitmapDrawShape(tempCanvas, graphics);
 			}
 			else if (drawStatus == DrawStatus.CanvasAdjusting)
 			{
@@ -263,10 +264,12 @@ namespace DrawKit.Shapes
 			//using (Graphics g = Graphics.FromImage(tempCanvas))
 			//{
 			//	using (Pen selectionPen = new Pen(Color.Black, 0.5f))
-			//	{
-			//		selectionPen.DashStyle = DashStyle.Dash;
+			//	{   selectionPen.DashStyle = DashStyle.Dash;
 			//		selectionPen.DashPattern = new float[] { 5.0f, 4.0f };// 划线长，间隔长
-			//		g.DrawRectangle(selectionPen, ConvertSelectionRectToCanvasRect(SelectionRect));
+			//		g.CompositingQuality = CompositingQuality.HighQuality;
+			//		g.InterpolationMode = InterpolationMode.NearestNeighbor;
+			//		g.SmoothingMode = SmoothingMode.None;
+			//		g.DrawRectangle(selectionPen,ConvertSelectionRectToCanvasRect( SelectionRect));
 			//	}
 			//}
 		}
@@ -285,6 +288,9 @@ namespace DrawKit.Shapes
 			{
 				using (Pen selectionPen = new Pen(ForeColor, Size))
 				{
+					g.CompositingQuality = CompositingQuality.HighQuality;
+					g.InterpolationMode = InterpolationMode.NearestNeighbor;
+					g.SmoothingMode = SmoothingMode.None;
 					g.FillRectangle(new SolidBrush(_FillRectColor), ConvertSelectionRectToCanvasRect(_fillRect));
 					g.DrawImage(_selectedBitmap, ConvertSelectionRectToCanvasRect(SelectionRect));
 				}
@@ -319,6 +325,9 @@ namespace DrawKit.Shapes
 			{
 				using (Pen selectionPen = new Pen(ForeColor, Size))
 				{
+					g.CompositingQuality = CompositingQuality.HighQuality;
+					g.InterpolationMode = InterpolationMode.NearestNeighbor;
+					g.SmoothingMode = SmoothingMode.None;
 					g.FillRectangle(new SolidBrush(_FillRectColor), ConvertSelectionRectToCanvasRect(_fillRect));
 					g.DrawImage(_selectedBitmap, ConvertSelectionRectToCanvasRect(_rectBeforeAdjust));
 				}
@@ -330,9 +339,9 @@ namespace DrawKit.Shapes
 				selectionPen.DashPattern = new float[] { 5.0f, 4.0f };// 划线长，间隔长
 				graphics.DrawRectangle(selectionPen, _rectBeforeAdjust);
 
-				//selectionPen.Color = Color.Black;
-				//selectionPen.DashPattern = new float[] { 1.0f, 1.0f };// 划线长，间隔长
-				//graphics.DrawRectangle(selectionPen, SelectionRect);
+				selectionPen.Color = Color.Black;
+				selectionPen.DashPattern = new float[] { 1.0f, 1.0f };// 划线长，间隔长
+				graphics.DrawRectangle(selectionPen, SelectionRect);
 			}
 			foreach (var item in GetResizerPoints(_rectBeforeAdjust))
 			{
@@ -357,11 +366,14 @@ namespace DrawKit.Shapes
 			{
 				using (Pen selectionPen = new Pen(ForeColor, Size))
 				{
+					g.CompositingQuality = CompositingQuality.HighQuality;
+					g.InterpolationMode = InterpolationMode.NearestNeighbor;
+					g.SmoothingMode = SmoothingMode.None;
 					g.FillRectangle(new SolidBrush(_FillRectColor), ConvertSelectionRectToCanvasRect(_fillRect));
 					g.DrawImage(_selectedBitmap, ConvertSelectionRectToCanvasRect(SelectionRect));
 				}
 			}
-
+			graphics.DrawImage(tempCanvas, GetCanvasRegion());
 			using (Pen selectionPen = new Pen(ResizerPointColor, 0.5f))
 			{
 				selectionPen.DashStyle = DashStyle.Dash;
