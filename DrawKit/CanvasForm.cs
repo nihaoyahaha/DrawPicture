@@ -356,6 +356,7 @@ namespace DrawKit
 			_shape.drawStatus = DrawStatus.AdjustTheStyle;
 			if (_shape is RectangularSelection) return;
 			panel_main.Refresh();
+			panel_main.Refresh();
 		}
 
 		private void InitializeCanvas()
@@ -492,6 +493,7 @@ namespace DrawKit
 			rtb_Text.ForeColor = color;
 			if (_shape is RectangularSelection) return;
 			panel_main.Refresh();
+			panel_main.Refresh();
 		}
 
 		private void btn_RightRotate90_Click(object sender, EventArgs e)
@@ -505,6 +507,7 @@ namespace DrawKit
 			else
 			{
 				_shape.RotateRight();
+				panel_main.Refresh();
 				panel_main.Refresh();
 			}
 		}
@@ -521,6 +524,7 @@ namespace DrawKit
 			{
 				_shape.RotateLeft();
 				panel_main.Refresh();
+				panel_main.Refresh();
 			}
 		}
 
@@ -535,6 +539,7 @@ namespace DrawKit
 			else
 			{
 				_shape.Rotate180();
+				panel_main.Refresh();
 				panel_main.Refresh();
 			}
 		}
@@ -551,6 +556,7 @@ namespace DrawKit
 			{
 				_shape.FlipVertical();
 				panel_main.Refresh();
+				panel_main.Refresh();
 			}
 		}
 
@@ -565,6 +571,7 @@ namespace DrawKit
 			else
 			{
 				_shape.FlipHorizontal();
+				panel_main.Refresh();
 				panel_main.Refresh();
 			}
 		}

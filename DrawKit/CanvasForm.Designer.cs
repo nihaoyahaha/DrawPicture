@@ -29,6 +29,7 @@
 		private void InitializeComponent()
 		{
 			this.panel_main = new System.Windows.Forms.Panel();
+			this.rtb_Text = new DrawKit.UserControl.TransparentRichTextBox();
 			this.lb_Penposition = new System.Windows.Forms.Label();
 			this.lb_CanvasSize = new System.Windows.Forms.Label();
 			this.lb_SelectionSize = new System.Windows.Forms.Label();
@@ -81,7 +82,6 @@
 			this.pic_amplify = new System.Windows.Forms.PictureBox();
 			this.pic_reduce = new System.Windows.Forms.PictureBox();
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
-			this.rtb_Text = new DrawKit.UserControl.TransparentRichTextBox();
 			this.panel_main.SuspendLayout();
 			this.toolStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.trackBar_scale)).BeginInit();
@@ -103,7 +103,7 @@
 			this.panel_main.Controls.Add(this.rtb_Text);
 			this.panel_main.Location = new System.Drawing.Point(0, 83);
 			this.panel_main.Name = "panel_main";
-			this.panel_main.Size = new System.Drawing.Size(750, 330);
+			this.panel_main.Size = new System.Drawing.Size(750, 338);
 			this.panel_main.TabIndex = 1;
 			this.panel_main.TabStop = true;
 			this.panel_main.Scroll += new System.Windows.Forms.ScrollEventHandler(this.panel_main_Scroll);
@@ -111,6 +111,16 @@
 			this.panel_main.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel_main_MouseDown);
 			this.panel_main.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel_main_MouseMove);
 			this.panel_main.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panel_main_MouseUp);
+			// 
+			// rtb_Text
+			// 
+			this.rtb_Text.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.rtb_Text.EmptyTextTip = null;
+			this.rtb_Text.Location = new System.Drawing.Point(78, 210);
+			this.rtb_Text.Name = "rtb_Text";
+			this.rtb_Text.Size = new System.Drawing.Size(100, 96);
+			this.rtb_Text.TabIndex = 0;
+			this.rtb_Text.Text = "";
 			// 
 			// lb_Penposition
 			// 
@@ -653,16 +663,6 @@
 			this.pictureBox1.Size = new System.Drawing.Size(26, 26);
 			this.pictureBox1.TabIndex = 0;
 			this.pictureBox1.TabStop = false;
-			// 
-			// rtb_Text
-			// 
-			this.rtb_Text.BorderStyle = System.Windows.Forms.BorderStyle.None;
-			this.rtb_Text.EmptyTextTip = null;
-			this.rtb_Text.Location = new System.Drawing.Point(78, 210);
-			this.rtb_Text.Name = "rtb_Text";
-			this.rtb_Text.Size = new System.Drawing.Size(100, 96);
-			this.rtb_Text.TabIndex = 0;
-			this.rtb_Text.Text = "";
 			// 
 			// CanvasForm
 			// 
