@@ -53,6 +53,9 @@ namespace DrawKit.Shapes
 		protected bool IsFlippedVertically = false;
 
 		public Bitmap canvas;
+
+		public Bitmap tempCanvas;
+
 		//ズーム倍率
 		public float Scale { get; set; }
 
@@ -336,6 +339,7 @@ namespace DrawKit.Shapes
 			{
 				g.Clear(color);
 			}
+			tempCanvas = null;
 			SelectionRect = Rectangle.Empty;
 			drawStatus = DrawStatus.CannotMovedOrAdjusted;
 			RotationCount = 0;
@@ -349,6 +353,7 @@ namespace DrawKit.Shapes
 		/// </summary>
 		protected virtual void CancelDrawing()
 		{
+			tempCanvas = null;
 			drawStatus = DrawStatus.CannotMovedOrAdjusted;
 			SelectionRect = Rectangle.Empty;
 			RotationCount = 0;
@@ -664,6 +669,18 @@ namespace DrawKit.Shapes
 		{
 			canvas.RotateFlip(RotateFlipType.RotateNoneFlipY);
 			panel.Invalidate();
+		}
+
+		protected void DrawTempCanvasOnMain()
+		{
+			if (tempCanvas != null)
+			{
+				using (Graphics g = Graphics.FromImage(canvas))
+				{
+					g.DrawImage(tempCanvas, new Point(0, 0));
+				}
+				tempCanvas = null;
+			}
 		}
 
 	}

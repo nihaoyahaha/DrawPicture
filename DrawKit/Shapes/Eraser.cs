@@ -15,8 +15,6 @@ namespace DrawKit.Shapes
 	/// </summary>
 	public class Eraser : Shape
 	{
-		Bitmap newCanvas;
-
 		public Eraser() { }
 		public Eraser(Bitmap canvas, Panel panel,float scale) : base(canvas, panel,scale) {}
 		public override void MouseDown(MouseEventArgs e)
@@ -40,7 +38,7 @@ namespace DrawKit.Shapes
 			}
 			else
 			{
-				newCanvas = (Bitmap)canvas.Clone();
+				tempCanvas = (Bitmap)canvas.Clone();
 				EndPoint = e.Location;
 				DrawEraserPath(ConvertPoint(EndPoint), ConvertPoint(e.Location));
 				drawStatus = DrawStatus.Creating;
@@ -53,7 +51,7 @@ namespace DrawKit.Shapes
 				drawStatus == DrawStatus.CanvasAdjusting)
 			{
 				drawStatus = DrawStatus.CannotMovedOrAdjusted;
-				newCanvas = null;
+				tempCanvas = null;
 				panel.Invalidate();
 				return;
 			}
@@ -92,15 +90,15 @@ namespace DrawKit.Shapes
 
 		private void DrawEraserPath(Point start, Point end)
 		{
-			if (newCanvas == null) return;
+			if (tempCanvas == null) return;
 			float eraserSize = Size; 
-			using (Graphics g = Graphics.FromImage(newCanvas))
+			using (Graphics g = Graphics.FromImage(tempCanvas))
 			{
 				double distance = Math.Sqrt(Math.Pow(end.X - start.X, 2) + Math.Pow(end.Y - start.Y, 2));
 
 				if (distance < 1)
 				{
-					g.FillRectangle(new SolidBrush(ForeColor),
+					g.FillRectangle(new SolidBrush(Color.White/*ForeColor*/),
 						start.X - eraserSize / 2,
 						start.Y - eraserSize / 2,
 						eraserSize,
@@ -113,7 +111,7 @@ namespace DrawKit.Shapes
 					int x = (int)(start.X + t * (end.X - start.X));
 					int y = (int)(start.Y + t * (end.Y - start.Y));
 
-					g.FillRectangle(new SolidBrush(ForeColor),
+					g.FillRectangle(new SolidBrush(Color.White/*ForeColor*/),
 						x - eraserSize / 2,
 						y - eraserSize / 2,
 						eraserSize,
@@ -140,14 +138,15 @@ namespace DrawKit.Shapes
 			}
 			else
 			{
-				if (newCanvas != null)
-				{
-					using (Graphics g = Graphics.FromImage(canvas))
-					{
-						g.DrawImage(newCanvas, new Point(0, 0));
-					}
-					newCanvas = null;
-				}
+				//if (tempCanvas != null)
+				//{
+				//	using (Graphics g = Graphics.FromImage(canvas))
+				//	{
+				//		g.DrawImage(tempCanvas, new Point(0, 0));
+				//	}
+				//	tempCanvas = null;
+				//}
+				DrawTempCanvasOnMain();
 				panel.Invalidate();
 			}
 		}
@@ -158,9 +157,9 @@ namespace DrawKit.Shapes
 			{
 				BitmapDrawShape(canvas, graphics);
 			}
-			if (newCanvas != null)
+			if (tempCanvas != null)
 			{
-				BitmapDrawShape(newCanvas, graphics);
+				BitmapDrawShape(tempCanvas, graphics);
 				//graphics.DrawImage(newCanvas,0,0);
 			}
 		    if (drawStatus == DrawStatus.CanvasAdjusting)

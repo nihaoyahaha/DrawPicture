@@ -30,7 +30,6 @@ namespace DrawKit.Shapes
 			{
 				using (Pen selectionPen = new Pen(ForeColor, Size))
 				{
-
 					// 设置 StringFormat 为精确排版模式
 					StringFormat format = (StringFormat)StringFormat.GenericTypographic.Clone();
 					format.FormatFlags |= StringFormatFlags.MeasureTrailingSpaces;

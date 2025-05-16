@@ -27,16 +27,19 @@ namespace DrawKit.Shapes
 		private void BitmapDrawLine()
 		{
 			if (EndPoint.X == 0 && EndPoint.Y == 0) return;
-			using (Graphics g = Graphics.FromImage(canvas))
-			{
-				using (Pen pen = new Pen(ForeColor, Size) { DashStyle = DashStyle.Solid, StartCap = LineCap.Round, EndCap = LineCap.Round })
-				{
-					g.CompositingQuality = CompositingQuality.HighQuality;
-					g.InterpolationMode = InterpolationMode.NearestNeighbor;
-					g.SmoothingMode = SmoothingMode.None;
-					g.DrawLine(pen,ConvertPoint(StartPoint),ConvertPoint(EndPoint));
-				}
-			}
+			//using (Graphics g = Graphics.FromImage(canvas))
+			//{
+			//	using (Pen pen = new Pen(ForeColor, Size) { DashStyle = DashStyle.Solid, StartCap = LineCap.Round, EndCap = LineCap.Round })
+			//	{
+			//		g.CompositingQuality = CompositingQuality.HighQuality;
+			//		g.InterpolationMode = InterpolationMode.NearestNeighbor;
+			//		g.SmoothingMode = SmoothingMode.None;
+			//		g.DrawLine(pen,ConvertPoint(StartPoint),ConvertPoint(EndPoint));
+			//	}
+			//}
+
+			DrawTempCanvasOnMain();
+
 			EndPoint = new Point();
 			SelectionRect = Rectangle.Empty;
 			panel.Invalidate();
@@ -193,6 +196,10 @@ namespace DrawKit.Shapes
 			{
 				BitmapDrawShape(canvas, graphics);
 			}
+			if (tempCanvas != null)
+			{
+				BitmapDrawShape(tempCanvas, graphics);
+			}
 			if (drawStatus == DrawStatus.Creating)
 			{
 				if (EndPoint.X == 0 && EndPoint.Y == 0) return;
@@ -214,24 +221,43 @@ namespace DrawKit.Shapes
 
 		private void DrawCreating(Graphics graphics)
 		{
-			using (Pen pen = new Pen(ForeColor, Size * Scale) { DashStyle = DashStyle.Solid, StartCap = LineCap.Round, EndCap = LineCap.Round })
+			//using (Pen pen = new Pen(ForeColor, Size * Scale) { DashStyle = DashStyle.Solid, StartCap = LineCap.Round, EndCap = LineCap.Round })
+			//{
+			//	Rectangle bitmapArea = GetCanvasRegion();
+			//	graphics.SetClip(bitmapArea);
+			//	graphics.DrawLine(pen, StartPoint, EndPoint);
+			//	graphics.ResetClip();
+			//}
+
+			tempCanvas = (Bitmap)canvas.Clone();
+			using (Graphics g = Graphics.FromImage(tempCanvas))
 			{
-				Rectangle bitmapArea = GetCanvasRegion();
-				graphics.SetClip(bitmapArea);
-				graphics.DrawLine(pen, StartPoint, EndPoint);
-				graphics.ResetClip();
+				using (Pen pen = new Pen(ForeColor, Size))
+				{
+					g.DrawLine(pen, ConvertPoint(StartPoint), ConvertPoint(EndPoint));
+				}
 			}
 		}
 
 		private void DrawMoveOrAdjusted(Graphics graphics)
 		{
-			using (Pen pen = new Pen(ForeColor, Size * Scale) { DashStyle = DashStyle.Solid, StartCap = LineCap.Round, EndCap = LineCap.Round })
+			//using (Pen pen = new Pen(ForeColor, Size * Scale) { DashStyle = DashStyle.Solid, StartCap = LineCap.Round, EndCap = LineCap.Round })
+			//{
+			//	Rectangle bitmapArea = GetCanvasRegion();
+			//	graphics.SetClip(bitmapArea);
+			//	graphics.DrawLine(pen, StartPoint, EndPoint);
+			//	graphics.ResetClip();
+			//}
+
+			tempCanvas = (Bitmap)canvas.Clone();
+			using (Graphics g = Graphics.FromImage(tempCanvas))
 			{
-				Rectangle bitmapArea = GetCanvasRegion();
-				graphics.SetClip(bitmapArea);
-				graphics.DrawLine(pen, StartPoint, EndPoint);
-				graphics.ResetClip();
+				using (Pen pen = new Pen(ForeColor, Size))
+				{
+					g.DrawLine(pen, ConvertPoint(StartPoint), ConvertPoint(EndPoint));
+				}
 			}
+
 			DrawHandle(graphics, StartPoint, EndPoint);
 		}
 
