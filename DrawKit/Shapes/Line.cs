@@ -17,10 +17,7 @@ namespace DrawKit.Shapes
 	{
 		private int _handleSize = 15; // 控制点矩形的大小
 		private bool _startPointSelected = false;
-		public Line(Bitmap canvas, Panel panel,float scale) : base(canvas,panel, scale)
-		{
-			
-		}
+		public Line(Bitmap canvas, Panel panel,float scale) : base(canvas,panel, scale){}
 
 		public Line() { }
 
@@ -366,5 +363,6 @@ namespace DrawKit.Shapes
 				centerX + rotatedDeltaX / 2,
 				centerY + rotatedDeltaY / 2);
 		}
+
 	}
 }

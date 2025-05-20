@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DrawKit.History;
 
 namespace DrawKit.Shapes
 {
@@ -104,6 +105,7 @@ namespace DrawKit.Shapes
 			}
 			else
 			{
+				OperationStep.PushRevokeStack(canvas);
 				if (_tempCanvas != null)
 				{
 					using (Graphics g = Graphics.FromImage(canvas))
@@ -181,5 +183,6 @@ namespace DrawKit.Shapes
 		public override void FlipHorizontal() { }
 
 		public override void FlipVertical() { }
+
 	}
 }

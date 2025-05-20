@@ -457,7 +457,5 @@ namespace DrawKit.Shapes
 			}
 		}
 
-
-
 	}
 }

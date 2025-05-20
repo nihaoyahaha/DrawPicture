@@ -64,6 +64,7 @@
     <Compile Include="Shapes\Hexagon.cs" />
     <Compile Include="Shapes\Line.cs" />
     <Compile Include="Shapes\OilTank.cs" />
+    <Compile Include="History\OperationStep.cs" />
     <Compile Include="Shapes\Pentagon.cs" />
     <Compile Include="Shapes\RectangleShapeFocusType.cs" />
     <Compile Include="Shapes\RectangularSelection.cs" />

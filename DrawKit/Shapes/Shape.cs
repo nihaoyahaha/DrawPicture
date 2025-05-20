@@ -4,9 +4,11 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DrawKit.History;
 
 namespace DrawKit.Shapes
 {
@@ -14,7 +16,7 @@ namespace DrawKit.Shapes
 	{
 		public Shape() { }
 
-		public Shape(Bitmap bitmap, Panel panel,float scale=1f)
+		public Shape(Bitmap bitmap, Panel panel, float scale = 1f)
 		{
 			canvas = bitmap;
 			this.panel = panel;
@@ -86,19 +88,6 @@ namespace DrawKit.Shapes
 		//編集状態の図を保存
 		public abstract void CommitCurrentShape();
 
-		//インスタンスの作成
-		public T InitializeShape<T>() where T : Shape, new()
-		{
-			T t = new T
-			{
-				canvas = canvas,
-				panel = panel,
-				Scale = Scale,
-				ForeColor = ForeColor,
-				Size = Size
-			};
-			return t;
-		}
 
 		//右に90度回転
 		public abstract void RotateRight();
@@ -117,6 +106,132 @@ namespace DrawKit.Shapes
 
 		//クリアランス
 		public abstract void Clear(Color color);
+
+		/// <summary>
+		/// bitmapの場所を取得
+		/// </summary>
+		/// <returns></returns>
+		private (int X, int Y) GetCanvasLocation()
+		{
+			int offsetX = (panel.Width - (int)(canvas.Width * Scale)) / 2;
+			int offsetY = (panel.Height - (int)(canvas.Height * Scale)) / 2;
+
+			offsetX += panel.AutoScrollPosition.X;
+			offsetY += panel.AutoScrollPosition.Y;
+
+			if (offsetX <= 0 && panel.AutoScrollPosition.X == 0)
+			{
+				offsetX = 10;
+			}
+			if (offsetY <= 0 && panel.AutoScrollPosition.Y == 0)
+			{
+				offsetY = 10;
+			}
+			return (offsetX, offsetY);
+		}
+
+		private void DrawCanvasEditPoint(Graphics graphics)
+		{
+			int resizerSize = 8;
+			Rectangle rect;
+			_canvasEditPoints = new List<(Rectangle rect, RectangleShapeFocusType focusType)>();
+			foreach (var item in GetResizerPoints(GetCanvasRegion()))
+			{
+				var point = item.editPoint;
+				using (Pen pen = new Pen(Color.Black, 1))
+				{
+					if (item.focusType == RectangleShapeFocusType.TopLeft)
+					{
+						rect = new Rectangle(
+							point.X - resizerSize,
+							point.Y - resizerSize,
+							resizerSize,
+							resizerSize
+							);
+						graphics.DrawRectangle(pen, rect);
+						_canvasEditPoints.Add((rect, RectangleShapeFocusType.TopLeft));
+					}
+					else if (item.focusType == RectangleShapeFocusType.TopCenter)
+					{
+						rect = new Rectangle(
+								point.X - resizerSize / 2,
+								point.Y - resizerSize,
+								resizerSize,
+								resizerSize
+								);
+						graphics.DrawRectangle(pen, rect);
+						_canvasEditPoints.Add((rect, RectangleShapeFocusType.TopCenter));
+					}
+					else if (item.focusType == RectangleShapeFocusType.TopRight)
+					{
+						rect = new Rectangle(
+									point.X,
+									point.Y - resizerSize,
+									resizerSize,
+									resizerSize
+									);
+						graphics.DrawRectangle(pen, rect);
+						_canvasEditPoints.Add((rect, RectangleShapeFocusType.TopRight));
+					}
+					else if (item.focusType == RectangleShapeFocusType.MiddleLeft)
+					{
+						rect = new Rectangle(
+										point.X - resizerSize,
+										point.Y - resizerSize / 2,
+										resizerSize,
+										resizerSize
+										);
+						graphics.DrawRectangle(pen, rect);
+						_canvasEditPoints.Add((rect, RectangleShapeFocusType.MiddleLeft));
+					}
+					else if (item.focusType == RectangleShapeFocusType.MiddleRight)
+					{
+						rect = new Rectangle(
+										point.X,
+										point.Y - resizerSize / 2,
+										resizerSize,
+										resizerSize
+										);
+						graphics.DrawRectangle(pen, rect);
+						_canvasEditPoints.Add((rect, RectangleShapeFocusType.MiddleRight));
+					}
+					else if (item.focusType == RectangleShapeFocusType.BottomLeft)
+					{
+						rect = new Rectangle(
+											point.X - resizerSize,
+											point.Y,
+											resizerSize,
+											resizerSize
+											);
+						graphics.DrawRectangle(pen, rect);
+						_canvasEditPoints.Add((rect, RectangleShapeFocusType.BottomLeft));
+					}
+					else if (item.focusType == RectangleShapeFocusType.BottomCenter)
+					{
+						rect = new Rectangle(
+											point.X - resizerSize / 2,
+											point.Y,
+											resizerSize,
+											resizerSize
+											);
+						graphics.DrawRectangle(pen, rect);
+						_canvasEditPoints.Add((rect, RectangleShapeFocusType.BottomCenter));
+					}
+					else if (item.focusType == RectangleShapeFocusType.BottomRight)
+					{
+						rect = new Rectangle(
+											point.X,
+											point.Y,
+											resizerSize,
+											resizerSize
+											);
+						graphics.DrawRectangle(pen, rect);
+						_canvasEditPoints.Add((rect, RectangleShapeFocusType.BottomRight));
+					}
+				}
+			}
+		}
+
 		/// <summary>
 		/// 点が直線上にあるかどうかを判断する
 		/// </summary>
@@ -129,7 +244,7 @@ namespace DrawKit.Shapes
 		{
 			if (StartPoint.X == 0 && StartPoint.Y == 0) return false;
 			if (EndPoint.X == 0 && EndPoint.Y == 0) return false;
-			pf = new Point (int.Parse(Math.Round((double)pf.X / 1, 0).ToString()), int.Parse(Math.Round((double)pf.Y / 1, 0).ToString()));
+			pf = new Point(int.Parse(Math.Round((double)pf.X / 1, 0).ToString()), int.Parse(Math.Round((double)pf.Y / 1, 0).ToString()));
 			double cross = (p2.X - p1.X) * (pf.X - p1.X) + (p2.Y - p1.Y) * (pf.Y - p1.Y);
 			if (cross <= 0) return false;
 			double d2 = (p2.X - p1.X) * (p2.X - p1.X) + (p2.Y - p1.Y) * (p2.Y - p1.Y);
@@ -209,7 +324,7 @@ namespace DrawKit.Shapes
 		/// </summary>
 		/// <param name="horizontalDistance"></param>
 		/// <param name="verticalDistance"></param>
-		protected void SelectionAdjusting(int horizontalDistance, int verticalDistance,ref Rectangle rect)
+		protected void SelectionAdjusting(int horizontalDistance, int verticalDistance, ref Rectangle rect)
 		{
 			int width = rect.Width;
 			int height = rect.Height;
@@ -366,183 +481,15 @@ namespace DrawKit.Shapes
 		{
 			if (bitmap != null)
 			{
-				graphics.DrawImage(bitmap,GetCanvasRegion());
+				graphics.DrawImage(bitmap, GetCanvasRegion());
 				DrawCanvasEditPoint(graphics);
 			}
 		}
-
-		/// <summary>
-		/// bitmapの場所を取得
-		/// </summary>
-		/// <returns></returns>
-		private (int X,int Y) GetCanvasLocation()
-		{
-			int offsetX = (panel.Width - (int)(canvas.Width*Scale)) / 2;
-			int offsetY = (panel.Height - (int)(canvas.Height*Scale)) / 2;
-
-			offsetX += panel.AutoScrollPosition.X;
-			offsetY += panel.AutoScrollPosition.Y;
-
-			if (offsetX <= 0 && panel.AutoScrollPosition.X == 0)
-			{
-				offsetX = 10;
-			}
-			if (offsetY <= 0 && panel.AutoScrollPosition.Y == 0)
-			{
-				offsetY = 10;
-			}
-			return (offsetX,offsetY);
-		}
-
-		public Rectangle GetCanvasRegion()
-		{
-			var canvaslocation = GetCanvasLocation();
-			return new Rectangle(
-				canvaslocation.X,
-				canvaslocation.Y,
-		        (int)(canvas.Width*Scale) ,
-			    (int)(canvas.Height*Scale)
-			);
-		}
-
-		public Rectangle ConvertSelectionRectToCanvasRect(Rectangle rect)
-		{
-			var canvaslocation = GetCanvasLocation();
-			return new Rectangle(
-					(int)(rect.X/Scale) - (int)(canvaslocation.X/Scale),
-					(int)(rect.Y/Scale) - (int)(canvaslocation.Y/Scale),
-					(int)(rect.Width / Scale),
-					(int)(rect.Height / Scale)
-				);
-		}
-
 		protected Point[] ConvertVertexs(List<Point> points)
 		{
 			var canvaslocation = GetCanvasLocation();
-			return points.Select(v => new Point((int)(v.X/Scale) -(int) (canvaslocation.X/Scale), (int)(v.Y/Scale) - (int)(canvaslocation.Y/Scale))).ToArray();
+			return points.Select(v => new Point((int)(v.X / Scale) - (int)(canvaslocation.X / Scale), (int)(v.Y / Scale) - (int)(canvaslocation.Y / Scale))).ToArray();
 		}
-
-		public Point ConvertPoint(Point point)
-		{
-			var canvaslocation = GetCanvasLocation();
-			return new Point((int)(point.X/Scale) - (int)(canvaslocation.X/Scale),(int)( point.Y/Scale) - (int)(canvaslocation.Y/Scale));
-		}
-
-		public bool IsValidLocation(Point point)
-		{
-			var canvaslocation = GetCanvasLocation();
-			Rectangle canvasRect = new Rectangle(
-				canvaslocation.X,
-				canvaslocation.Y,
-				(int)(canvas.Width*Scale),
-				(int)(canvas.Height*Scale)
-			);
-			if (canvasRect.Contains(point)) return true;
-			return false;
-		}
-
-		private void DrawCanvasEditPoint(Graphics graphics)
-		{
-			int resizerSize = 8;
-			Rectangle rect;
-			_canvasEditPoints = new List<(Rectangle rect, RectangleShapeFocusType focusType)>();
-			foreach (var item in GetResizerPoints(GetCanvasRegion()))
-			{
-				var point = item.editPoint;
-				using (Pen pen = new Pen(Color.Black, 1)) 
-				{
-					if (item.focusType == RectangleShapeFocusType.TopLeft)
-					{
-						rect = new Rectangle(
-							point.X - resizerSize,
-							point.Y - resizerSize,
-							resizerSize,
-							resizerSize
-							);
-						graphics.DrawRectangle(pen, rect);
-						_canvasEditPoints.Add((rect, RectangleShapeFocusType.TopLeft));
-					}
-					else if (item.focusType == RectangleShapeFocusType.TopCenter)
-					{
-						rect = new Rectangle(
-								point.X - resizerSize / 2,
-								point.Y - resizerSize,
-								resizerSize,
-								resizerSize
-								);
-						graphics.DrawRectangle(pen,rect );
-						_canvasEditPoints.Add((rect, RectangleShapeFocusType.TopCenter));
-					}
-					else if (item.focusType == RectangleShapeFocusType.TopRight)
-					{
-						rect = new Rectangle(
-									point.X,
-									point.Y - resizerSize,
-									resizerSize,
-									resizerSize
-									);
-						graphics.DrawRectangle(pen,rect);
-						_canvasEditPoints.Add((rect, RectangleShapeFocusType.TopRight));
-					}
-					else if (item.focusType == RectangleShapeFocusType.MiddleLeft)
-					{
-						rect = new Rectangle(
-										point.X - resizerSize,
-										point.Y - resizerSize / 2,
-										resizerSize,
-										resizerSize
-										);
-						graphics.DrawRectangle(pen,rect);
-						_canvasEditPoints.Add((rect, RectangleShapeFocusType.MiddleLeft));
-					}
-					else if (item.focusType == RectangleShapeFocusType.MiddleRight)
-					{
-						rect = new Rectangle(
-										point.X,
-										point.Y - resizerSize / 2,
-										resizerSize,
-										resizerSize
-										);
-						graphics.DrawRectangle(pen, rect);
-						_canvasEditPoints.Add((rect, RectangleShapeFocusType.MiddleRight));
-					}
-					else if (item.focusType == RectangleShapeFocusType.BottomLeft)
-					{
-						rect = new Rectangle(
-											point.X - resizerSize,
-											point.Y,
-											resizerSize,
-											resizerSize
-											);
-						graphics.DrawRectangle(pen, rect);
-						_canvasEditPoints.Add((rect, RectangleShapeFocusType.BottomLeft));
-					}
-					else if (item.focusType == RectangleShapeFocusType.BottomCenter)
-					{
-						rect = new Rectangle(
-											point.X - resizerSize / 2,
-											point.Y,
-											resizerSize,
-											resizerSize
-											);
-						graphics.DrawRectangle(pen, rect);
-						_canvasEditPoints.Add((rect, RectangleShapeFocusType.BottomCenter));
-					}
-					else if (item.focusType == RectangleShapeFocusType.BottomRight)
-					{
-						rect = new Rectangle(
-											point.X,
-											point.Y,
-											resizerSize,
-											resizerSize
-											);
-						graphics.DrawRectangle(pen, rect);
-						_canvasEditPoints.Add((rect, RectangleShapeFocusType.BottomRight));
-					}
-				}	
-			}
-		}
-
 		protected void DrawCanvasAdjusted(Graphics graphics)
 		{
 			using (Pen selectionPen = new Pen(ResizerPointColor, 0.5f))
@@ -552,8 +499,74 @@ namespace DrawKit.Shapes
 				graphics.DrawRectangle(selectionPen, AdjustingCanvasRect);
 			}
 		}
+		protected Rectangle RotateRectangle90Degrees()
+		{
+			int centerX = SelectionRect.Left + SelectionRect.Width / 2;
+			int centerY = SelectionRect.Top + SelectionRect.Height / 2;
 
-		public Rectangle SetRichTextBoxMinSize(float size,ref Rectangle rectangle)
+			int newWidth = SelectionRect.Height;
+			int newHeight = SelectionRect.Width;
+
+			int newLeft = centerX - newWidth / 2;
+			int newTop = centerY - newHeight / 2;
+
+			return new Rectangle(newLeft, newTop, newWidth, newHeight);
+		}
+		protected void DrawTempCanvasOnMain()
+		{
+			OperationStep.PushRevokeStack(canvas);
+			if (tempCanvas != null)
+			{
+				using (Graphics g = Graphics.FromImage(canvas))
+				{
+					g.DrawImage(tempCanvas, new Point(0, 0));
+				}
+				tempCanvas = null;
+			}
+		}
+
+		public Rectangle GetCanvasRegion()
+		{
+			var canvaslocation = GetCanvasLocation();
+			return new Rectangle(
+				canvaslocation.X,
+				canvaslocation.Y,
+				(int)(canvas.Width * Scale),
+				(int)(canvas.Height * Scale)
+			);
+		}
+
+		public Rectangle ConvertSelectionRectToCanvasRect(Rectangle rect)
+		{
+			var canvaslocation = GetCanvasLocation();
+			return new Rectangle(
+					(int)(rect.X / Scale) - (int)(canvaslocation.X / Scale),
+					(int)(rect.Y / Scale) - (int)(canvaslocation.Y / Scale),
+					(int)(rect.Width / Scale),
+					(int)(rect.Height / Scale)
+				);
+		}
+
+		public Point ConvertPoint(Point point)
+		{
+			var canvaslocation = GetCanvasLocation();
+			return new Point((int)(point.X / Scale) - (int)(canvaslocation.X / Scale), (int)(point.Y / Scale) - (int)(canvaslocation.Y / Scale));
+		}
+
+		public bool IsValidLocation(Point point)
+		{
+			var canvaslocation = GetCanvasLocation();
+			Rectangle canvasRect = new Rectangle(
+				canvaslocation.X,
+				canvaslocation.Y,
+				(int)(canvas.Width * Scale),
+				(int)(canvas.Height * Scale)
+			);
+			if (canvasRect.Contains(point)) return true;
+			return false;
+		}
+
+		public Rectangle SetRichTextBoxMinSize(float size, ref Rectangle rectangle)
 		{
 			int width = rectangle.Width;
 			int height = rectangle.Height;
@@ -627,20 +640,6 @@ namespace DrawKit.Shapes
 			return rectangle;
 		}
 
-		protected Rectangle RotateRectangle90Degrees()
-		{
-			int centerX = SelectionRect.Left + SelectionRect.Width / 2;
-			int centerY = SelectionRect.Top + SelectionRect.Height / 2;
-
-			int newWidth = SelectionRect.Height;
-			int newHeight = SelectionRect.Width;
-
-			int newLeft = centerX - newWidth / 2;
-			int newTop = centerY - newHeight / 2;
-
-			return new Rectangle(newLeft, newTop, newWidth, newHeight);
-		}
-
 		public void CanvasRotateRight()
 		{
 			canvas.RotateFlip(RotateFlipType.Rotate90FlipNone);
@@ -671,17 +670,18 @@ namespace DrawKit.Shapes
 			panel.Invalidate();
 		}
 
-		protected void DrawTempCanvasOnMain()
+		//インスタンスの作成
+		public T InitializeShape<T>() where T : Shape, new()
 		{
-			if (tempCanvas != null)
+			T t = new T
 			{
-				using (Graphics g = Graphics.FromImage(canvas))
-				{
-					g.DrawImage(tempCanvas, new Point(0, 0));
-				}
-				tempCanvas = null;
-			}
+				canvas = canvas,
+				panel = panel,
+				Scale = Scale,
+				ForeColor = ForeColor,
+				Size = Size
+			};
+			return t;
 		}
-
 	}
 }

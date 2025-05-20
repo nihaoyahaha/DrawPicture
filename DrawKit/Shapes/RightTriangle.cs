@@ -448,5 +448,6 @@ namespace DrawKit.Shapes
 					break;
 			}
 		}
+
 	}
 }

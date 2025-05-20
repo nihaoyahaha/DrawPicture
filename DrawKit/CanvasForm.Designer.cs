@@ -28,8 +28,8 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CanvasForm));
 			this.panel_main = new System.Windows.Forms.Panel();
-			this.rtb_Text = new DrawKit.UserControl.TransparentRichTextBox();
 			this.lb_Penposition = new System.Windows.Forms.Label();
 			this.lb_CanvasSize = new System.Windows.Forms.Label();
 			this.lb_SelectionSize = new System.Windows.Forms.Label();
@@ -74,6 +74,8 @@
 			this.btn_save = new System.Windows.Forms.ToolStripButton();
 			this.btn_open = new System.Windows.Forms.ToolStripButton();
 			this.btn_ClearAll = new System.Windows.Forms.ToolStripButton();
+			this.btn_revoke = new System.Windows.Forms.ToolStripButton();
+			this.btn_redo = new System.Windows.Forms.ToolStripButton();
 			this.btn_Ok = new System.Windows.Forms.Button();
 			this.trackBar_scale = new System.Windows.Forms.TrackBar();
 			this.lb_scale = new System.Windows.Forms.Label();
@@ -82,6 +84,7 @@
 			this.pic_amplify = new System.Windows.Forms.PictureBox();
 			this.pic_reduce = new System.Windows.Forms.PictureBox();
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
+			this.rtb_Text = new DrawKit.UserControl.TransparentRichTextBox();
 			this.panel_main.SuspendLayout();
 			this.toolStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.trackBar_scale)).BeginInit();
@@ -111,16 +114,6 @@
 			this.panel_main.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel_main_MouseDown);
 			this.panel_main.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel_main_MouseMove);
 			this.panel_main.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panel_main_MouseUp);
-			// 
-			// rtb_Text
-			// 
-			this.rtb_Text.BorderStyle = System.Windows.Forms.BorderStyle.None;
-			this.rtb_Text.EmptyTextTip = null;
-			this.rtb_Text.Location = new System.Drawing.Point(78, 210);
-			this.rtb_Text.Name = "rtb_Text";
-			this.rtb_Text.Size = new System.Drawing.Size(100, 96);
-			this.rtb_Text.TabIndex = 0;
-			this.rtb_Text.Text = "";
 			// 
 			// lb_Penposition
 			// 
@@ -277,7 +270,9 @@
             this.toolStripSeparator5,
             this.btn_save,
             this.btn_open,
-            this.btn_ClearAll});
+            this.btn_ClearAll,
+            this.btn_revoke,
+            this.btn_redo});
 			this.toolStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
 			this.toolStrip1.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip1.Margin = new System.Windows.Forms.Padding(0, 10, 0, 0);
@@ -574,6 +569,27 @@
 			this.btn_ClearAll.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
 			this.btn_ClearAll.Click += new System.EventHandler(this.btn_ClearAll_Click);
 			// 
+			// btn_revoke
+			// 
+			this.btn_revoke.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.btn_revoke.Image = ((System.Drawing.Image)(resources.GetObject("btn_revoke.Image")));
+			this.btn_revoke.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.btn_revoke.Name = "btn_revoke";
+			this.btn_revoke.Size = new System.Drawing.Size(36, 21);
+			this.btn_revoke.Text = "撤销";
+			this.btn_revoke.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.btn_revoke.Click += new System.EventHandler(this.btn_revoke_Click);
+			// 
+			// btn_redo
+			// 
+			this.btn_redo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.btn_redo.Image = ((System.Drawing.Image)(resources.GetObject("btn_redo.Image")));
+			this.btn_redo.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.btn_redo.Name = "btn_redo";
+			this.btn_redo.Size = new System.Drawing.Size(36, 21);
+			this.btn_redo.Text = "重做";
+			this.btn_redo.Click += new System.EventHandler(this.btn_redo_Click);
+			// 
 			// btn_Ok
 			// 
 			this.btn_Ok.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -663,6 +679,16 @@
 			this.pictureBox1.Size = new System.Drawing.Size(26, 26);
 			this.pictureBox1.TabIndex = 0;
 			this.pictureBox1.TabStop = false;
+			// 
+			// rtb_Text
+			// 
+			this.rtb_Text.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.rtb_Text.EmptyTextTip = null;
+			this.rtb_Text.Location = new System.Drawing.Point(78, 210);
+			this.rtb_Text.Name = "rtb_Text";
+			this.rtb_Text.Size = new System.Drawing.Size(100, 96);
+			this.rtb_Text.TabIndex = 0;
+			this.rtb_Text.Text = "";
 			// 
 			// CanvasForm
 			// 
@@ -758,6 +784,8 @@
 		private System.Windows.Forms.Label lb_scale;
 		private System.Windows.Forms.PictureBox pic_reduce;
 		private System.Windows.Forms.PictureBox pic_amplify;
+		private System.Windows.Forms.ToolStripButton btn_revoke;
+		private System.Windows.Forms.ToolStripButton btn_redo;
 	}
 }
 

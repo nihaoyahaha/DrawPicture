@@ -38,7 +38,6 @@ namespace DrawKit.Shapes
 			//}
 
 			DrawTempCanvasOnMain();
-
 			drawStatus = DrawStatus.CannotMovedOrAdjusted;
 			SelectionRect = Rectangle.Empty;
 			RotationCount = 0;

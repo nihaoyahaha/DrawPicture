@@ -91,7 +91,8 @@ namespace DrawKit.Shapes
 		private void DrawEraserPath(Point start, Point end)
 		{
 			if (tempCanvas == null) return;
-			float eraserSize = Size; 
+			float eraserSize = Size;
+			
 			using (Graphics g = Graphics.FromImage(tempCanvas))
 			{
 				double distance = Math.Sqrt(Math.Pow(end.X - start.X, 2) + Math.Pow(end.Y - start.Y, 2));
@@ -184,5 +185,6 @@ namespace DrawKit.Shapes
 		public override void FlipHorizontal() { }
 
 		public override void FlipVertical() { }
+
 	}
 }

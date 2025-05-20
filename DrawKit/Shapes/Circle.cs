@@ -33,6 +33,7 @@ namespace DrawKit.Shapes
 			//		g.DrawEllipse(selectionPen, rect);
 			//	}
 			//}
+			
 			DrawTempCanvasOnMain();
 			drawStatus = DrawStatus.CannotMovedOrAdjusted;
 			SelectionRect = Rectangle.Empty;
@@ -307,5 +308,6 @@ namespace DrawKit.Shapes
 		{
 			drawStatus = DrawStatus.CanAdjusted;
 		}
+
 	}
 }

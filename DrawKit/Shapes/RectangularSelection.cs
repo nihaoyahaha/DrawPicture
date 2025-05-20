@@ -431,5 +431,6 @@ namespace DrawKit.Shapes
 			drawStatus = DrawStatus.CanAdjusted;
 			_selectedBitmap.RotateFlip(RotateFlipType.RotateNoneFlipY);
 		}
+
 	}
 }

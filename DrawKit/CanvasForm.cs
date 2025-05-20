@@ -1,4 +1,5 @@
 ﻿using DrawKit.Shapes;
+using DrawKit.History;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -31,6 +32,7 @@ namespace DrawKit
 			InitializeCanvas();
 			LoadInstalledFonts();
 			_shape = new Circle(_canvas, this.panel_main, _scales[trackBar_scale.Value]);
+			OperationStep.OnOperationCompleted += RevokeAndRedoAction;
 		}
 
 		private void Form1_Load(object sender, EventArgs e)
@@ -40,6 +42,7 @@ namespace DrawKit
 			cmb_FontFamily.SelectedIndex = 0;
 			SetTextFont();
 			UpdateLabel(trackBar_scale.Value);
+			OperationStep.InitStack();
 		}
 
 		private void panel_main_MouseMove(object sender, MouseEventArgs e)
@@ -118,6 +121,7 @@ namespace DrawKit
 
 			if (_shape.drawStatus == DrawStatus.CompleteCanvasAdjustment)
 			{
+				OperationStep.PushRevokeStack(_canvas);
 				GenerateStretchedBitmap();
 			}
 			SetRichTextBoxLocation();
@@ -342,6 +346,7 @@ namespace DrawKit
 		{
 			_shape.CommitCurrentShape();
 			OpenPng();
+			OperationStep.InitStack();
 		}
 
 		//释放 Bitmap 资源
@@ -501,6 +506,7 @@ namespace DrawKit
 			if (_shape is TextBoxArea) return;
 			if (_shape.SelectionRect == Rectangle.Empty || _shape.SelectionRect.Width == 0 || _shape.SelectionRect.Height == 0)
 			{
+				OperationStep.PushRevokeStack(_canvas);
 				_shape.CanvasRotateRight();
 				CreateNewBitmap();
 			}
@@ -517,6 +523,7 @@ namespace DrawKit
 			if (_shape is TextBoxArea) return;
 			if (_shape.SelectionRect == Rectangle.Empty || _shape.SelectionRect.Width == 0 || _shape.SelectionRect.Height == 0)
 			{
+				OperationStep.PushRevokeStack(_canvas);
 				_shape.CanvasRotateLeft();
 				CreateNewBitmap();
 			}
@@ -533,6 +540,7 @@ namespace DrawKit
 			if (_shape is TextBoxArea) return;
 			if (_shape.SelectionRect == Rectangle.Empty || _shape.SelectionRect.Width == 0 || _shape.SelectionRect.Height == 0)
 			{
+				OperationStep.PushRevokeStack(_canvas);
 				_shape.CanvasRotate180();
 				CreateNewBitmap();
 			}
@@ -549,6 +557,7 @@ namespace DrawKit
 			if (_shape is TextBoxArea) return;
 			if (_shape.SelectionRect == Rectangle.Empty || _shape.SelectionRect.Width == 0 || _shape.SelectionRect.Height == 0)
 			{
+				OperationStep.PushRevokeStack(_canvas);
 				_shape.CanvasFlipVertical();
 				CreateNewBitmap();
 			}
@@ -565,6 +574,7 @@ namespace DrawKit
 			if (_shape is TextBoxArea) return;
 			if (_shape.SelectionRect == Rectangle.Empty || _shape.SelectionRect.Width == 0 || _shape.SelectionRect.Height == 0)
 			{
+				OperationStep.PushRevokeStack(_canvas);
 				_shape.CanvasFlipHorizontal();
 				CreateNewBitmap();
 			}
@@ -578,6 +588,7 @@ namespace DrawKit
 
 		private void btn_ClearAll_Click(object sender, EventArgs e)
 		{
+			OperationStep.PushRevokeStack(_canvas);
 			_shape.Clear(_canvasBackgroundColor);
 		}
 
@@ -705,5 +716,44 @@ namespace DrawKit
 			if (_shape is RectangularSelection rectSelection) rectSelection.Cancel();
 			CreateNewBitmap();
 		}
+
+		private void btn_revoke_Click(object sender, EventArgs e)
+		{
+			var bitmap = OperationStep.Revoke(_canvas);
+			RevokeOrRedo(bitmap);
+			panel_main.Invalidate();
+		}
+
+		private void RevokeOrRedo(Bitmap bitmap)
+		{
+			if (bitmap == null) return;
+			Bitmap newCanvas = new Bitmap(bitmap.Width, bitmap.Height);
+			if (_canvas != null)
+			{
+				using (Graphics g = Graphics.FromImage(newCanvas))
+				{
+					g.Clear(_canvasBackgroundColor);
+					g.DrawImage(bitmap, Point.Empty);
+				}
+				_canvas.Dispose();
+				_canvas = newCanvas;
+				_shape.canvas = _canvas;
+			}
+			RevokeAndRedoAction();
+		}
+
+		private void btn_redo_Click(object sender, EventArgs e)
+		{
+			var bitmap = OperationStep.Redo(_canvas);
+			RevokeOrRedo(bitmap);
+			panel_main.Invalidate();
+		}
+
+		private void RevokeAndRedoAction()
+		{
+			btn_revoke.Enabled = OperationStep.AllowRevoke();
+			btn_redo.Enabled = OperationStep.AllowRedo();
+		}
+
 	}
 }
