@@ -353,6 +353,7 @@ namespace DrawKit
 		private void Form1_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			_canvas.Dispose();
+			OperationStep.OnOperationCompleted -= RevokeAndRedoAction;
 		}
 
 		private void cmb_size_SelectedIndexChanged(object sender, EventArgs e)
