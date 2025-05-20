@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Net.Mime.MediaTypeNames;
+using DrawKit.History;
 
 namespace DrawKit.Shapes
 {
@@ -26,6 +26,7 @@ namespace DrawKit.Shapes
 		{
 			if (canvas == null) return;
 			if (SelectionRect.Width == 0 && SelectionRect.Height == 0) return;
+			OperationStep.PushRevokeStack(canvas);
 			using (Graphics g = Graphics.FromImage(canvas))
 			{
 				using (Pen selectionPen = new Pen(ForeColor, Size))

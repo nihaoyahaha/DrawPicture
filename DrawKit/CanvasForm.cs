@@ -719,6 +719,7 @@ namespace DrawKit
 
 		private void btn_revoke_Click(object sender, EventArgs e)
 		{
+			_shape.CommitCurrentShape();
 			var bitmap = OperationStep.Revoke(_canvas);
 			RevokeOrRedo(bitmap);
 			panel_main.Invalidate();
@@ -744,6 +745,7 @@ namespace DrawKit
 
 		private void btn_redo_Click(object sender, EventArgs e)
 		{
+			_shape.CommitCurrentShape();
 			var bitmap = OperationStep.Redo(_canvas);
 			RevokeOrRedo(bitmap);
 			panel_main.Invalidate();
