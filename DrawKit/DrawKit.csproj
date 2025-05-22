@@ -230,5 +230,15 @@
   <ItemGroup>
     <None Include="Resources\颜色 %281%29.png" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Cursors\Cursor_eraser.cur">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Cursors\Cursor_null.cur">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

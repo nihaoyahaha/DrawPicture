@@ -1,8 +1,12 @@
-﻿using System;
+﻿using DrawKit.Properties;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -15,8 +19,10 @@ namespace DrawKit.Shapes
 	/// </summary>
 	public class Eraser : Shape
 	{
+		private Point _cursorLocation;
+		private Bitmap _eraserBitmap;
 		public Eraser() { }
-		public Eraser(Bitmap canvas, Panel panel,float scale) : base(canvas, panel,scale) {}
+		public Eraser(Bitmap canvas, Panel panel, float scale) : base(canvas, panel, scale) { }
 		public override void MouseDown(MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Left)
@@ -52,6 +58,7 @@ namespace DrawKit.Shapes
 			{
 				drawStatus = DrawStatus.CannotMovedOrAdjusted;
 				tempCanvas = null;
+				_eraserBitmap = null;
 				panel.Invalidate();
 				return;
 			}
@@ -59,15 +66,25 @@ namespace DrawKit.Shapes
 
 		public override void MouseMove(MouseEventArgs e)
 		{
+			_cursorLocation = e.Location;
 			if (e.Button == MouseButtons.Left)
 			{
 				MouseMoveLeftButtonHandle(e);
 			}
 			else if (e.Button == MouseButtons.None)
 			{
-				drawStatus = DrawStatus.CannotMovedOrAdjusted;
-				panel.Cursor = Cursors.Default;
+				if (IsValidLocation(e.Location))
+				{
+					var assembly = Assembly.GetExecutingAssembly();
+					drawStatus = DrawStatus.CannotMovedOrAdjusted;
+					panel.Cursor = new Cursor(assembly.GetManifestResourceStream("DrawKit.Cursors.Cursor_null.cur")); //Cursors.Default;
+				}
+				else
+				{
+					panel.Cursor = Cursors.Default;
+				}
 				MouseOverResizeHandle(e.Location);
+				panel.Invalidate();
 			}
 		}
 
@@ -92,7 +109,7 @@ namespace DrawKit.Shapes
 		{
 			if (tempCanvas == null) return;
 			float eraserSize = Size;
-			
+
 			using (Graphics g = Graphics.FromImage(tempCanvas))
 			{
 				double distance = Math.Sqrt(Math.Pow(end.X - start.X, 2) + Math.Pow(end.Y - start.Y, 2));
@@ -122,6 +139,30 @@ namespace DrawKit.Shapes
 			panel.Invalidate();
 		}
 
+		private void DrawCursor(Graphics graphics)
+		{
+			var point = ConvertPoint(_cursorLocation);
+
+			_eraserBitmap = tempCanvas == null ? (Bitmap)canvas.Clone() : (Bitmap)tempCanvas.Clone();
+			using (Graphics g = Graphics.FromImage(_eraserBitmap))
+			{
+				g.FillRectangle(new SolidBrush(Color.White),
+					point.X - Size / 2,
+					point.Y - Size / 2,
+					Size,
+					Size);
+				using (Pen selectionPen = new Pen(Color.Black, 1))
+				{
+					g.DrawRectangle(selectionPen, 
+					point.X - Size / 2,
+					point.Y - Size / 2,
+					Size-1,
+					Size-1);
+			}
+			}
+			
+		}
+
 		public override void MouseUp(MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Left)
@@ -139,14 +180,6 @@ namespace DrawKit.Shapes
 			}
 			else
 			{
-				//if (tempCanvas != null)
-				//{
-				//	using (Graphics g = Graphics.FromImage(canvas))
-				//	{
-				//		g.DrawImage(tempCanvas, new Point(0, 0));
-				//	}
-				//	tempCanvas = null;
-				//}
 				DrawTempCanvasOnMain();
 				panel.Invalidate();
 			}
@@ -161,9 +194,13 @@ namespace DrawKit.Shapes
 			if (tempCanvas != null)
 			{
 				BitmapDrawShape(tempCanvas, graphics);
-				//graphics.DrawImage(newCanvas,0,0);
 			}
-		    if (drawStatus == DrawStatus.CanvasAdjusting)
+			DrawCursor(graphics);
+			if (_eraserBitmap != null)
+			{
+				BitmapDrawShape(_eraserBitmap, graphics);
+			}
+			if (drawStatus == DrawStatus.CanvasAdjusting)
 			{
 				DrawCanvasAdjusted(graphics);
 			}
@@ -174,13 +211,13 @@ namespace DrawKit.Shapes
 			ClearBitmap(color);
 		}
 
-		public override void CommitCurrentShape(){}
+		public override void CommitCurrentShape() { }
 
-		public override void RotateRight(){}
+		public override void RotateRight() { }
 
-		public override void RotateLeft(){}
+		public override void RotateLeft() { }
 
-		public override void Rotate180(){}
+		public override void Rotate180() { }
 
 		public override void FlipHorizontal() { }
 

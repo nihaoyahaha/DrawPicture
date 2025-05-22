@@ -8,6 +8,8 @@ using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.IO;
 using System.Windows.Forms;
+using DrawKit.Properties;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace DrawKit
 {
@@ -234,6 +236,7 @@ namespace DrawKit
 		//直線
 		private void btn_Line_Click(object sender, EventArgs e)
 		{
+			UpdateSizeItems(nameof(Line), true);
 			_shape.CommitCurrentShape();
 			_shape = _shape.InitializeShape<Line>();
 			panel_main.Invalidate();
@@ -245,6 +248,7 @@ namespace DrawKit
 			_shape.CommitCurrentShape();
 			_shape = _shape.InitializeShape<Eraser>();
 			panel_main.Invalidate();
+			UpdateSizeItems(nameof(Eraser),true);
 		}
 
 		//矩形選択
@@ -253,11 +257,13 @@ namespace DrawKit
 			_shape.CommitCurrentShape();
 			_shape = _shape.InitializeShape<RectangularSelection>();
 			panel_main.Invalidate();
+			UpdateSizeItems(nameof(RectangularSelection), false);
 		}
 
 		//カラーフィル
 		private void btn_Fill_Click(object sender, EventArgs e)
 		{
+			UpdateSizeItems(nameof(OilTank),false);
 			_shape.CommitCurrentShape();
 			_shape = _shape.InitializeShape<OilTank>();
 			panel_main.Invalidate();
@@ -266,6 +272,7 @@ namespace DrawKit
 		//長方形
 		private void btn_rectangle_Click(object sender, EventArgs e)
 		{
+			UpdateSizeItems(nameof(ShapeRectangle), true);
 			_shape.CommitCurrentShape();
 			_shape = _shape.InitializeShape<ShapeRectangle>();
 			panel_main.Invalidate();
@@ -274,6 +281,7 @@ namespace DrawKit
 		//五角形
 		private void btn_pentagon_Click(object sender, EventArgs e)
 		{
+			UpdateSizeItems(nameof(Pentagon), true);
 			_shape.CommitCurrentShape();
 			_shape = _shape.InitializeShape<Pentagon>();
 			panel_main.Invalidate();
@@ -282,6 +290,7 @@ namespace DrawKit
 		//円
 		private void btn_circle_Click(object sender, EventArgs e)
 		{
+			UpdateSizeItems(nameof(Circle), true);
 			_shape.CommitCurrentShape();
 			_shape = _shape.InitializeShape<Circle>();
 			panel_main.Invalidate();
@@ -290,6 +299,7 @@ namespace DrawKit
 		//三角形
 		private void btn_triangle_Click(object sender, EventArgs e)
 		{
+			UpdateSizeItems(nameof(Triangle), true);
 			_shape.CommitCurrentShape();
 			_shape = _shape.InitializeShape<Triangle>();
 			panel_main.Invalidate();
@@ -298,6 +308,7 @@ namespace DrawKit
 		//直角三角形
 		private void btn_RightTriangle_Click(object sender, EventArgs e)
 		{
+			UpdateSizeItems(nameof(RightTriangle), true);
 			_shape.CommitCurrentShape();
 			_shape = _shape.InitializeShape<RightTriangle>();
 			panel_main.Invalidate();
@@ -306,6 +317,7 @@ namespace DrawKit
 		//ひし形
 		private void btn_rhombus_Click(object sender, EventArgs e)
 		{
+			UpdateSizeItems(nameof(Rhombus), true);
 			_shape.CommitCurrentShape();
 			_shape = _shape.InitializeShape<Rhombus>();
 			panel_main.Invalidate();
@@ -313,6 +325,7 @@ namespace DrawKit
 		//六角形
 		private void btn_hexagon_Click(object sender, EventArgs e)
 		{
+			UpdateSizeItems(nameof(Hexagon), true);
 			_shape.CommitCurrentShape();
 			_shape = _shape.InitializeShape<Hexagon>();
 			panel_main.Invalidate();
@@ -320,6 +333,7 @@ namespace DrawKit
 		//フィレット長方形
 		private void btn_roundedRectangle_Click(object sender, EventArgs e)
 		{
+			UpdateSizeItems(nameof(RoundedRectangle), true);
 			_shape.CommitCurrentShape();
 			_shape = _shape.InitializeShape<RoundedRectangle>();
 			panel_main.Invalidate();
@@ -327,6 +341,7 @@ namespace DrawKit
 		//テキスト
 		private void btn_Text_Click(object sender, EventArgs e)
 		{
+			UpdateSizeItems(nameof(TextBoxArea), false);
 			_shape.CommitCurrentShape();
 			_shape = _shape.InitializeShape<TextBoxArea>();
 			panel_main.Invalidate();
@@ -358,7 +373,7 @@ namespace DrawKit
 
 		private void cmb_size_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			_shape.Size = float.Parse(cmb_size.Text.Substring(0, 1));
+			_shape.Size = float.Parse(cmb_size.Text.Substring(0, cmb_size.Text.Length - 2));
 			_shape.drawStatus = DrawStatus.AdjustTheStyle;
 			if (_shape is RectangularSelection) return;
 			panel_main.Refresh();
@@ -756,6 +771,22 @@ namespace DrawKit
 		{
 			btn_revoke.Enabled = OperationStep.AllowRevoke();
 			btn_redo.Enabled = OperationStep.AllowRedo();
+		}
+
+		private void UpdateSizeItems(string type,bool enable)
+		{
+			int index = cmb_size.SelectedIndex;
+			cmb_size.Items.Clear();
+			if (type == nameof(Eraser))
+			{
+				cmb_size.Items.AddRange(new object[] { "4px", "6px", "8px", "10px" });
+			}
+			else
+			{
+				cmb_size.Items.AddRange(new object[] { "1px", "3px", "5px", "8px" });
+			}
+			cmb_size.SelectedIndex = index;
+			cmb_size.Enabled = enable;
 		}
 
 	}
