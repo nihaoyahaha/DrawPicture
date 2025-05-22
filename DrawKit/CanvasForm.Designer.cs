@@ -30,7 +30,6 @@
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CanvasForm));
 			this.panel_main = new System.Windows.Forms.Panel();
-			this.rtb_Text = new DrawKit.UserControl.TransparentRichTextBox();
 			this.lb_Penposition = new System.Windows.Forms.Label();
 			this.lb_CanvasSize = new System.Windows.Forms.Label();
 			this.lb_SelectionSize = new System.Windows.Forms.Label();
@@ -85,6 +84,7 @@
 			this.pic_amplify = new System.Windows.Forms.PictureBox();
 			this.pic_reduce = new System.Windows.Forms.PictureBox();
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
+			this.rtb_Text = new DrawKit.UserControl.TransparentRichTextBox();
 			this.panel_main.SuspendLayout();
 			this.toolStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.trackBar_scale)).BeginInit();
@@ -114,16 +114,6 @@
 			this.panel_main.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel_main_MouseDown);
 			this.panel_main.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel_main_MouseMove);
 			this.panel_main.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panel_main_MouseUp);
-			// 
-			// rtb_Text
-			// 
-			this.rtb_Text.BorderStyle = System.Windows.Forms.BorderStyle.None;
-			this.rtb_Text.EmptyTextTip = null;
-			this.rtb_Text.Location = new System.Drawing.Point(78, 210);
-			this.rtb_Text.Name = "rtb_Text";
-			this.rtb_Text.Size = new System.Drawing.Size(100, 96);
-			this.rtb_Text.TabIndex = 0;
-			this.rtb_Text.Text = "";
 			// 
 			// lb_Penposition
 			// 
@@ -690,6 +680,16 @@
 			this.pictureBox1.TabIndex = 0;
 			this.pictureBox1.TabStop = false;
 			// 
+			// rtb_Text
+			// 
+			this.rtb_Text.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.rtb_Text.EmptyTextTip = null;
+			this.rtb_Text.Location = new System.Drawing.Point(78, 210);
+			this.rtb_Text.Name = "rtb_Text";
+			this.rtb_Text.Size = new System.Drawing.Size(100, 96);
+			this.rtb_Text.TabIndex = 0;
+			this.rtb_Text.Text = "";
+			// 
 			// CanvasForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -709,6 +709,7 @@
 			this.Controls.Add(this.lb_Penposition);
 			this.Controls.Add(this.panel_main);
 			this.Controls.Add(this.toolStrip1);
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MinimumSize = new System.Drawing.Size(700, 500);
 			this.Name = "CanvasForm";
 			this.Text = "図を描く";
