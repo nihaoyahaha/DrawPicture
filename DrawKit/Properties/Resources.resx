@@ -163,8 +163,8 @@
   <data name="坐标轴" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\坐标轴.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ZoomIn" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ZoomIn.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="五边形" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\五边形.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="填充颜色" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\填充颜色.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -180,9 +180,6 @@
   </data>
   <data name="透明" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\透明.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="文字颜色" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\文字颜色.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="拓展" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\拓展.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -202,8 +199,8 @@
   <data name="underline" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\underline.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="五边形" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\五边形.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="right1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\right1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Clearup" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Clearup.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -217,8 +214,8 @@
   <data name="菱形框" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\菱形框.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="FillTool" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\FillTool.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="文字颜色" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\文字颜色.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="圆角矩形" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\圆角矩形.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -235,17 +232,14 @@
   <data name="RectangleTool" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\RectangleTool.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="颜色__1_" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\颜色 (1).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="保存" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\保存.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="select" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\select.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="center1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\center1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ZoomIn" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ZoomIn.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="尺寸1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\尺寸1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -259,11 +253,20 @@
   <data name="RectangularSelectionLarge" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\RectangularSelectionLarge.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="HexagonTool" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\HexagonTool.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="center" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\center.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="_22" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\22.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="HexagonTool" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\HexagonTool.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="FillTool" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\FillTool.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="center1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\center1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="擦除" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\擦除.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -274,17 +277,17 @@
   <data name="保存__1_" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\保存 (1).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="RightTriangleTool" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\RightTriangleTool.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="尺寸__1_" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\尺寸 (1).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="center" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\center.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="颜色__1_" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\颜色 (1).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="六边形" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\六边形.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ic_透明背景" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ic_透明背景.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="RoundedRectTool" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\RoundedRectTool.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -304,8 +307,8 @@
   <data name="center aligned" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\center aligned.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ic_透明背景" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ic_透明背景.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="RightTriangleTool" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RightTriangleTool.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="RotateRight" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\RotateRight.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -313,7 +316,7 @@
   <data name="直角三角形" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\直角三角形.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="right1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\right1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ObjectSize" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ObjectSize.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

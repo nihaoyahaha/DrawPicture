@@ -8,9 +8,6 @@ using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.IO;
 using System.Windows.Forms;
-using DrawKit.Properties;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolBar;
 
 namespace DrawKit
 {
@@ -230,10 +227,9 @@ namespace DrawKit
 		{
 			if (_canvas != null)
 			{
-				e.Graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+				e.Graphics.CompositingQuality = CompositingQuality.HighQuality;
 				e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
 				e.Graphics.SmoothingMode = SmoothingMode.None;//HighQuality;
-
 				_shape.InPainting(e.Graphics);
 			}
 		}

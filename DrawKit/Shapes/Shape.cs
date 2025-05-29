@@ -485,6 +485,18 @@ namespace DrawKit.Shapes
 				DrawCanvasEditPoint(graphics);
 			}
 		}
+
+		public Rectangle GetCanvasRegion()
+		{
+			var canvaslocation = GetCanvasLocation();
+			return new Rectangle(
+				canvaslocation.X,
+				canvaslocation.Y,
+				(int)(canvas.Width * Scale),
+				(int)(canvas.Height * Scale)
+			);
+		}
+
 		protected Point[] ConvertVertexs(List<Point> points)
 		{
 			var canvaslocation = GetCanvasLocation();
@@ -523,17 +535,6 @@ namespace DrawKit.Shapes
 				}
 				tempCanvas = null;
 			}
-		}
-
-		public Rectangle GetCanvasRegion()
-		{
-			var canvaslocation = GetCanvasLocation();
-			return new Rectangle(
-				canvaslocation.X,
-				canvaslocation.Y,
-				(int)(canvas.Width * Scale),
-				(int)(canvas.Height * Scale)
-			);
 		}
 
 		public Rectangle ConvertSelectionRectToCanvasRect(Rectangle rect)
