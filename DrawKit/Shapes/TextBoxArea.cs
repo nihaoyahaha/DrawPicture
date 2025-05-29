@@ -18,7 +18,9 @@ namespace DrawKit.Shapes
 	/// </summary>
 	public class TextBoxArea : Shape
 	{
-		private Rectangle _rectCreating = Rectangle.Empty;
+		public float FontSize { get; set; }
+
+		public Rectangle _rectCreating  = Rectangle.Empty;
 		public RichTextBox richTextBox { get; set; }
 		public TextBoxArea() { }
 		public TextBoxArea(Bitmap bitmap, Panel panel,float scale) : base(bitmap, panel, scale) { }
@@ -31,34 +33,50 @@ namespace DrawKit.Shapes
 			{
 				using (Pen selectionPen = new Pen(ForeColor, Size))
 				{
-					// 设置 StringFormat 为精确排版模式
 					StringFormat format = (StringFormat)StringFormat.GenericTypographic.Clone();
 					format.FormatFlags |= StringFormatFlags.MeasureTrailingSpaces;
+					if (richTextBox.SelectionAlignment == HorizontalAlignment.Left)
+					{
+						format.Alignment |= StringAlignment.Near;
+					}
+					else if (richTextBox.SelectionAlignment == HorizontalAlignment.Center)
+					{
+						format.Alignment |= StringAlignment.Center;
+					}
+					else if (richTextBox.SelectionAlignment == HorizontalAlignment.Right)
+					{
+						format.Alignment |= StringAlignment.Far;
+					}
+
 					selectionPen.DashStyle = DashStyle.Solid;
 					g.CompositingQuality = CompositingQuality.HighQuality;
 					g.InterpolationMode = InterpolationMode.NearestNeighbor;
 					g.SmoothingMode = SmoothingMode.None;
 					g.TextRenderingHint = TextRenderingHint.SingleBitPerPixel;
-
-					g.DrawString(richTextBox.Text, richTextBox.Font, new SolidBrush(ForeColor), ConvertPoint(richTextBox.Location), format);
-
-					
-					//TextFormatFlags flags = TextFormatFlags.NoPadding | TextFormatFlags.Left | TextFormatFlags.NoPrefix;
-					//TextRenderer.DrawText(g, richTextBox.Text, richTextBox.Font, ConvertPoint(richTextBox.Location), ForeColor, Color.Transparent,flags);
+					Font font = new Font(richTextBox.Font.FontFamily,FontSize, richTextBox.Font.Style);
+					g.DrawString(richTextBox.Text, font, new SolidBrush(ForeColor),ConvertSelectionRectToCanvasRect(SelectionRect) /*ConvertPoint(richTextBox.Location)*/, format);
 				}
 			}
 			SelectionRect = Rectangle.Empty;
 			drawStatus = DrawStatus.CompleteDrawText;
+			richTextBox.Visible = false;
 			richTextBox.Text = "";
 			panel.Invalidate();	
 		}
+
 		public override void MouseDown(MouseEventArgs e)
 		{
+			if (e.Button == MouseButtons.Right)
+			{
+				MouseRightButtonDownHandle(e);
+				return;
+			}
 			if (!IsValidLocation(e.Location) && drawStatus != DrawStatus.CanvasAdjustable) return;
 			if (e.Button == MouseButtons.Left)
 			{
 				MouseLeftButtonDownHandle(e);
 			}
+		    
 		}
 
 		private void MouseLeftButtonDownHandle(MouseEventArgs e)
@@ -86,7 +104,21 @@ namespace DrawKit.Shapes
 				drawStatus = DrawStatus.CanvasAdjusting;
 			}
 		}
-
+		
+		private void MouseRightButtonDownHandle(MouseEventArgs e)
+		{
+			if (drawStatus == DrawStatus.Creating ||
+				drawStatus == DrawStatus.CanvasAdjusting)
+			{
+				_rectCreating = Rectangle.Empty;
+				if (richTextBox != null) richTextBox.Visible = false;
+				CancelDrawing();
+			}
+			else if (drawStatus == DrawStatus.CannotMovedOrAdjusted && SelectionRect != Rectangle.Empty)
+			{
+				BitmapDrawText();
+			}
+		}
 		public override void MouseMove(MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Left)
@@ -342,7 +374,7 @@ namespace DrawKit.Shapes
 					_rectCreating.Y = StartPoint.Y;
 				}
 
-				SetRichTextBoxMinSize(richTextBox.Font.Size,ref _rectCreating);
+				SetRichTextBoxMinSize(FontSize,ref _rectCreating);
 
 				drawStatus = DrawStatus.CanAdjusted;
 				SelectionRect = _rectCreating;
@@ -376,6 +408,7 @@ namespace DrawKit.Shapes
 				if (_rectCreating.Width == 0 || _rectCreating.Height == 0) return;
 				DrawCreating(graphics);
 			}
+
 			else if (drawStatus == DrawStatus.Moving ||
 				drawStatus == DrawStatus.CanMove ||
 				drawStatus == DrawStatus.CanAdjusted ||
@@ -389,10 +422,6 @@ namespace DrawKit.Shapes
 			{
 				DrawCanvasAdjusted(graphics);
 			}
-			else if (drawStatus == DrawStatus.CompleteCanvasAdjustment)
-			{
-				DrawCanMoveOrAdjusted(graphics);
-			}
 		}
 		private void DrawCreating(Graphics graphics)
 		{
@@ -405,6 +434,7 @@ namespace DrawKit.Shapes
 				graphics.DrawRectangle(selectionPen, _rectCreating);
 				graphics.ResetClip();
 			}
+
 			if (SelectionRect != Rectangle.Empty)
 			{
 				using (Pen selectionPen = new Pen(ResizerPointColor, 0.5f))
@@ -451,6 +481,8 @@ namespace DrawKit.Shapes
 		public override void CommitCurrentShape()
 		{
 			BitmapDrawText();
+			if (richTextBox == null) return;
+			richTextBox.Visible = false;
 		}
 
 		public override void RotateRight(){}

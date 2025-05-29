@@ -21,17 +21,16 @@ namespace DrawKit.Shapes
 		public OilTank(Bitmap bitmap, Panel panel,float scale) : base(bitmap, panel, scale) {}
 
 		public override void MouseDown(MouseEventArgs e)
-		{
+		{  
+			if (e.Button == MouseButtons.Right)
+			{
+				_tempCanvas = null;
+				CancelDrawing();
+			}
 			if (!IsValidLocation(e.Location) && drawStatus != DrawStatus.CanvasAdjustable) return;
 			if (e.Button == MouseButtons.Left)
 			{
 				MouseLeftButtonDownHandle(e);
-			}
-			else if (e.Button == MouseButtons.Right)
-			{
-				_tempCanvas = null;
-				panel.Invalidate();
-				return;
 			}
 		}
 		

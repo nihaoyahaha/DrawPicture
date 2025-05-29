@@ -153,14 +153,13 @@ namespace DrawKit.Shapes
 					Size);
 				using (Pen selectionPen = new Pen(Color.Black, 1))
 				{
-					g.DrawRectangle(selectionPen, 
+					g.DrawRectangle(selectionPen,
 					point.X - Size / 2,
 					point.Y - Size / 2,
-					Size-1,
-					Size-1);
+					Size - 1,
+					Size - 1);
+				}
 			}
-			}
-			
 		}
 
 		public override void MouseUp(MouseEventArgs e)

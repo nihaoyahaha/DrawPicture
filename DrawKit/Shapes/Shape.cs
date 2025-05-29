@@ -570,71 +570,72 @@ namespace DrawKit.Shapes
 		{
 			int width = rectangle.Width;
 			int height = rectangle.Height;
+			int newHeight = (int)(size * Scale + 30);
 			switch (size)
 			{
 				case 8:
 					if (width <= 110) rectangle.Width = 110;
-					if (height <= 16) rectangle.Height = 26;
+					if (height <= 16) rectangle.Height = newHeight;
 					break;
 				case 9:
 					if (width <= 130) rectangle.Width = 130;
-					if (height <= 27) rectangle.Height = 37;
+					if (height <= 27) rectangle.Height = newHeight;
 					break;
 				case 10:
 					if (width <= 130) rectangle.Width = 130;
-					if (height <= 29) rectangle.Height = 39;
+					if (height <= 29) rectangle.Height = newHeight;
 					break;
 				case 11:
 					if (width <= 150) rectangle.Width = 150;
-					if (height <= 30) rectangle.Height = 40;
+					if (height <= 30) rectangle.Height = newHeight;
 					break;
 				case 12:
 					if (width <= 170) rectangle.Width = 170;
-					if (height <= 31) rectangle.Height = 41;
+					if (height <= 31) rectangle.Height = newHeight;
 					break;
 				case 14:
 					if (width <= 190) rectangle.Width = 190;
-					if (height <= 34) rectangle.Height = 44;
+					if (height <= 34) rectangle.Height = newHeight;
 					break;
 				case 16:
 					if (width <= 210) rectangle.Width = 210;
-					if (height <= 38) rectangle.Height = 48;
+					if (height <= 38) rectangle.Height = newHeight;
 					break;
 				case 18:
 					if (width <= 250) rectangle.Width = 250;
-					if (height <= 41) rectangle.Height = 51;
+					if (height <= 41) rectangle.Height = newHeight;
 					break;
 				case 20:
 					if (width <= 270) rectangle.Width = 270;
-					if (height <= 45) rectangle.Height = 55;
+					if (height <= 45) rectangle.Height = newHeight;
 					break;
 				case 22:
 					if (width <= 290) rectangle.Width = 290;
-					if (height <= 48) rectangle.Height = 58;
+					if (height <= 48) rectangle.Height = newHeight;
 					break;
 				case 24:
 					if (width <= 310) rectangle.Width = 310;
-					if (height <= 51) rectangle.Height = 61;
+					if (height <= 51) rectangle.Height = newHeight;
 					break;
 				case 26:
 					if (width <= 330) rectangle.Width = 330;
-					if (height <= 55) rectangle.Height = 65;
+					if (height <= 55) rectangle.Height = newHeight;
 					break;
 				case 28:
 					if (width <= 370) rectangle.Width = 370;
-					if (height <= 58) rectangle.Height = 68;
+					if (height <= 58) rectangle.Height = newHeight;
 					break;
 				case 36:
 					if (width <= 415) rectangle.Width = 415;
-					if (height <= 72) rectangle.Height = 82;
+					if (height <= 72) rectangle.Height = newHeight;
 					break;
 				case 48:
 					if (width <= 847) rectangle.Width = 847;
-					if (height <= 134) rectangle.Height = 144;
+					if (height <= 134) rectangle.Height = newHeight;
 					break;
 				case 72:
 					if (width <= 930) rectangle.Width = 930;
-					if (height <= 134) rectangle.Height = 144;
+					if (height <= 134) rectangle.Height = newHeight;
 					break;
 			}
 			return rectangle;
