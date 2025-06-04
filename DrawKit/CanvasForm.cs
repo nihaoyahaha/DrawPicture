@@ -29,13 +29,22 @@ namespace DrawKit
 		{
 			InitializeComponent();
 			InitCmbScaleItems();
-			panel_main.BackColor = Color.AliceBlue;
+			InitBackColor();
 			panel_main.MouseWheel += Panel_MouseWheel;
 			OperationStep.OnOperationCompleted += RevokeAndRedoAction;
 			rtb_Text.Visible = false;
 			InitializeCanvas();
 			LoadInstalledFonts();
-			_shape = new Circle(_canvas, this.panel_main, GetCmbscaleSelectedItemKey());
+			_shape = new Pencil(_canvas, this.panel_main, GetCmbscaleSelectedItemKey());
+		}
+
+		private void InitBackColor()
+		{
+			BackColor = Color.FromArgb(247, 249, 254);
+			panel_TextStyle.BackColor = Color.FromArgb(247, 249, 254);
+			panel_main.BackColor = Color.FromArgb(247, 249, 254);
+			toolStrip1.BackColor = Color.FromArgb(204, 213, 240);
+			panel1.BackColor = Color.FromArgb(64, 80, 141);
 		}
 
 		private void Form1_Load(object sender, EventArgs e)
@@ -61,7 +70,7 @@ namespace DrawKit
 			if (_shape.IsValidLocation(point))
 			{
 				var canvaslocation = _shape.GetCanvasRegion();
-				lb_Penposition.Text = $"{(int)(point.X / GetCmbscaleSelectedItemKey()) - (int)(canvaslocation.X / GetCmbscaleSelectedItemKey())}, {(int)(point.Y / GetCmbscaleSelectedItemKey()) - (int)(canvaslocation.Y / GetCmbscaleSelectedItemKey())}ピクセル";
+				lb_Penposition.Text = $"{(int)(point.X / GetCmbscaleSelectedItemKey()) - (int)(canvaslocation.X / GetCmbscaleSelectedItemKey())}, {(int)(point.Y / GetCmbscaleSelectedItemKey()) - (int)(canvaslocation.Y / GetCmbscaleSelectedItemKey())}像素";
 			}
 			else
 			{
@@ -73,12 +82,12 @@ namespace DrawKit
 		{
 			if (_shape.drawStatus == DrawStatus.CanvasAdjusting)
 			{
-				lb_CanvasSize.Text = $"{(int)(_shape.AdjustingCanvasRect.Width / _shape.Scale)},{(int)(_shape.AdjustingCanvasRect.Height / _shape.Scale)}ピクセル";
+				lb_CanvasSize.Text = $"{(int)(_shape.AdjustingCanvasRect.Width / _shape.Scale)},{(int)(_shape.AdjustingCanvasRect.Height / _shape.Scale)}像素";
 			}
 			else if (_shape.drawStatus == DrawStatus.Creating ||
 				_shape.drawStatus == DrawStatus.Adjusting)
 			{
-				lb_SelectionSize.Text = $"{(int)(_shape.SelectionRect.Width / _shape.Scale)},{(int)(_shape.SelectionRect.Height / _shape.Scale)}ピクセル";
+				lb_SelectionSize.Text = $"{(int)(_shape.SelectionRect.Width / _shape.Scale)},{(int)(_shape.SelectionRect.Height / _shape.Scale)}像素";
 			}
 		}
 
@@ -124,7 +133,7 @@ namespace DrawKit
 				GenerateStretchedBitmap();
 			}
 			SetRichTextBoxLocation();
-			lb_CanvasSize.Text = $"{_canvas.Width},{_canvas.Height}ピクセル";
+			lb_CanvasSize.Text = $"{_canvas.Width},{_canvas.Height}像素";
 		}
 
 		private void SetRichTextBoxLocation()
@@ -193,7 +202,7 @@ namespace DrawKit
 			var rect = _shape.GetCanvasRegion();
 			panel_main.AutoScrollMinSize = new Size(rect.Width, rect.Height);
 			panel_main.Invalidate();
-			lb_CanvasSize.Text = $"{_canvas.Width},{_canvas.Height}ピクセル";
+			lb_CanvasSize.Text = $"{_canvas.Width},{_canvas.Height}像素";
 		}
 
 		private void GenerateStretchedBitmap()
@@ -237,6 +246,8 @@ namespace DrawKit
 		//直線
 		private void btn_Line_Click(object sender, EventArgs e)
 		{
+			SetShapeBtnBackColor();
+			btn_Line.BackColor = Color.FromArgb(245, 204, 132);
 			_shape.CommitCurrentShape();
 			_shape = _shape.InitializeShape<Line>();
 			panel_main.Invalidate();
@@ -246,6 +257,8 @@ namespace DrawKit
 		//消しゴム
 		private void btn_Erase_Click(object sender, EventArgs e)
 		{
+			SetShapeBtnBackColor();
+			btn_Erase.BackColor = Color.FromArgb(245, 204, 132);
 			_shape.CommitCurrentShape();
 			_shape = _shape.InitializeShape<Eraser>();
 			panel_main.Invalidate();
@@ -255,6 +268,8 @@ namespace DrawKit
 		//矩形選択
 		private void btn_select_Click(object sender, EventArgs e)
 		{
+			SetShapeBtnBackColor();
+			btn_select.BackColor = Color.FromArgb(245, 204, 132);
 			_shape.CommitCurrentShape();
 			_shape = _shape.InitializeShape<RectangularSelection>();
 			panel_main.Invalidate();
@@ -264,6 +279,8 @@ namespace DrawKit
 		//カラーフィル
 		private void btn_Fill_Click(object sender, EventArgs e)
 		{
+			SetShapeBtnBackColor();
+			btn_Fill.BackColor = Color.FromArgb(245, 204, 132);
 			_shape.CommitCurrentShape();
 			_shape = _shape.InitializeShape<OilTank>();
 			panel_main.Invalidate();
@@ -273,6 +290,8 @@ namespace DrawKit
 		//長方形
 		private void btn_rectangle_Click(object sender, EventArgs e)
 		{
+			SetShapeBtnBackColor();
+			btn_rectangle.BackColor = Color.FromArgb(245, 204, 132);
 			_shape.CommitCurrentShape();
 			_shape = _shape.InitializeShape<ShapeRectangle>();
 			panel_main.Invalidate();
@@ -282,6 +301,8 @@ namespace DrawKit
 		//五角形
 		private void btn_pentagon_Click(object sender, EventArgs e)
 		{
+			SetShapeBtnBackColor();
+			btn_pentagon.BackColor = Color.FromArgb(245, 204, 132);
 			_shape.CommitCurrentShape();
 			_shape = _shape.InitializeShape<Pentagon>();
 			panel_main.Invalidate();
@@ -291,7 +312,8 @@ namespace DrawKit
 		//円
 		private void btn_circle_Click(object sender, EventArgs e)
 		{
-
+			SetShapeBtnBackColor();
+			btn_circle.BackColor = Color.FromArgb(245, 204, 132);
 			_shape.CommitCurrentShape();
 			_shape = _shape.InitializeShape<Circle>();
 			panel_main.Invalidate();
@@ -301,7 +323,8 @@ namespace DrawKit
 		//三角形
 		private void btn_triangle_Click(object sender, EventArgs e)
 		{
-
+			SetShapeBtnBackColor();
+			btn_triangle.BackColor = Color.FromArgb(245, 204, 132);
 			_shape.CommitCurrentShape();
 			_shape = _shape.InitializeShape<Triangle>();
 			panel_main.Invalidate();
@@ -311,6 +334,8 @@ namespace DrawKit
 		//直角三角形
 		private void btn_RightTriangle_Click(object sender, EventArgs e)
 		{
+			SetShapeBtnBackColor();
+			btn_RightTriangle.BackColor = Color.FromArgb(245, 204, 132); 
 			_shape.CommitCurrentShape();
 			_shape = _shape.InitializeShape<RightTriangle>();
 			panel_main.Invalidate();
@@ -320,7 +345,8 @@ namespace DrawKit
 		//ひし形
 		private void btn_rhombus_Click(object sender, EventArgs e)
 		{
-
+			SetShapeBtnBackColor();
+			btn_rhombus.BackColor = Color.FromArgb(245, 204, 132);
 			_shape.CommitCurrentShape();
 			_shape = _shape.InitializeShape<Rhombus>();
 			panel_main.Invalidate();
@@ -329,7 +355,8 @@ namespace DrawKit
 		//六角形
 		private void btn_hexagon_Click(object sender, EventArgs e)
 		{
-
+			SetShapeBtnBackColor();
+			btn_hexagon.BackColor = Color.FromArgb(245, 204, 132);
 			_shape.CommitCurrentShape();
 			_shape = _shape.InitializeShape<Hexagon>();
 			panel_main.Invalidate();
@@ -338,7 +365,8 @@ namespace DrawKit
 		//フィレット長方形
 		private void btn_roundedRectangle_Click(object sender, EventArgs e)
 		{
-
+			SetShapeBtnBackColor();
+			btn_roundedRectangle.BackColor = Color.FromArgb(245, 204, 132);
 			_shape.CommitCurrentShape();
 			_shape = _shape.InitializeShape<RoundedRectangle>();
 			panel_main.Invalidate();
@@ -347,6 +375,8 @@ namespace DrawKit
 		//テキスト
 		private void btn_Text_Click(object sender, EventArgs e)
 		{
+			SetShapeBtnBackColor();
+			btn_Text.BackColor = Color.FromArgb(245, 204, 132);
 			_shape.CommitCurrentShape();
 			_shape = _shape.InitializeShape<TextBoxArea>();
 			panel_main.Invalidate();
@@ -406,7 +436,7 @@ namespace DrawKit
 			panel_main,
 			new object[] { true });
 			lb_SelectionSize.Text = "";
-			lb_CanvasSize.Text = $"{(int)(_canvas.Width / GetCmbscaleSelectedItemKey())},{(int)(_canvas.Height / GetCmbscaleSelectedItemKey())}ピクセル";
+			lb_CanvasSize.Text = $"{(int)(_canvas.Width / GetCmbscaleSelectedItemKey())},{(int)(_canvas.Height / GetCmbscaleSelectedItemKey())}像素";
 			panel_main.AutoScrollMinSize = new Size(_canvas.Width, _canvas.Height);
 		}
 
@@ -472,7 +502,7 @@ namespace DrawKit
 						_canvas = new Bitmap(tempBitmap);
 					}
 					_shape.canvas = _canvas;
-					lb_CanvasSize.Text = $"{_canvas.Width},{_canvas.Height}ピクセル";
+					lb_CanvasSize.Text = $"{_canvas.Width},{_canvas.Height}像素";
 					panel_main.Invalidate();
 				}
 				catch (Exception ex)
@@ -482,42 +512,8 @@ namespace DrawKit
 			}
 		}
 
-		//黑色
-		private void btn_BlackColor_Click(object sender, EventArgs e)
-		{
-			SetShapeForeColor(Color.Black);
-		}
-
-		//灰色50%
-		private void btn_greyColor_Click(object sender, EventArgs e)
-		{
-			SetShapeForeColor(Color.FromArgb(255, 128, 128, 128));
-		}
-
-		//深红色
-		private void btn_darkRedColor_Click(object sender, EventArgs e)
-		{
-			SetShapeForeColor(ColorTranslator.FromHtml("#8B0000"));
-		}
-		//红色
-		private void btn_RedColor_Click(object sender, EventArgs e)
-		{
-			SetShapeForeColor(Color.Red);
-		}
-
-		private void btn_OrangeColor_Click(object sender, EventArgs e)
-		{
-			SetShapeForeColor(Color.Orange);
-		}
-
-		private void btn_WhileColor_Click(object sender, EventArgs e)
-		{
-			SetShapeForeColor(Color.White);
-		}
-
 		private void SetShapeForeColor(Color color)
 		{
-			btn_showColor.BackColor = color;
 			_shape.ForeColor = color;
 			_shape.drawStatus = DrawStatus.AdjustTheStyle;
 			rtb_Text.ForeColor = color;
@@ -741,7 +737,7 @@ namespace DrawKit
 				_shape.canvas = _canvas;
 			}
 			RevokeAndRedoAction();
-			lb_CanvasSize.Text = $"{bitmap.Width},{bitmap.Height}ピクセル";
+			lb_CanvasSize.Text = $"{bitmap.Width},{bitmap.Height}像素";
 		}
 
 		private void btn_redo_Click(object sender, EventArgs e)
@@ -969,5 +965,44 @@ namespace DrawKit
 		{
 			e.SuppressKeyPress = true;
 		}
+
+		private void btn_Pencil_Click(object sender, EventArgs e)
+		{
+			SetShapeBtnBackColor();
+			btn_Pencil.BackColor = Color.FromArgb(245, 204, 132);
+			_shape.CommitCurrentShape();
+			_shape = _shape.InitializeShape<Pencil>();
+			panel_main.Invalidate();
+			UpdateSizeItems(nameof(Pencil), true);
+		}
+
+		private void btn_Color_Click(object sender, EventArgs e)
+		{
+			ColorDialog colorDialog = new ColorDialog();
+			if (colorDialog.ShowDialog() == DialogResult.OK)
+			{
+				btn_Color.BackColor = colorDialog.Color;
+				SetShapeForeColor(btn_Color.BackColor);
+			}
+		}
+
+		private void SetShapeBtnBackColor()
+		{
+			btn_select.BackColor = Color.Transparent;
+			btn_Pencil.BackColor = Color.Transparent;
+			btn_Erase.BackColor = Color.Transparent;
+			btn_Fill.BackColor = Color.Transparent;
+			btn_Text.BackColor = Color.Transparent;
+			btn_Line.BackColor = Color.Transparent;
+			btn_circle.BackColor = Color.Transparent;
+			btn_rectangle.BackColor = Color.Transparent;
+			btn_roundedRectangle.BackColor = Color.Transparent;
+			btn_triangle.BackColor = Color.Transparent;
+			btn_RightTriangle.BackColor = Color.Transparent;
+			btn_rhombus.BackColor = Color.Transparent;
+			btn_pentagon.BackColor = Color.Transparent;
+			btn_hexagon.BackColor = Color.Transparent;
+		}
+
 	}
 }

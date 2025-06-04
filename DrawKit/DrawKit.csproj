@@ -65,6 +65,7 @@
     <Compile Include="Shapes\Line.cs" />
     <Compile Include="Shapes\OilTank.cs" />
     <Compile Include="History\OperationStep.cs" />
+    <Compile Include="Shapes\Pencil.cs" />
     <Compile Include="Shapes\Pentagon.cs" />
     <Compile Include="Shapes\RectangleShapeFocusType.cs" />
     <Compile Include="Shapes\RectangularSelection.cs" />
@@ -85,93 +86,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\22.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\Clearup.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\select.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\右旋转.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\右旋转1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\矩形.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\形状-矩形.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\形状-三角形.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\五边形.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\坐标轴.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\擦除.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\尺寸 %281%29.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\尺寸.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\尺寸1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\粗细.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\打开.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\拓展.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\直角三角形.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\直线.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\填充颜色.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\透明.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\菱形框.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\文字颜色.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\保存 %281%29.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\保存.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\六边形.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\圆角矩形.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\圆圈.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\颜色.png" />
@@ -222,15 +142,6 @@
     <None Include="Resources\RotateRight.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\ZoomOut.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ZoomIn.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\颜色 %281%29.png" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Cursors\Cursor_eraser.cur">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -250,43 +161,16 @@
     <None Include="Resources\Bold.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\incline.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\incline1.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\incline2.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\underline.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\underline1.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\strikethrough.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\left justifying.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\center aligned.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\left.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\center.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\right.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\透明背景.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ic_透明背景.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\left1.png" />
@@ -298,7 +182,31 @@
     <None Include="Resources\right1.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\ObjectSize.png" />
+    <None Include="Resources\PencilTool.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Cursor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ObjectSize1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CvsSize .png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ZoomOut .png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ZoomIn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\shiying.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\openPic.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\透明度.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
