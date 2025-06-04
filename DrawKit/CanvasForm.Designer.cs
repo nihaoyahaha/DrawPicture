@@ -191,7 +191,6 @@
 			// 
 			// toolStrip1
 			// 
-			this.toolStrip1.AutoSize = false;
 			this.toolStrip1.BackColor = System.Drawing.Color.White;
 			this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
 			this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -227,7 +226,8 @@
 			this.toolStrip1.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip1.Margin = new System.Windows.Forms.Padding(0, 10, 0, 0);
 			this.toolStrip1.Name = "toolStrip1";
-			this.toolStrip1.Size = new System.Drawing.Size(1177, 70);
+			this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
+			this.toolStrip1.Size = new System.Drawing.Size(1177, 42);
 			this.toolStrip1.TabIndex = 0;
 			this.toolStrip1.Text = "toolStrip1";
 			// 
@@ -242,7 +242,7 @@
 			this.btn_select.Size = new System.Drawing.Size(36, 67);
 			this.btn_select.Text = "选择";
 			this.btn_select.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-			this.btn_select.ToolTipText = "せんたく";
+			this.btn_select.ToolTipText = "选择";
 			this.btn_select.Click += new System.EventHandler(this.btn_select_Click);
 			// 
 			// btn_rotate
@@ -540,7 +540,7 @@
 			this.panel_TextStyle.Controls.Add(this.pic_Blod);
 			this.panel_TextStyle.Controls.Add(this.cmb_TextSize);
 			this.panel_TextStyle.Controls.Add(this.cmb_FontFamily);
-			this.panel_TextStyle.Location = new System.Drawing.Point(1073, 21);
+			this.panel_TextStyle.Location = new System.Drawing.Point(1082, 12);
 			this.panel_TextStyle.Name = "panel_TextStyle";
 			this.panel_TextStyle.Size = new System.Drawing.Size(513, 34);
 			this.panel_TextStyle.TabIndex = 7;
@@ -676,6 +676,7 @@
 			this.cmb_scales.Name = "cmb_scales";
 			this.cmb_scales.Size = new System.Drawing.Size(64, 20);
 			this.cmb_scales.TabIndex = 8;
+			this.toolTip1.SetToolTip(this.cmb_scales, "缩放级别");
 			this.cmb_scales.SelectedIndexChanged += new System.EventHandler(this.cmb_scales_SelectedIndexChanged);
 			this.cmb_scales.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cmb_scales_KeyDown);
 			this.cmb_scales.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.cmb_scales_KeyPress);
@@ -728,9 +729,9 @@
 			this.panel_main.AutoScrollMinSize = new System.Drawing.Size(750, 320);
 			this.panel_main.BackColor = System.Drawing.Color.White;
 			this.panel_main.Controls.Add(this.rtb_Text);
-			this.panel_main.Location = new System.Drawing.Point(0, 73);
+			this.panel_main.Location = new System.Drawing.Point(0, 45);
 			this.panel_main.Name = "panel_main";
-			this.panel_main.Size = new System.Drawing.Size(1177, 570);
+			this.panel_main.Size = new System.Drawing.Size(1177, 598);
 			this.panel_main.TabIndex = 1;
 			this.panel_main.TabStop = true;
 			this.panel_main.Scroll += new System.Windows.Forms.ScrollEventHandler(this.panel_main_Scroll);
@@ -809,9 +810,9 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.SystemColors.Control;
 			this.ClientSize = new System.Drawing.Size(1177, 702);
-			this.Controls.Add(this.panel1);
-			this.Controls.Add(this.panel_TextStyle);
 			this.Controls.Add(this.panel_main);
+			this.Controls.Add(this.panel_TextStyle);
+			this.Controls.Add(this.panel1);
 			this.Controls.Add(this.toolStrip1);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MinimumSize = new System.Drawing.Size(700, 500);
@@ -841,6 +842,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
 			this.ResumeLayout(false);
+			this.PerformLayout();
 
 		}
 

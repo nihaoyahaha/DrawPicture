@@ -236,9 +236,7 @@ namespace DrawKit
 		{
 			if (_canvas != null)
 			{
-				e.Graphics.CompositingQuality = CompositingQuality.HighQuality;
 				e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
-				e.Graphics.SmoothingMode = SmoothingMode.None;//HighQuality;
 				_shape.InPainting(e.Graphics);
 			}
 		}
@@ -773,6 +771,7 @@ namespace DrawKit
 
 		private void SetPanelTextStyle()
 		{
+			panel_TextStyle.BringToFront();
 			panel_TextStyle.Visible = _shape is TextBoxArea ? true : false;
 			var x = (this.Width - panel_TextStyle.Width) / 2;
 			var y = toolStrip1.Bottom + 1;

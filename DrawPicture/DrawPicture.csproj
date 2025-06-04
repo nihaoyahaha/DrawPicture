@@ -12,6 +12,22 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -34,6 +50,18 @@
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>F0AE6C1B11B8ACB504EE4E5B6120C73D365BA2C5</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>DrawPicture_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -50,16 +78,6 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -74,97 +92,22 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\select.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\拓展.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\右旋转.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\擦除.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\文字颜色.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\直线.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\圆圈.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\矩形.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\圆角矩形.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\形状-矩形.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\形状-三角形.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\直角三角形.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\菱形框.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\五边形.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\六边形.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\保存.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\保存 %281%29.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\打开.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\坐标轴.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\粗细.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\颜色.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\透明.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\填充颜色.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\右旋转1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Clearup.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\尺寸.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\尺寸1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\尺寸 %281%29.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\22.png" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\DrawKit\DrawKit.csproj">
       <Project>{3754853e-d1de-423b-abfb-600100dfa8a9}</Project>
       <Name>DrawKit</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7.2 %28x86 和 x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
