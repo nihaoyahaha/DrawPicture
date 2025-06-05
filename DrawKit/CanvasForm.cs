@@ -505,7 +505,7 @@ namespace DrawKit
 				}
 				catch (Exception ex)
 				{
-					MessageBox.Show($"画像をロードできません：{ex.Message}", "エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					MessageBox.Show($"无法加载图像：{ex.Message}", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				}
 			}
 		}
