@@ -208,5 +208,8 @@
   <ItemGroup>
     <None Include="Resources\透明度.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Screenshot\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
