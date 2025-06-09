@@ -23,13 +23,13 @@ namespace DrawPicture
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-			//Application.Run(new  DrawKit.Screenshot.CaptureForm());return;
-			var form = new ScreenshotApp();
+			Application.Run(new  DrawKit.CanvasForm());return;
+			//var form = new ScreenshotApp();
 
 			// 注册 Alt+A 快捷键
 			//RegisterHotKey(form.Handle, ScreenshotApp.HOTKEY_ID, 1, (int)Keys.B);
 
-			Application.Run(form);
+			//Application.Run(form);
 
 			//UnregisterHotKey(form.Handle, ScreenshotApp.HOTKEY_ID);
 		}

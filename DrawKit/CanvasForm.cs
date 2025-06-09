@@ -8,6 +8,7 @@ using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.IO;
 using System.Windows.Forms;
+using DrawKit.Screenshot;
 
 namespace DrawKit
 {
@@ -139,10 +140,10 @@ namespace DrawKit
 		private void SetRichTextBoxLocation()
 		{
 			if (_shape.GetType() != typeof(TextBoxArea)) return;
-			if (_shape.drawStatus == DrawStatus.CompleteDrawText || 
+			if (_shape.drawStatus == DrawStatus.CompleteDrawText ||
 				_shape.drawStatus == DrawStatus.CannotMovedOrAdjusted ||
 				_shape.drawStatus == DrawStatus.CompleteCanvasAdjustment) return;
-			
+
 			var rect = _shape.GetCanvasRegion();
 
 			if (_shape.SelectionRect.X <= rect.X)
@@ -184,19 +185,18 @@ namespace DrawKit
 
 		private void CreateNewBitmap()
 		{
+			if (_canvas == null) return;
 			Bitmap newCanvas = new Bitmap(_canvas.Width, _canvas.Height);
-			if (_canvas != null)
+			//将现在bitmap其绘制到新的bitmap上
+			using (Graphics g = Graphics.FromImage(newCanvas))
 			{
-				//将现在bitmap其绘制到新的bitmap上
-				using (Graphics g = Graphics.FromImage(newCanvas))
-				{
-					g.Clear(_canvasBackgroundColor);
-					g.DrawImage(_canvas, Point.Empty);
-				}
-				_canvas.Dispose();
-				_canvas = newCanvas;
-				_shape.canvas = _canvas;
+				g.Clear(_canvasBackgroundColor);
+				g.DrawImage(_canvas, Point.Empty);
 			}
+			_canvas.Dispose();
+			_canvas = newCanvas;
+			_shape.canvas = _canvas;
+
 			SetRichTextBoxLocation();
 			_shape.drawStatus = DrawStatus.CanAdjusted;
 			var rect = _shape.GetCanvasRegion();
@@ -333,7 +333,7 @@ namespace DrawKit
 		private void btn_RightTriangle_Click(object sender, EventArgs e)
 		{
 			SetShapeBtnBackColor();
-			btn_RightTriangle.BackColor = Color.FromArgb(245, 204, 132); 
+			btn_RightTriangle.BackColor = Color.FromArgb(245, 204, 132);
 			_shape.CommitCurrentShape();
 			_shape = _shape.InitializeShape<RightTriangle>();
 			panel_main.Invalidate();
@@ -1003,5 +1003,12 @@ namespace DrawKit
 			btn_hexagon.BackColor = Color.Transparent;
 		}
 
+		private void btn_screenShot_Click(object sender, EventArgs e)
+		{
+			using (var captureForm = new CaptureForm())
+			{
+				captureForm.ShowDialog(this);
+			}
+		}
 	}
 }

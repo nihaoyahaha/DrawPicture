@@ -58,6 +58,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Screenshot\CaptureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Screenshot\CaptureForm.Designer.cs">
+      <DependentUpon>CaptureForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Shapes\Circle.cs" />
     <Compile Include="Shapes\DrawStatus.cs" />
     <Compile Include="Shapes\Eraser.cs" />
@@ -209,7 +215,7 @@
     <None Include="Resources\透明度.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Screenshot\" />
+    <None Include="Resources\Screenshots.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
