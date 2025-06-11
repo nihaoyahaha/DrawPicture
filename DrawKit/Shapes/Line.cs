@@ -15,9 +15,10 @@ namespace DrawKit.Shapes
 	/// </summary>
 	public class Line : Shape
 	{
+		private double[] _directions = { 0, 45, 90, 135, 180, 225, 270, 315 };
 		private int _handleSize = 15; // 控制点矩形的大小
 		private bool _startPointSelected = false;
-		public Line(Bitmap canvas, Panel panel,float scale) : base(canvas,panel, scale){}
+		public Line(Bitmap canvas, Panel panel, float scale) : base(canvas, panel, scale) { }
 
 		public Line() { }
 
@@ -50,6 +51,10 @@ namespace DrawKit.Shapes
 			else if (e.Button == MouseButtons.Right)
 			{
 				MouseRightButtonDownHandle(e);
+			}
+			if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift)
+			{
+
 			}
 		}
 		private void MouseLeftButtonDownHandle(MouseEventArgs e)
@@ -85,8 +90,8 @@ namespace DrawKit.Shapes
 		}
 		private void MouseRightButtonDownHandle(MouseEventArgs e)
 		{
-			if (drawStatus == DrawStatus.Creating || 
-				drawStatus == DrawStatus.Adjusting || 
+			if (drawStatus == DrawStatus.Creating ||
+				drawStatus == DrawStatus.Adjusting ||
 				drawStatus == DrawStatus.CanMove ||
 				drawStatus == DrawStatus.CanvasAdjusting)
 			{
@@ -102,12 +107,12 @@ namespace DrawKit.Shapes
 			{
 				MouseMoveLeftButtonHandle(e);
 			}
-			else if(e.Button == MouseButtons.None)
+			else if (e.Button == MouseButtons.None)
 			{
 				_startPointSelected = false;
 				drawStatus = DrawStatus.CannotMovedOrAdjusted;
 				panel.Cursor = Cursors.Default;
-				
+
 				IsMouseOnHandle(e.Location, StartPoint, EndPoint);
 				if (GetPointIsInLine(e.Location, StartPoint, EndPoint, 10))
 				{
@@ -117,12 +122,44 @@ namespace DrawKit.Shapes
 				MouseOverResizeHandle(e.Location);
 			}
 		}
+		private Point AdjustPointToDirection(Point origin, Point target, double angle)
+		{
+			double minDiff = 360;
+			int index = 0;
+
+			for (int i = 0; i < _directions.Length; i++)
+			{
+				double diff = Math.Abs(_directions[i] - angle);
+				if (diff > 180) diff = 360 - diff;
+				if (diff < minDiff)
+				{
+					minDiff = diff;
+					index = i;
+				}
+			}
+			double desiredAngle = _directions[index] * Math.PI / 180;
+			double length = Math.Sqrt(Math.Pow(target.X - origin.X, 2) + Math.Pow(target.Y - origin.Y, 2));
+			int newX = (int)(origin.X + Math.Cos(desiredAngle) * length);
+			int newY = (int)(origin.Y + Math.Sin(desiredAngle) * length);
+
+			return new Point(newX, newY);
+		}
 
 		private void MouseMoveLeftButtonHandle(MouseEventArgs e)
-		{   
+		{
 			if (drawStatus == DrawStatus.Creating)
 			{
 				EndPoint = e.Location;
+				if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift)
+				{
+					double angle = Math.Atan2(e.Y - StartPoint.Y, e.X - StartPoint.X) * (180 / Math.PI);
+					if (angle < 0)
+					{
+						angle += 360;
+					}
+					EndPoint = AdjustPointToDirection(StartPoint, e.Location, angle);
+				}
+
 				int x = Math.Min(StartPoint.X, EndPoint.X);
 				int y = Math.Min(StartPoint.Y, EndPoint.Y);
 				int width = Math.Abs(StartPoint.X - EndPoint.X);
@@ -134,8 +171,8 @@ namespace DrawKit.Shapes
 			{
 				int deltaX = e.X - Offset.X;
 				int deltaY = e.Y - Offset.Y;
-				StartPoint = new Point(StartPoint.X+deltaX,StartPoint.Y+deltaY);
-				EndPoint = new Point(EndPoint.X+deltaX,EndPoint.Y+deltaY);
+				StartPoint = new Point(StartPoint.X + deltaX, StartPoint.Y + deltaY);
+				EndPoint = new Point(EndPoint.X + deltaX, EndPoint.Y + deltaY);
 				Offset = new Point(e.X, e.Y);
 				panel.Invalidate();
 			}
@@ -161,11 +198,11 @@ namespace DrawKit.Shapes
 
 		public override void MouseUp(MouseEventArgs e)
 		{
-			if (drawStatus == DrawStatus.Creating && EndPoint.X == 0 && EndPoint.Y == 0) 
-			{ 
+			if (drawStatus == DrawStatus.Creating && EndPoint.X == 0 && EndPoint.Y == 0)
+			{
 				drawStatus = DrawStatus.CannotMovedOrAdjusted;
 				StartPoint = new Point();
-				return; 
+				return;
 			}
 			if (e.Button == MouseButtons.Left)
 			{
@@ -202,9 +239,9 @@ namespace DrawKit.Shapes
 				if (EndPoint.X == 0 && EndPoint.Y == 0) return;
 				DrawCreating(graphics);
 			}
-			else if (drawStatus == DrawStatus.CanMove || 
+			else if (drawStatus == DrawStatus.CanMove ||
 				drawStatus == DrawStatus.CanAdjusted ||
-				drawStatus == DrawStatus.Adjusting || 
+				drawStatus == DrawStatus.Adjusting ||
 				drawStatus == DrawStatus.AdjustTheStyle)
 			{
 				if (EndPoint.X == 0 && EndPoint.Y == 0) return;
@@ -258,7 +295,7 @@ namespace DrawKit.Shapes
 			DrawHandle(graphics, StartPoint, EndPoint);
 		}
 
-		private void DrawHandle(Graphics g, Point startPoint ,Point endPoint)
+		private void DrawHandle(Graphics g, Point startPoint, Point endPoint)
 		{
 			// 计算小矩形的位置
 			Rectangle rect = new Rectangle(
@@ -278,7 +315,7 @@ namespace DrawKit.Shapes
 			g.FillEllipse(new SolidBrush(ResizerPointColor), rect);// 绘制矩形边框
 		}
 
-		private void IsMouseOnHandle(Point mouseLocation ,Point startPoint, Point endPoint)
+		private void IsMouseOnHandle(Point mouseLocation, Point startPoint, Point endPoint)
 		{
 			if (StartPoint.X == 0 && StartPoint.Y == 0) return;
 			if (EndPoint.X == 0 && EndPoint.Y == 0) return;
@@ -336,11 +373,13 @@ namespace DrawKit.Shapes
 		{
 			drawStatus = DrawStatus.CanAdjusted;
 		}
-		public override void FlipHorizontal() {
+		public override void FlipHorizontal()
+		{
 			drawStatus = DrawStatus.CanAdjusted;
 		}
 
-		public override void FlipVertical() {
+		public override void FlipVertical()
+		{
 			drawStatus = DrawStatus.CanAdjusted;
 		}
 
