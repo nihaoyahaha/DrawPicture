@@ -6,6 +6,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -30,7 +31,8 @@ namespace DrawKit.Screenshot
 		private RectangleShapeFocusType _focusType;
 		public CaptureForm()
 		{
-			//this.TopMost = true;
+			InitializeComponent();
+			//TopMost = true;
 			this.FormBorderStyle = FormBorderStyle.None;
 			this.Bounds = Screen.PrimaryScreen.Bounds;
 			this.DoubleBuffered = true;
@@ -56,25 +58,28 @@ namespace DrawKit.Screenshot
 			}
 			else if (e.Button == MouseButtons.Right)
 			{
-				this.Close();
+				CloseForm();
 			}
-				base.OnMouseDown(e);
+			base.OnMouseDown(e);
 		}
 
 		private void MouseLeftButtonDownHandle(MouseEventArgs e)
 		{
 			if (_drawStatus == DrawStatus.CannotMovedOrAdjusted)
 			{
+				if (_selectionRect != Rectangle.Empty) return;
 				_startPoint = e.Location;
 				_drawStatus = DrawStatus.Creating;
 			}
 			else if (_drawStatus == DrawStatus.CanMove)
 			{
+				panel_operation.Visible = false;
 				_offset = e.Location;
 				_drawStatus = DrawStatus.Moving;
 			}
 			else if (_drawStatus == DrawStatus.CanAdjusted)
 			{
+				panel_operation.Visible = false;
 				_offset = e.Location;
 				_drawStatus = DrawStatus.Adjusting;
 			}
@@ -114,7 +119,7 @@ namespace DrawKit.Screenshot
 				_selectionRect.Offset(deltaX, deltaY);
 				if (_selectionRect.X <= 0) _selectionRect.X = 0;
 				if (_selectionRect.Y <= 0) _selectionRect.Y = 0;
-				if (_selectionRect.Right >= _screenBitmap.Width) _selectionRect.X = _screenBitmap.Width- _selectionRect.Width;
+				if (_selectionRect.Right >= _screenBitmap.Width) _selectionRect.X = _screenBitmap.Width - _selectionRect.Width;
 				if (_selectionRect.Bottom >= _screenBitmap.Height) _selectionRect.Y = _screenBitmap.Height - _selectionRect.Height;
 				_offset = e.Location;
 				this.Invalidate();
@@ -134,6 +139,7 @@ namespace DrawKit.Screenshot
 			if (e.Button == MouseButtons.Left)
 			{
 				MouseLeftButtonUpHandel(e);
+				SetOperationPanelLocation();
 			}
 			base.OnMouseUp(e);
 		}
@@ -175,7 +181,7 @@ namespace DrawKit.Screenshot
 				_drawStatus == DrawStatus.CanMove ||
 				_drawStatus == DrawStatus.CanAdjusted ||
 				_drawStatus == DrawStatus.Adjusting ||
-				_drawStatus == DrawStatus.CompleteAdjustment )
+				_drawStatus == DrawStatus.CompleteAdjustment)
 			{
 				if (_selectionRect.Width == 0 || _selectionRect.Height == 0) return;
 				DrawCanMoveOrAdjusted(e.Graphics);
@@ -183,43 +189,17 @@ namespace DrawKit.Screenshot
 
 		}
 
-		private void RecalculateScope()
+		private void DrawSelectionRectSize(Graphics graphics, Point location)
 		{
-			int x;
-			int y;
-			int width;
-			int height;
-			if (_selectionRect.Width < 0 && _selectionRect.Height < 0)
-			{
-				x = _selectionRect.X + _selectionRect.Width;
-				y = _selectionRect.Y + _selectionRect.Height;
-				width = Math.Abs(_selectionRect.Width);
-				height = Math.Abs(_selectionRect.Height);
-				_selectionRect = new Rectangle(x, y, width, height);
-			}
-			else if (_selectionRect.Width < 0 && _selectionRect.Height > 0)
-			{
-				x = _selectionRect.X + _selectionRect.Width;
-				y = _selectionRect.Y;
-				width = Math.Abs(_selectionRect.Width);
-				height = _selectionRect.Height;
-				_selectionRect = new Rectangle(x, y, width, height);
-			}
-			else if (_selectionRect.Width > 0 && _selectionRect.Height < 0)
-			{
-				x = _selectionRect.X;
-				y = _selectionRect.Y + _selectionRect.Height;
-				width = _selectionRect.Width;
-				height = Math.Abs(_selectionRect.Height);
-				_selectionRect = new Rectangle(x, y, width, height);
-			}
+			graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+			graphics.DrawString($"{Math.Abs(_selectionRect.Width)} x {Math.Abs(_selectionRect.Height)}", new Font("Segoe UI", 9, FontStyle.Bold), new SolidBrush(Color.White), location);
 		}
 
 		private void DrawCreating(Graphics graphics)
 		{
 			using (Pen pen = new Pen(Color.FromArgb(255, 7, 193, 96), 1))
 			{
-				_selectedArea = new Bitmap( _selectionRect.Width, _selectionRect.Height);
+				_selectedArea = new Bitmap(_selectionRect.Width, _selectionRect.Height);
 				using (Graphics g = Graphics.FromImage(_selectedArea))
 				{
 					g.DrawImage(_screenBitmap, new Rectangle(0, 0, _selectionRect.Width, _selectionRect.Height), _selectionRect, GraphicsUnit.Pixel);
@@ -229,90 +209,91 @@ namespace DrawKit.Screenshot
 				graphics.DrawRectangle(pen, new Rectangle(_selectionRect.X, _selectionRect.Y, _selectionRect.Width, _selectionRect.Height));
 
 				int y = _selectionRect.Y - 22 <= 0 ? _selectionRect.Y + 2 : _selectionRect.Y - 22;
-				DrawSelectionRectSize(graphics,new Point(_selectionRect.X,y));
+				DrawSelectionRectSize(graphics, new Point(_selectionRect.X, y));
 			}
-		}
-
-		private void DrawSelectionRectSize(Graphics graphics,Point location)
-		{
-			graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
-			graphics.DrawString($"{Math.Abs(_selectionRect.Width)} x {Math.Abs(_selectionRect.Height)}", new Font("Segoe UI", 9, FontStyle.Bold), new SolidBrush(Color.White),location);
 		}
 
 		private void DrawCanMoveOrAdjusted(Graphics graphics)
 		{
+			int x;
+			int y;
+			int width;
+			int height;
+			int textY;
+			if (_selectionRect.Width < 0 && _selectionRect.Height < 0)
+			{
+				x = _selectionRect.X + _selectionRect.Width;
+				y = _selectionRect.Y + _selectionRect.Height;
+				width = Math.Abs(_selectionRect.Width);
+				height = Math.Abs(_selectionRect.Height);
+			}
+			else if (_selectionRect.Width < 0 && _selectionRect.Height > 0)
+			{
+				x = _selectionRect.X + _selectionRect.Width;
+				y = _selectionRect.Y;
+				width = Math.Abs(_selectionRect.Width);
+				height = _selectionRect.Height;
+			}
+			else if (_selectionRect.Width > 0 && _selectionRect.Height < 0)
+			{
+				x = _selectionRect.X;
+				y = _selectionRect.Y + _selectionRect.Height;
+				width = _selectionRect.Width;
+				height = Math.Abs(_selectionRect.Height);
+			}
+			else
+			{
+				x = _selectionRect.X;
+				y = _selectionRect.Y;
+				width = _selectionRect.Width;
+				height = _selectionRect.Height;
+			}
+			_selectedArea = new Bitmap(width, height);
+			var rect = new Rectangle(x, y, width, height);
+			using (Graphics g = Graphics.FromImage(_selectedArea))
+			{
+				g.DrawImage(_screenBitmap, new Rectangle(0, 0, width, height), rect, GraphicsUnit.Pixel);
+			}
+			graphics.DrawImage(_selectedArea, rect);
+
 			using (Pen pen = new Pen(Color.FromArgb(255, 7, 193, 96), 1))
 			{
-				int x;
-				int y;
-				int width;
-				int height;
-				int textY;
-				if (_selectionRect.Width < 0 && _selectionRect.Height < 0)
-				{
-					 x = _selectionRect.X + _selectionRect.Width;
-					 y = _selectionRect.Y + _selectionRect.Height;
-					width = Math.Abs(_selectionRect.Width);
-					height = Math.Abs(_selectionRect.Height);
-				}
-				else if (_selectionRect.Width < 0 && _selectionRect.Height > 0)
-				{
-					x = _selectionRect.X + _selectionRect.Width;
-					y = _selectionRect.Y;
-					width = Math.Abs(_selectionRect.Width);
-					height = _selectionRect.Height;
-				}
-				else if (_selectionRect.Width > 0 && _selectionRect.Height < 0)
-				{
-					x = _selectionRect.X;
-					y = _selectionRect.Y + _selectionRect.Height;
-					width = _selectionRect.Width;
-					height = Math.Abs(_selectionRect.Height);
-				}
-				else
-				{
-					x = _selectionRect.X;
-					y = _selectionRect.Y;
-					width = _selectionRect.Width;
-					height = _selectionRect.Height;
-				}
-				_selectedArea = new Bitmap(width, height);
-				var rect = new Rectangle(x, y, width, height);
-				using (Graphics g = Graphics.FromImage(_selectedArea))
-				{
-					g.DrawImage(_screenBitmap, new Rectangle(0, 0, width, height), rect, GraphicsUnit.Pixel);
-				}
-				graphics.DrawImage(_selectedArea, rect);
-
 				graphics.DrawRectangle(pen, new Rectangle(x, y, width, height));
-				
-				textY = y - 22 <= 0 ? y + 2 : y - 22;
-				DrawSelectionRectSize(graphics, new Point(x, textY));
-				
-				foreach (var item in GetEditPoints(_selectionRect))
-				{
-					graphics.FillRectangle(new SolidBrush(_editPointColor), new Rectangle(
-						item.editPoint.X - (int)_editPointSize / 2,
-						item.editPoint.Y - (int)_editPointSize / 2,
-						(int)_editPointSize,
-						(int)_editPointSize));
-				}
 			}
-			
+			textY = y - 22 <= 0 ? y + 2 : y - 22;
+			DrawSelectionRectSize(graphics, new Point(x, textY));
+
+			foreach (var item in GetEditPoints(_selectionRect))
+			{
+				graphics.FillRectangle(new SolidBrush(_editPointColor), new Rectangle(
+					item.editPoint.X - (int)_editPointSize / 2,
+					item.editPoint.Y - (int)_editPointSize / 2,
+					(int)_editPointSize,
+					(int)_editPointSize));
+			}
 		}
 
-		private IEnumerable<(Point editPoint, RectangleShapeFocusType focusType)> GetEditPoints(Rectangle rect)
+		private void pic_cancel_Click(object sender, EventArgs e)
 		{
-			yield return (new Point(rect.X, rect.Y), RectangleShapeFocusType.TopLeft);
-			yield return (new Point(rect.X + rect.Width / 2, rect.Y), RectangleShapeFocusType.TopCenter);
-			yield return (new Point(rect.X + rect.Width, rect.Y), RectangleShapeFocusType.TopRight);
+			CloseForm();
+		}
 
-			yield return (new Point(rect.X, rect.Y + rect.Height / 2), RectangleShapeFocusType.MiddleLeft);
-			yield return (new Point(rect.X + rect.Width, rect.Y + rect.Height / 2), RectangleShapeFocusType.MiddleRight);
+		private void CloseForm()
+		{
+			Close();
+			this.Dispose();
+		}
 
-			yield return (new Point(rect.X, rect.Y + rect.Height), RectangleShapeFocusType.BottomLeft);
-			yield return (new Point(rect.X + rect.Width / 2, rect.Y + rect.Height), RectangleShapeFocusType.BottomCenter);
-			yield return (new Point(rect.X + rect.Width, rect.Y + rect.Height), RectangleShapeFocusType.BottomRight);
+		private void pic_OK_Click(object sender, EventArgs e)
+		{
+			CopyScreenshotToClipboard();
+		}
+
+		private void CopyScreenshotToClipboard()
+		{
+			if (_selectedArea == null) return;
+			Clipboard.SetImage(_selectedArea);
+			CloseForm();
 		}
 
 		private void MouseOverResizeHandle(Point mouseLocation)
@@ -394,6 +375,21 @@ namespace DrawKit.Screenshot
 					break;
 			}
 		}
+
+		private IEnumerable<(Point editPoint, RectangleShapeFocusType focusType)> GetEditPoints(Rectangle rect)
+		{
+			yield return (new Point(rect.X, rect.Y), RectangleShapeFocusType.TopLeft);
+			yield return (new Point(rect.X + rect.Width / 2, rect.Y), RectangleShapeFocusType.TopCenter);
+			yield return (new Point(rect.X + rect.Width, rect.Y), RectangleShapeFocusType.TopRight);
+
+			yield return (new Point(rect.X, rect.Y + rect.Height / 2), RectangleShapeFocusType.MiddleLeft);
+			yield return (new Point(rect.X + rect.Width, rect.Y + rect.Height / 2), RectangleShapeFocusType.MiddleRight);
+
+			yield return (new Point(rect.X, rect.Y + rect.Height), RectangleShapeFocusType.BottomLeft);
+			yield return (new Point(rect.X + rect.Width / 2, rect.Y + rect.Height), RectangleShapeFocusType.BottomCenter);
+			yield return (new Point(rect.X + rect.Width, rect.Y + rect.Height), RectangleShapeFocusType.BottomRight);
+		}
+
 		private void SetFoucsCursorType(RectangleShapeFocusType focusType)
 		{
 			switch (focusType)
@@ -432,38 +428,76 @@ namespace DrawKit.Screenshot
 					break;
 			}
 		}
+
+		private void RecalculateScope()
+		{
+			int x;
+			int y;
+			int width;
+			int height;
+			if (_selectionRect.Width < 0 && _selectionRect.Height < 0)
+			{
+				x = _selectionRect.X + _selectionRect.Width;
+				y = _selectionRect.Y + _selectionRect.Height;
+				width = Math.Abs(_selectionRect.Width);
+				height = Math.Abs(_selectionRect.Height);
+				_selectionRect = new Rectangle(x, y, width, height);
+			}
+			else if (_selectionRect.Width < 0 && _selectionRect.Height > 0)
+			{
+				x = _selectionRect.X + _selectionRect.Width;
+				y = _selectionRect.Y;
+				width = Math.Abs(_selectionRect.Width);
+				height = _selectionRect.Height;
+				_selectionRect = new Rectangle(x, y, width, height);
+			}
+			else if (_selectionRect.Width > 0 && _selectionRect.Height < 0)
+			{
+				x = _selectionRect.X;
+				y = _selectionRect.Y + _selectionRect.Height;
+				width = _selectionRect.Width;
+				height = Math.Abs(_selectionRect.Height);
+				_selectionRect = new Rectangle(x, y, width, height);
+			}
+		}
+
+		private void SetOperationPanelLocation()
+		{
+			if (_selectionRect == Rectangle.Empty) return;
+			int x = _selectionRect.Right - panel_operation.Width;
+			int y = _selectionRect.Bottom + 5 + panel_operation.Height >= _screenBitmap.Height ? _selectionRect.Top - 5 - panel_operation.Height : _selectionRect.Bottom + 5;
+			
+
+			panel_operation.Location = new Point(x, y);
+			panel_operation.Visible = true;
+		}
+
+		private void pic_Save_Click(object sender, EventArgs e)
+		{
+			SavePng();
+			CloseForm();
+		}
+
+		private void SavePng()
+		{
+			SaveFileDialog saveFileDialog = new SaveFileDialog
+			{
+				Filter = "PNG Image|*.png",
+				Title = "保存为 PNG 图片"
+			};
+
+			if (saveFileDialog.ShowDialog() == DialogResult.OK)
+			{
+				try
+				{
+					_selectedArea.Save(saveFileDialog.FileName, ImageFormat.Png);
+				}
+				catch (Exception ex)
+				{
+					MessageBox.Show($"保存失败：{ex.Message}", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				}
+			}
+		}
+
 	}
 }
-
-
-/*
- if (_startPoint.HasValue && e.Button == MouseButtons.Left)
-			{
-				_endPoint = e.Location;
-				this.Invalidate();
-
-				Rectangle rect = GetSelectionRect();
-				if (rect.Width != 0 && rect.Height != 0)
-				{
-				
-					//Bitmap _selectedArea = new Bitmap(rect.Width, rect.Height);
-					//using (Graphics g = Graphics.FromImage(_selectedArea))
-					//{
-					//	g.DrawImage(_screenBitmap, new Rectangle(0, 0, rect.Width, rect.Height), rect, GraphicsUnit.Pixel);
-					//}
-
-					//Clipboard.SetImage(_selectedArea); // 存入剪贴板
-					//MessageBox.Show("截图已复制到剪贴板");
-				}
-				
-				this.Close();
-			}
-
-
-
-
-
-
-
-
- */

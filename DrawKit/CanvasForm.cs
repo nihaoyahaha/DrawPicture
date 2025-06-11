@@ -9,11 +9,19 @@ using System.Drawing.Text;
 using System.IO;
 using System.Windows.Forms;
 using DrawKit.Screenshot;
+using System.Runtime.InteropServices;
 
 namespace DrawKit
 {
 	public partial class CanvasForm : Form
 	{
+		[DllImport("user32.dll")]
+		private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
+
+		[DllImport("user32.dll")]
+		private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+		private const int HOTKEY_ID = 1;
+
 		public string FilePath;
 		public event Action OnConfirm;
 		private Bitmap _canvas;
@@ -21,11 +29,8 @@ namespace DrawKit
 		private Color _canvasBackgroundColor = Color.White;
 		private float[] _scales = { 0.125f, 0.25f, 0.5f, 0.75f, 1, 2, 3, 4, 5, 6, 7, 8 };
 		private float _scaleDelta = 0.1f;
+		private CaptureForm _captureForm;
 
-		//10  ~  800
-		//12.5 ~ 200  +-10
-		//200-600   +- 25
-		//600 - 800  +-50
 		public CanvasForm()
 		{
 			InitializeComponent();
@@ -57,6 +62,10 @@ namespace DrawKit
 			SetCanvasScale(GetCmbscaleSelectedItemKey());
 			OperationStep.InitStack();
 			SetPanelTextStyle();
+			if (!RegisterHotKey(this.Handle, HOTKEY_ID, (uint)0x0001, (uint)Keys.B))
+			{
+				MessageBox.Show("无法注册热键，请重试。");
+			}
 		}
 
 		private void panel_main_MouseMove(object sender, MouseEventArgs e)
@@ -440,7 +449,6 @@ namespace DrawKit
 
 		private void SavePng()
 		{
-			// 保存位图为 PNG 文件
 			SaveFileDialog saveFileDialog = new SaveFileDialog
 			{
 				Filter = "PNG Image|*.png",
@@ -452,11 +460,11 @@ namespace DrawKit
 				try
 				{
 					_canvas.Save(saveFileDialog.FileName, ImageFormat.Png);
-					MessageBox.Show("画像は正常に保存されました！", "保存に成功しました", MessageBoxButtons.OK, MessageBoxIcon.Information);
+					MessageBox.Show("图像已成功保存!", "保存成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				}
 				catch (Exception ex)
 				{
-					MessageBox.Show($"保存に失敗しました：{ex.Message}", "エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					MessageBox.Show($"保存失败：{ex.Message}", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				}
 			}
 		}
@@ -1005,10 +1013,7 @@ namespace DrawKit
 
 		private void btn_screenShot_Click(object sender, EventArgs e)
 		{
-			using (var captureForm = new CaptureForm())
-			{
-				captureForm.ShowDialog(this);
-			}
+			OpenCaptureForm();
 		}
 
 		private void CanvasForm_KeyDown(object sender, KeyEventArgs e)
@@ -1019,5 +1024,27 @@ namespace DrawKit
 				rectSelection.DelSelectedBitmap();
 			}
 		}
+		protected override void WndProc(ref Message m)
+		{
+			if (m.Msg == 0x0312 && m.WParam.ToInt32() == HOTKEY_ID)
+			{
+				OpenCaptureForm();
+			}
+			base.WndProc(ref m);
+		}
+
+		private void OpenCaptureForm()
+		{
+			if (_captureForm == null || _captureForm.IsDisposed)
+			{
+				_captureForm = new CaptureForm();
+				_captureForm.ShowDialog();
+			}
+			else
+			{ 
+				_captureForm.Focus();
+			}
+		}
+
 	}
 }

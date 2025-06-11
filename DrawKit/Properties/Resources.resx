@@ -127,9 +127,6 @@
   <data name="ObjectSize1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ObjectSize1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="left1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\left1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="FillTool" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\FillTool.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -141,6 +138,9 @@
   </data>
   <data name="right1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\right1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ScreenshotCompleted_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ScreenshotCompleted_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="RightTriangleTool" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\RightTriangleTool.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -162,6 +162,9 @@
   </data>
   <data name="RectangleTool" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\RectangleTool.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="strikethrough" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\strikethrough.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="颜色" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\颜色.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -205,14 +208,20 @@
   <data name="CvsSize " type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\CvsSize .png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Screenshots" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Screenshots.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="TextTool" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\TextTool.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="shiying" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\shiying.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="strikethrough" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\strikethrough.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ScreenshotCancellation_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ScreenshotCancellation_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="left1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\left1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="DiamondTool" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\DiamondTool.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -223,7 +232,7 @@
   <data name="EraserTool" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\EraserTool.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Screenshots" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Screenshots.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="savescreen_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\savescreen_32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

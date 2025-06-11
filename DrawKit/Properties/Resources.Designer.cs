@@ -323,6 +323,36 @@ namespace DrawKit.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
+        internal static System.Drawing.Bitmap savescreen_32 {
+            get {
+                object obj = ResourceManager.GetObject("savescreen_32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap ScreenshotCancellation_16 {
+            get {
+                object obj = ResourceManager.GetObject("ScreenshotCancellation_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap ScreenshotCompleted_16 {
+            get {
+                object obj = ResourceManager.GetObject("ScreenshotCompleted_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
         internal static System.Drawing.Bitmap Screenshots {
             get {
                 object obj = ResourceManager.GetObject("Screenshots", resourceCulture);

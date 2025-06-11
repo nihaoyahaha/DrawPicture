@@ -95,6 +95,9 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Screenshot\CaptureForm.resx">
+      <DependentUpon>CaptureForm.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Clearup.png" />
@@ -216,6 +219,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Screenshots.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ScreenshotCompleted_16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ScreenshotCancellation_16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\savescreen_32.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
