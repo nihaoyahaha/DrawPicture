@@ -52,10 +52,6 @@ namespace DrawKit.Shapes
 			{
 				MouseRightButtonDownHandle(e);
 			}
-			if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift)
-			{
-
-			}
 		}
 		private void MouseLeftButtonDownHandle(MouseEventArgs e)
 		{
