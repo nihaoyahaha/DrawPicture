@@ -1010,5 +1010,14 @@ namespace DrawKit
 				captureForm.ShowDialog(this);
 			}
 		}
+
+		private void CanvasForm_KeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.KeyCode == Keys.Delete && _shape is RectangularSelection)
+			{
+				var rectSelection = _shape as RectangularSelection;
+				rectSelection.DelSelectedBitmap();
+			}
+		}
 	}
 }

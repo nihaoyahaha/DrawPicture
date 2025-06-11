@@ -55,6 +55,16 @@ namespace DrawKit.Shapes
 			}
 		}
 
+		public void DelSelectedBitmap()
+		{
+			tempCanvas = (Bitmap)canvas.Clone();
+			using (Graphics g = Graphics.FromImage(tempCanvas))
+			{
+				g.FillRectangle(new SolidBrush(_FillRectColor), ConvertSelectionRectToCanvasRect(_fillRect));
+			}
+			BitmapDrawImage();
+		}
+
 		private void MouseRightButtonDownHandle(MouseEventArgs e)
 		{
 			if (drawStatus == DrawStatus.Creating ||
@@ -286,14 +296,11 @@ namespace DrawKit.Shapes
 			tempCanvas = (Bitmap)canvas.Clone();
 			using (Graphics g = Graphics.FromImage(tempCanvas))
 			{
-				using (Pen selectionPen = new Pen(ForeColor, Size))
-				{
-					g.CompositingQuality = CompositingQuality.HighQuality;
-					g.InterpolationMode = InterpolationMode.NearestNeighbor;
-					g.SmoothingMode = SmoothingMode.None;
-					g.FillRectangle(new SolidBrush(_FillRectColor), ConvertSelectionRectToCanvasRect(_fillRect));
-					g.DrawImage(_selectedBitmap, ConvertSelectionRectToCanvasRect(SelectionRect));
-				}
+				g.CompositingQuality = CompositingQuality.HighQuality;
+				g.InterpolationMode = InterpolationMode.NearestNeighbor;
+				g.SmoothingMode = SmoothingMode.None;
+				g.FillRectangle(new SolidBrush(_FillRectColor), ConvertSelectionRectToCanvasRect(_fillRect));
+				g.DrawImage(_selectedBitmap, ConvertSelectionRectToCanvasRect(SelectionRect));
 			}
 
 			using (Pen selectionPen = new Pen(ResizerPointColor, 0.5f))
@@ -323,14 +330,11 @@ namespace DrawKit.Shapes
 			tempCanvas = (Bitmap)canvas.Clone();
 			using (Graphics g = Graphics.FromImage(tempCanvas))
 			{
-				using (Pen selectionPen = new Pen(ForeColor, Size))
-				{
-					g.CompositingQuality = CompositingQuality.HighQuality;
-					g.InterpolationMode = InterpolationMode.NearestNeighbor;
-					g.SmoothingMode = SmoothingMode.None;
-					g.FillRectangle(new SolidBrush(_FillRectColor), ConvertSelectionRectToCanvasRect(_fillRect));
-					g.DrawImage(_selectedBitmap, ConvertSelectionRectToCanvasRect(_rectBeforeAdjust));
-				}
+				g.CompositingQuality = CompositingQuality.HighQuality;
+				g.InterpolationMode = InterpolationMode.NearestNeighbor;
+				g.SmoothingMode = SmoothingMode.None;
+				g.FillRectangle(new SolidBrush(_FillRectColor), ConvertSelectionRectToCanvasRect(_fillRect));
+				g.DrawImage(_selectedBitmap, ConvertSelectionRectToCanvasRect(_rectBeforeAdjust));
 			}
 
 			using (Pen selectionPen = new Pen(ResizerPointColor, 0.5f))
@@ -364,14 +368,11 @@ namespace DrawKit.Shapes
 			tempCanvas = (Bitmap)canvas.Clone();
 			using (Graphics g = Graphics.FromImage(tempCanvas))
 			{
-				using (Pen selectionPen = new Pen(ForeColor, Size))
-				{
-					g.CompositingQuality = CompositingQuality.HighQuality;
-					g.InterpolationMode = InterpolationMode.NearestNeighbor;
-					g.SmoothingMode = SmoothingMode.None;
-					g.FillRectangle(new SolidBrush(_FillRectColor), ConvertSelectionRectToCanvasRect(_fillRect));
-					g.DrawImage(_selectedBitmap, ConvertSelectionRectToCanvasRect(SelectionRect));
-				}
+				g.CompositingQuality = CompositingQuality.HighQuality;
+				g.InterpolationMode = InterpolationMode.NearestNeighbor;
+				g.SmoothingMode = SmoothingMode.None;
+				g.FillRectangle(new SolidBrush(_FillRectColor), ConvertSelectionRectToCanvasRect(_fillRect));
+				g.DrawImage(_selectedBitmap, ConvertSelectionRectToCanvasRect(SelectionRect));
 			}
 			graphics.DrawImage(tempCanvas, GetCanvasRegion());
 			using (Pen selectionPen = new Pen(ResizerPointColor, 0.5f))
