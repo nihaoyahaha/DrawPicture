@@ -10,7 +10,7 @@ using System.Windows.Forms;
 namespace DrawKit.Shapes
 {
 	/// <summary>
-	/// 長方形
+	/// 矩形
 	/// </summary>
 	public class ShapeRectangle : Shape
 	{

@@ -11,7 +11,7 @@ using System.Windows.Forms;
 namespace DrawKit.Shapes
 {
 	/// <summary>
-	/// 直線
+	/// 直线
 	/// </summary>
 	public class Line : Shape
 	{

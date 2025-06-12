@@ -14,16 +14,16 @@ using DrawKit.History;
 namespace DrawKit.Shapes
 {
 	/// <summary>
-	/// テキスト
+	///文本
 	/// </summary>
 	public class TextBoxArea : Shape
 	{
 		public float FontSize { get; set; }
 
-		public Rectangle _rectCreating  = Rectangle.Empty;
+		public Rectangle _rectCreating = Rectangle.Empty;
 		public RichTextBox richTextBox { get; set; }
 		public TextBoxArea() { }
-		public TextBoxArea(Bitmap bitmap, Panel panel,float scale) : base(bitmap, panel, scale) { }
+		public TextBoxArea(Bitmap bitmap, Panel panel, float scale) : base(bitmap, panel, scale) { }
 		private void BitmapDrawText()
 		{
 			if (canvas == null) return;
@@ -53,15 +53,15 @@ namespace DrawKit.Shapes
 					g.InterpolationMode = InterpolationMode.NearestNeighbor;
 					g.SmoothingMode = SmoothingMode.None;
 					g.TextRenderingHint = TextRenderingHint.SingleBitPerPixel;
-					Font font = new Font(richTextBox.Font.FontFamily,FontSize, richTextBox.Font.Style);
-					g.DrawString(richTextBox.Text, font, new SolidBrush(ForeColor),ConvertSelectionRectToCanvasRect(SelectionRect) /*ConvertPoint(richTextBox.Location)*/, format);
+					Font font = new Font(richTextBox.Font.FontFamily, FontSize, richTextBox.Font.Style);
+					g.DrawString(richTextBox.Text, font, new SolidBrush(ForeColor), ConvertSelectionRectToCanvasRect(SelectionRect) /*ConvertPoint(richTextBox.Location)*/, format);
 				}
 			}
 			SelectionRect = Rectangle.Empty;
 			drawStatus = DrawStatus.CompleteDrawText;
 			richTextBox.Visible = false;
 			richTextBox.Text = "";
-			panel.Invalidate();	
+			panel.Invalidate();
 		}
 
 		public override void MouseDown(MouseEventArgs e)
@@ -76,7 +76,7 @@ namespace DrawKit.Shapes
 			{
 				MouseLeftButtonDownHandle(e);
 			}
-		    
+
 		}
 
 		private void MouseLeftButtonDownHandle(MouseEventArgs e)
@@ -104,7 +104,7 @@ namespace DrawKit.Shapes
 				drawStatus = DrawStatus.CanvasAdjusting;
 			}
 		}
-		
+
 		private void MouseRightButtonDownHandle(MouseEventArgs e)
 		{
 			if (drawStatus == DrawStatus.Creating ||
@@ -156,7 +156,7 @@ namespace DrawKit.Shapes
 				if (y + height >= rect.Bottom)
 				{
 					height = rect.Bottom - y;
-				} 
+				}
 
 				_rectCreating = new Rectangle(x, y, width, height);
 				panel.Invalidate();
@@ -189,7 +189,7 @@ namespace DrawKit.Shapes
 		}
 
 		/// <summary>
-		/// 長方形選択範囲の調整
+		/// 调整矩形选区
 		/// </summary>
 		/// <param name="horizontalDistance"></param>
 		/// <param name="verticalDistance"></param>
@@ -359,7 +359,7 @@ namespace DrawKit.Shapes
 				MouseLeftButtonUpHandel(e);
 			}
 		}
-		
+
 		private void MouseLeftButtonUpHandel(MouseEventArgs e)
 		{
 			if (drawStatus == DrawStatus.Creating)
@@ -374,7 +374,7 @@ namespace DrawKit.Shapes
 					_rectCreating.Y = StartPoint.Y;
 				}
 
-				SetRichTextBoxMinSize(FontSize,ref _rectCreating);
+				SetRichTextBoxMinSize(FontSize, ref _rectCreating);
 
 				drawStatus = DrawStatus.CanAdjusted;
 				SelectionRect = _rectCreating;
@@ -485,15 +485,15 @@ namespace DrawKit.Shapes
 			richTextBox.Visible = false;
 		}
 
-		public override void RotateRight(){}
+		public override void RotateRight() { }
 
-		public override void RotateLeft(){}
+		public override void RotateLeft() { }
 
-		public override void Rotate180(){}
+		public override void Rotate180() { }
 
-		public override void FlipHorizontal(){}
+		public override void FlipHorizontal() { }
 
-		public override void FlipVertical(){}
+		public override void FlipVertical() { }
 
 	}
 }

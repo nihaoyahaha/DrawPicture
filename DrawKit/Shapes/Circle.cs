@@ -7,7 +7,7 @@ using static System.Windows.Forms.AxHost;
 namespace DrawKit.Shapes
 {
 	/// <summary>
-	/// 円
+	/// 圆
 	/// </summary>
 	public class Circle : Shape
 	{
@@ -277,7 +277,7 @@ namespace DrawKit.Shapes
 			ClearBitmap(color);
 		}
 
-		//編集状態の図を保存
+		//保存编辑状态
 		public override void CommitCurrentShape()
 		{
 			BitmapDrawCircle();

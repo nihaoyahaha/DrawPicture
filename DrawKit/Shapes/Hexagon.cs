@@ -10,11 +10,11 @@ using System.Windows.Forms;
 namespace DrawKit.Shapes
 {
 	/// <summary>
-	/// 六角形
+	///六角形
 	/// </summary>
 	public class Hexagon : Shape
 	{
-		//頂点の集合
+		//顶点集合
 		private List<Point> _vertexs = new List<Point>();
 
 		public Hexagon() { }
@@ -154,32 +154,32 @@ namespace DrawKit.Shapes
 		}
 
 		/// <summary>
-		/// 六角形頂点の計算
+		/// 计算六边形顶点
 		/// </summary>
 		private void CalculateHexagonPoints()
 		{
 			_vertexs.Clear();
-			//上部頂点
+			//顶部顶点
 			var point = new Point(SelectionRect.Left + SelectionRect.Width / 2, SelectionRect.Top);
 			_vertexs.Add(point);
 
-			//右上の頂点
+			//右上顶点
 			point = new Point(SelectionRect.Right, SelectionRect.Top + SelectionRect.Height / 4);
 			_vertexs.Add(point);
 
-			//右下の頂点
+			//右下顶点
 			point = new Point(SelectionRect.Right, SelectionRect.Bottom - SelectionRect.Height / 4);
 			_vertexs.Add(point);
 
-			//下部の頂点
+			//底部顶点
 			point = new Point(SelectionRect.Left + SelectionRect.Width / 2, SelectionRect.Bottom);
 			_vertexs.Add(point);
 
-			//左下の頂点
+			//左下顶点
 			point = new Point(SelectionRect.Left, SelectionRect.Bottom - SelectionRect.Height / 4);
 			_vertexs.Add(point);
 
-			//左上の頂点
+			//左上顶点
 			point = new Point(SelectionRect.Left, SelectionRect.Top + SelectionRect.Height / 4);
 			_vertexs.Add(point);
 
@@ -351,106 +351,106 @@ namespace DrawKit.Shapes
 			switch (RotationCount)
 			{
 				case 0:
-					//上部頂点
+					//顶部顶点
 					point = new Point(SelectionRect.Left + SelectionRect.Width / 2, SelectionRect.Top);
 					_vertexs.Add(point);
 
-					//右上の頂点
+					//右上顶点
 					point = new Point(SelectionRect.Right, SelectionRect.Top + SelectionRect.Height / 4);
 					_vertexs.Add(point);
 
-					//右下の頂点
+					//右下顶点
 					point = new Point(SelectionRect.Right, SelectionRect.Bottom - SelectionRect.Height / 4);
 					_vertexs.Add(point);
 
-					//下部の頂点
+					//底部顶点
 					point = new Point(SelectionRect.Left + SelectionRect.Width / 2, SelectionRect.Bottom);
 					_vertexs.Add(point);
 
-					//左下の頂点
+					//左下顶点
 					point = new Point(SelectionRect.Left, SelectionRect.Bottom - SelectionRect.Height / 4);
 					_vertexs.Add(point);
 
-					//左上の頂点
+					//左上顶点
 					point = new Point(SelectionRect.Left, SelectionRect.Top + SelectionRect.Height / 4);
 					_vertexs.Add(point);
 
 					break;
 
 				case 1:
-					//左中の頂点
+					//左中顶点
 					point = new Point(SelectionRect.Left,SelectionRect.Top+SelectionRect.Height/2);
 					_vertexs.Add(point);
 
-					//上左の頂点
+					//上左顶点
 					point = new Point(SelectionRect.Left+SelectionRect.Width/4,SelectionRect.Top);
 					_vertexs.Add(point);
 
-					//上右の頂点
+					//上右顶点
 					point = new Point(SelectionRect.Right-SelectionRect.Width/4,SelectionRect.Top);
 					_vertexs.Add(point);
 
-					//右中の頂点
+					//右中顶点
 					point = new Point(SelectionRect.Right,SelectionRect.Top+SelectionRect.Height/2);
 					_vertexs.Add(point);
 
-					//下右の頂点
+					//下右顶点
 					point = new Point(SelectionRect.Right-SelectionRect.Width/4,SelectionRect.Bottom);
 					_vertexs.Add(point);
 
-					//下左の頂点
+					//下左顶点
 					point = new Point(SelectionRect.Left+SelectionRect.Width/4,SelectionRect.Bottom);
 					_vertexs.Add(point);
 					break;
 
 				case 2:
-					//上部頂点
+					//上部顶点
 					point = new Point(SelectionRect.Left + SelectionRect.Width / 2, SelectionRect.Top);
 					_vertexs.Add(point);
 
-					//右上の頂点
+					//右上顶点
 					point = new Point(SelectionRect.Right, SelectionRect.Top + SelectionRect.Height / 4);
 					_vertexs.Add(point);
 
-					//右下の頂点
+					//右下顶点
 					point = new Point(SelectionRect.Right, SelectionRect.Bottom - SelectionRect.Height / 4);
 					_vertexs.Add(point);
 
-					//下部の頂点
+					//下部顶点
 					point = new Point(SelectionRect.Left + SelectionRect.Width / 2, SelectionRect.Bottom);
 					_vertexs.Add(point);
 
-					//左下の頂点
+					//左下顶点
 					point = new Point(SelectionRect.Left, SelectionRect.Bottom - SelectionRect.Height / 4);
 					_vertexs.Add(point);
 
-					//左上の頂点
+					//左上顶点
 					point = new Point(SelectionRect.Left, SelectionRect.Top + SelectionRect.Height / 4);
 					_vertexs.Add(point);
 					break;
 
 				case 3:
-					//左中の頂点
+					//左中顶点
 					point = new Point(SelectionRect.Left, SelectionRect.Top + SelectionRect.Height / 2);
 					_vertexs.Add(point);
 
-					//上左の頂点
+					//上左顶点
 					point = new Point(SelectionRect.Left + SelectionRect.Width / 4, SelectionRect.Top);
 					_vertexs.Add(point);
 
-					//上右の頂点
+					//上右顶点
 					point = new Point(SelectionRect.Right - SelectionRect.Width / 4, SelectionRect.Top);
 					_vertexs.Add(point);
 
-					//右中の頂点
+					//右中顶点
 					point = new Point(SelectionRect.Right, SelectionRect.Top + SelectionRect.Height / 2);
 					_vertexs.Add(point);
 
-					//下右の頂点
+					//下右顶点
 					point = new Point(SelectionRect.Right - SelectionRect.Width / 4, SelectionRect.Bottom);
 					_vertexs.Add(point);
 
-					//下左の頂点
+					//下左顶点
 					point = new Point(SelectionRect.Left + SelectionRect.Width / 4, SelectionRect.Bottom);
 					_vertexs.Add(point);
 					break;

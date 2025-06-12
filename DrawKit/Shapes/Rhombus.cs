@@ -9,13 +9,15 @@ using System.Windows.Forms;
 
 namespace DrawKit.Shapes
 {
-	//ひし形
+	/// <summary>
+	/// 菱形
+	/// </summary>
 	public class Rhombus : Shape
 	{
 		public Rhombus() { }
 		public Rhombus(Bitmap bitmap, Panel panel,float scale) : base(bitmap, panel, scale){}
 
-		//頂点の集合
+		//顶点集合
 		private List<Point> _vertexs = new List<Point>();
 
 		private void BitmapDrawRhombus()
@@ -152,24 +154,24 @@ namespace DrawKit.Shapes
 		}
 
 		/// <summary>
-		/// ひし形頂点の計算
+		/// 计算菱形顶点
 		/// </summary>
 		private void CalculateRhombusPoints()
 		{
 			_vertexs.Clear();
-			//上部頂点
+			//顶部顶点
 			var point = new Point(SelectionRect.Left + SelectionRect.Width / 2, SelectionRect.Top);
 			_vertexs.Add(point);
 
-			//右中の頂点
+			//右中顶点
 			point = new Point(SelectionRect.Right, SelectionRect.Top+SelectionRect.Height/2);
 			_vertexs.Add(point);
 
-			//下部の頂点
+			//底部顶点
 			point = new Point(SelectionRect.Left + SelectionRect.Width / 2, SelectionRect.Bottom);
 			_vertexs.Add(point);
 
-			//左中の頂点
+			//左中顶点
 			point = new Point(SelectionRect.Left,SelectionRect.Top+SelectionRect.Height/2);
 			_vertexs.Add(point);
 		}

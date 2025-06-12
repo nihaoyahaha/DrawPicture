@@ -10,6 +10,9 @@ using System.Windows.Forms;
 
 namespace DrawKit.Shapes
 {
+	/// <summary>
+	/// 笔
+	/// </summary>
     public class Pencil:Shape
     {
 		private Bitmap _eraserBitmap;

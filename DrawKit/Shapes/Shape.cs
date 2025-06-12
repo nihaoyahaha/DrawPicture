@@ -23,92 +23,94 @@ namespace DrawKit.Shapes
 			Scale = scale;
 		}
 
-		//キャンバス調整点コレクション
+		//画布尺寸调整点集合
 		private List<(Rectangle rect, RectangleShapeFocusType focusType)> _canvasEditPoints = new List<(Rectangle rect, RectangleShapeFocusType focusType)>();
 
 		protected Panel panel;
-		//開始点
+
+		//起点
 		protected Point StartPoint { get; set; }
 
-		//終点
+		//终点
 		protected Point EndPoint { get; set; }
 
-		//ポイントカラーを編集する
+		//编辑点颜色
 		protected Color ResizerPointColor = Color.FromArgb(104, 139, 204);
 
-		//ポイント寸法を編集するには
+		//编辑点尺寸
 		protected float ResizerPointSize = 10;
 
-		//ポイントタイプを編集する
+		//编辑点的所在位置
 		protected RectangleShapeFocusType FocusType;
 
-		//オフセットポイント
+		//偏移点
 		protected Point Offset = new Point();
 
-		//時計回りの回転数を記録する
+		//记录顺时针旋转数
 		protected int RotationCount = 0;
 
-		//水平反転するかどうか
+		//是否水平翻转
 		protected bool IsFlippedHorizontally = false;
 
-		//垂直反転するかどうか
+		//是否垂直翻转
 		protected bool IsFlippedVertically = false;
 
 		public Bitmap canvas;
 
 		public Bitmap tempCanvas;
 
-		//ズーム倍率
+		//缩放比例
 		public float Scale { get; set; }
 
-		//選択範囲
+		//选择范围
 		public Rectangle SelectionRect = Rectangle.Empty;
 
-		//調整中のbitmap範囲
+		//调整中的bitmap范围
 		public Rectangle AdjustingCanvasRect = Rectangle.Empty;
 
-		//太さ
+		//粗细
 		public float Size { get; set; } = 8;
 
 		//前景色
 		public Color ForeColor { get; set; } = Color.Black;
 
-		//図形描画状態
+		//绘图状态
 		public DrawStatus drawStatus { get; set; } = DrawStatus.CannotMovedOrAdjusted;
 
-		//ビットマップストレッチオフセットポイント
+		//位图拉伸偏移点
 		public Point BitmapStretchOffsetPoint = Point.Empty;
 
 		public abstract void MouseMove(MouseEventArgs e);
 		public abstract void MouseDown(MouseEventArgs e);
 		public abstract void MouseUp(MouseEventArgs e);
-		//描画中
+
+		//正在绘制
 		public abstract void InPainting(Graphics graphics);
 
-		//編集状態の図を保存
+		//保存编辑状态下的位图
 		public abstract void CommitCurrentShape();
 
 
-		//右に90度回転
+		//向右旋转90度
 		public abstract void RotateRight();
 
-		//左に90度回転
+		//向左旋转90度
 		public abstract void RotateLeft();
 
-		//180度回転
+		//旋转180度
 		public abstract void Rotate180();
 
-		//水平反転
+		//水平翻转
 		public abstract void FlipHorizontal();
 
-		//垂直反転
+		//垂直翻转
 		public abstract void FlipVertical();
 
-		//クリアランス
+		//清空
 		public abstract void Clear(Color color);
 
 		/// <summary>
-		/// bitmapの場所を取得
+		/// 获取当前画布的位置
 		/// </summary>
 		/// <returns></returns>
 		private (int X, int Y) GetCanvasLocation()
@@ -233,7 +235,7 @@ namespace DrawKit.Shapes
 		}
 
 		/// <summary>
-		/// 点が直線上にあるかどうかを判断する
+		/// 确定点是否在直线上
 		/// </summary>
 		/// <param name="pf"></param>
 		/// <param name="p1"></param>
@@ -258,7 +260,7 @@ namespace DrawKit.Shapes
 		}
 
 		/// <summary>
-		/// 矩形編集点に戻る
+		/// 返回到矩形编辑点
 		/// </summary>
 		/// <param name="rect"></param>
 		/// <returns></returns>
@@ -277,7 +279,7 @@ namespace DrawKit.Shapes
 		}
 
 		/// <summary>
-		/// マウスポインタの設定
+		/// 设置鼠标指针
 		/// </summary>
 		/// <param name="focusType"></param>
 		protected void SetFoucsCursorType(RectangleShapeFocusType focusType)
@@ -320,7 +322,7 @@ namespace DrawKit.Shapes
 		}
 
 		/// <summary>
-		/// 長方形選択範囲の調整
+		/// 调整矩形选区
 		/// </summary>
 		/// <param name="horizontalDistance"></param>
 		/// <param name="verticalDistance"></param>
@@ -410,7 +412,7 @@ namespace DrawKit.Shapes
 		}
 
 		/// <summary>
-		/// マウスをストレッチ可能な点に置いたままにしているか
+		/// 判断鼠标是否悬停在可拉伸点上
 		/// </summary>
 		/// <param name="mouseLocation"></param>
 		protected void MouseOverResizeHandle(Point mouseLocation)
@@ -445,7 +447,7 @@ namespace DrawKit.Shapes
 		}
 
 		/// <summary>
-		/// bitmapをクリア
+		/// 清除画布
 		/// </summary>
 		/// <param name="color"></param>
 		protected void ClearBitmap(Color color)
@@ -464,7 +466,7 @@ namespace DrawKit.Shapes
 		}
 
 		/// <summary>
-		/// 描画解除
+		/// 取消绘制
 		/// </summary>
 		protected virtual void CancelDrawing()
 		{
@@ -672,7 +674,7 @@ namespace DrawKit.Shapes
 			panel.Invalidate();
 		}
 
-		//インスタンスの作成
+		//创建形状实例
 		public T InitializeShape<T>() where T : Shape, new()
 		{
 			T t = new T

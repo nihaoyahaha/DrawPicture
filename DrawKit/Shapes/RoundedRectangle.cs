@@ -11,14 +11,14 @@ using System.Windows.Forms;
 namespace DrawKit.Shapes
 {
 	/// <summary>
-	/// フィレット長方形
+	/// 圆角矩形
 	/// </summary>
 	public class RoundedRectangle : Shape
 	{
 		public RoundedRectangle() { }
 		public RoundedRectangle(Bitmap bitmap, Panel panel,float scale) : base(bitmap, panel, scale) { }
 
-		//頂点の集合
+		//顶点集合
 		private GraphicsPath _path = new GraphicsPath();
 		private GraphicsPath _pathInBitmap = new GraphicsPath();
 		private int _radius = 20;
@@ -153,7 +153,7 @@ namespace DrawKit.Shapes
 		}
 
 		/// <summary>
-		/// フィレット長方形パスを取得するには
+		/// 获取圆角矩形路径
 		/// </summary>
 		private void GetRoundedRectanglePath()
 		{

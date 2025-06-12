@@ -30,10 +30,10 @@
 		{
 			this.components = new System.ComponentModel.Container();
 			this.panel_operation = new System.Windows.Forms.Panel();
-			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
 			this.pic_Save = new System.Windows.Forms.PictureBox();
 			this.pic_cancel = new System.Windows.Forms.PictureBox();
 			this.pic_OK = new System.Windows.Forms.PictureBox();
+			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
 			this.panel_operation.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pic_Save)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pic_cancel)).BeginInit();
@@ -45,6 +45,7 @@
 			this.panel_operation.Controls.Add(this.pic_Save);
 			this.panel_operation.Controls.Add(this.pic_cancel);
 			this.panel_operation.Controls.Add(this.pic_OK);
+			this.panel_operation.Cursor = System.Windows.Forms.Cursors.Arrow;
 			this.panel_operation.Location = new System.Drawing.Point(388, 187);
 			this.panel_operation.Name = "panel_operation";
 			this.panel_operation.Size = new System.Drawing.Size(113, 43);

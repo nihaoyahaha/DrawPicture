@@ -250,7 +250,7 @@ namespace DrawKit
 			}
 		}
 
-		//直線
+		//直线
 		private void btn_Line_Click(object sender, EventArgs e)
 		{
 			SetShapeBtnBackColor();
@@ -261,7 +261,7 @@ namespace DrawKit
 			UpdateSizeItems(nameof(Line), true);
 		}
 
-		//消しゴム
+		//橡皮擦
 		private void btn_Erase_Click(object sender, EventArgs e)
 		{
 			SetShapeBtnBackColor();
@@ -272,7 +272,7 @@ namespace DrawKit
 			UpdateSizeItems(nameof(Eraser), true);
 		}
 
-		//矩形選択
+		//范围选择
 		private void btn_select_Click(object sender, EventArgs e)
 		{
 			SetShapeBtnBackColor();
@@ -283,7 +283,7 @@ namespace DrawKit
 			UpdateSizeItems(nameof(RectangularSelection), false);
 		}
 
-		//カラーフィル
+		//颜色填充
 		private void btn_Fill_Click(object sender, EventArgs e)
 		{
 			SetShapeBtnBackColor();
@@ -294,7 +294,7 @@ namespace DrawKit
 			UpdateSizeItems(nameof(OilTank), false);
 		}
 
-		//長方形
+		//矩形
 		private void btn_rectangle_Click(object sender, EventArgs e)
 		{
 			SetShapeBtnBackColor();
@@ -305,7 +305,7 @@ namespace DrawKit
 			UpdateSizeItems(nameof(ShapeRectangle), true);
 		}
 
-		//五角形
+		//五边形
 		private void btn_pentagon_Click(object sender, EventArgs e)
 		{
 			SetShapeBtnBackColor();
@@ -316,7 +316,7 @@ namespace DrawKit
 			UpdateSizeItems(nameof(Pentagon), true);
 		}
 
-		//円
+		//圆
 		private void btn_circle_Click(object sender, EventArgs e)
 		{
 			SetShapeBtnBackColor();
@@ -349,7 +349,7 @@ namespace DrawKit
 			UpdateSizeItems(nameof(RightTriangle), true);
 		}
 
-		//ひし形
+		//菱形
 		private void btn_rhombus_Click(object sender, EventArgs e)
 		{
 			SetShapeBtnBackColor();
@@ -359,7 +359,7 @@ namespace DrawKit
 			panel_main.Invalidate();
 			UpdateSizeItems(nameof(Rhombus), true);
 		}
-		//六角形
+		//六边形
 		private void btn_hexagon_Click(object sender, EventArgs e)
 		{
 			SetShapeBtnBackColor();
@@ -369,7 +369,7 @@ namespace DrawKit
 			panel_main.Invalidate();
 			UpdateSizeItems(nameof(Hexagon), true);
 		}
-		//フィレット長方形
+		//圆角矩形
 		private void btn_roundedRectangle_Click(object sender, EventArgs e)
 		{
 			SetShapeBtnBackColor();
@@ -379,7 +379,7 @@ namespace DrawKit
 			panel_main.Invalidate();
 			UpdateSizeItems(nameof(RoundedRectangle), true);
 		}
-		//テキスト
+		//文本
 		private void btn_Text_Click(object sender, EventArgs e)
 		{
 			SetShapeBtnBackColor();
@@ -670,7 +670,7 @@ namespace DrawKit
 		}
 
 		/// <summary>
-		/// 縮小
+		/// 缩小
 		/// </summary>
 		private void pic_reduce_Click(object sender, EventArgs e)
 		{
@@ -683,7 +683,7 @@ namespace DrawKit
 		}
 
 		/// <summary>
-		///  拡大
+		///  放大
 		/// </summary>
 		private void pic_amplify_Click(object sender, EventArgs e)
 		{

@@ -154,20 +154,20 @@ namespace DrawKit.Shapes
 		}
 
 		/// <summary>
-		/// 三角形頂点の計算
+		/// 计算三角形顶点
 		/// </summary>
 		private void CalculateTrianglePoints()
 		{
 			_vertexs.Clear();
-			//上部頂点
+			//顶部顶点
 			var point = new Point(SelectionRect.X + SelectionRect.Width / 2, SelectionRect.Y);
 			_vertexs.Add(point);
 
-			//右下の頂点
+			//右下顶点
 			point = new Point(SelectionRect.Right,SelectionRect.Bottom);
 			_vertexs.Add(point);
 
-			//左下の頂点
+			//左下顶点
 			point = new Point(SelectionRect.Left,SelectionRect.Bottom);
 			_vertexs.Add(point);
 		}

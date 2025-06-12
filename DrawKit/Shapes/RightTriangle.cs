@@ -14,7 +14,7 @@ namespace DrawKit.Shapes
 	/// </summary>
 	public class RightTriangle : Shape
 	{
-		//頂点の集合
+		//顶点集合
 		private List<Point> _vertexs = new List<Point>();
 
 		public RightTriangle() { }
@@ -154,20 +154,20 @@ namespace DrawKit.Shapes
 		}
 
 		/// <summary>
-		/// 直角三角形頂点の計算
+		/// 计算直角三角形顶点
 		/// </summary>
 		private void CalculateRightTrianglePoints()
 		{
 			_vertexs.Clear();
-			//上部頂点
+			//顶部顶点
 			var point = new Point(SelectionRect.Left, SelectionRect.Top);
 			_vertexs.Add(point);
 
-			//右下の頂点
+			//右下顶点
 			point = new Point(SelectionRect.Right, SelectionRect.Bottom);
 			_vertexs.Add(point);
 
-			//左下の頂点
+			//左下顶点
 			point = new Point(SelectionRect.Left, SelectionRect.Bottom);
 			_vertexs.Add(point);
 		}

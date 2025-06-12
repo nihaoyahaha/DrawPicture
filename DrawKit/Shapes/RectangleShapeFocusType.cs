@@ -9,52 +9,52 @@ namespace DrawKit.Shapes
     public enum RectangleShapeFocusType
     {
 		/// <summary>
-		/// フォーカスなし
+		/// 无焦点
 		/// </summary>
 		Unfocused,
 
 		/// <summary>
-		/// 上部左側
+		/// 顶部左侧
 		/// </summary>
 		TopLeft,
 
 		/// <summary>
-		/// 上部中央
+		///顶部中央
 		/// </summary>
 		TopCenter,
 
 		/// <summary>
-		/// 上部の右側
+		/// 顶部右侧
 		/// </summary>
 		TopRight,
 
 		/// <summary>
-		/// 左側中央
+		/// 左侧中央
 		/// </summary>
 		MiddleLeft,
 
 		/// <summary>
-		/// 右中央
+		/// 右侧中央
 		/// </summary>
 		MiddleRight,
 
 		/// <summary>
-		/// 下部の左側
+		/// 底部左侧
 		/// </summary>
 		BottomLeft,
 
 		/// <summary>
-		/// 下部中央
+		/// 底部中央
 		/// </summary>
 		BottomCenter,
 
 		/// <summary>
-		/// 下部の右側
+		/// 底部右侧
 		/// </summary>
 		BottomRight,
 
 		/// <summary>
-		/// 移動
+		/// 移动
 		/// </summary>
 		Move,
 	}

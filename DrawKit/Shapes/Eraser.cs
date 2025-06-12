@@ -15,7 +15,7 @@ using static System.Windows.Forms.AxHost;
 namespace DrawKit.Shapes
 {
 	/// <summary>
-	/// 消しゴム
+	/// 橡皮擦
 	/// </summary>
 	public class Eraser : Shape
 	{

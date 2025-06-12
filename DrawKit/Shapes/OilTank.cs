@@ -11,7 +11,7 @@ using DrawKit.History;
 namespace DrawKit.Shapes
 {
 	/// <summary>
-	/// カラーフィル
+	/// 油漆桶颜色填充
 	/// </summary>
 	public class OilTank : Shape
 	{

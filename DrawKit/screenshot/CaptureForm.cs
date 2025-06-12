@@ -316,7 +316,7 @@ namespace DrawKit.Screenshot
 			foreach (var focusPoint in GetEditPoints(_selectionRect))
 			{
 				double distance = Math.Sqrt(Math.Pow(mouseLocation.X - focusPoint.editPoint.X, 2) + Math.Pow(mouseLocation.Y - focusPoint.editPoint.Y, 2));
-				if (distance <= 15)
+				if (distance <= 10)
 				{
 					SetFoucsCursorType(focusPoint.focusType);
 					_drawStatus = DrawStatus.CanAdjusted;
@@ -465,9 +465,8 @@ namespace DrawKit.Screenshot
 		{
 			if (_selectionRect == Rectangle.Empty) return;
 			int x = _selectionRect.Right - panel_operation.Width;
-			int y = _selectionRect.Bottom + 5 + panel_operation.Height >= _screenBitmap.Height ? _selectionRect.Top - 5 - panel_operation.Height : _selectionRect.Bottom + 5;
+			int y = _selectionRect.Bottom + 5 + panel_operation.Height >= _screenBitmap.Height ? _selectionRect.Bottom - 5 - panel_operation.Height : _selectionRect.Bottom + 5;
 			
-
 			panel_operation.Location = new Point(x, y);
 			panel_operation.Visible = true;
 		}
@@ -475,7 +474,6 @@ namespace DrawKit.Screenshot
 		private void pic_Save_Click(object sender, EventArgs e)
 		{
 			SavePng();
-			CloseForm();
 		}
 
 		private void SavePng()
@@ -491,6 +489,7 @@ namespace DrawKit.Screenshot
 				try
 				{
 					_selectedArea.Save(saveFileDialog.FileName, ImageFormat.Png);
+					CloseForm();
 				}
 				catch (Exception ex)
 				{

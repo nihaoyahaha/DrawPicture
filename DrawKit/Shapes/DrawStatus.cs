@@ -9,60 +9,63 @@ namespace DrawKit.Shapes
     public enum DrawStatus
     {
 		/// <summary>
-		/// 移動可能
+		/// 可移动
 		/// </summary>
 		CanMove,
 
 		/// <summary>
-		/// 移動中
+		/// 正在移动
 		/// </summary>
 		Moving,
 
 		/// <summary>
-		/// 調整可能
+		/// 可调整
 		/// </summary>
 		CanAdjusted,
 
 		/// <summary>
-		/// 調整中
+		/// 正在调整
 		/// </summary>
 		Adjusting,
 
 		/// <summary>
-		/// 調整の完了
+		/// 完成调整
 		/// </summary>
 		CompleteAdjustment,
 
 		/// <summary>
-		/// 移動不可調整不可
+		/// 不可移动不可调整
 		/// </summary>
 		CannotMovedOrAdjusted,
 
 		/// <summary>
-		/// 作成描画中
+		/// 正在绘制
 		/// </summary>
 		Creating,
 
 		/// <summary>
-		/// スタイルの調整
+		/// 调整样式
 		/// </summary>
 		AdjustTheStyle,
 
 		/// <summary>
-		/// Bitmapを調整可能
+		/// Bitmap可调整
 		/// </summary>
 		CanvasAdjustable,
 
 		/// <summary>
-		///  Bitmap調整中
+		///  Bitmap正在调整
 		/// </summary>
 		CanvasAdjusting,
 
 		/// <summary>
-		/// Bitmap調整の完了
+		/// Bitmap完成调整
 		/// </summary>
 		CompleteCanvasAdjustment,
 
+		/// <summary>
+		/// 完成绘制文本
+		/// </summary>
 	    CompleteDrawText
 
 	}

@@ -10,17 +10,16 @@ using System.Windows.Forms;
 namespace DrawKit.Shapes
 {
 	/// <summary>
-	/// 五角形
+	/// 五边形
 	/// </summary>
 	public class Pentagon : Shape
 	{
-		//頂点の集合
+		//顶点集合
 		private List<Point> _vertexs = new List<Point>();
-		//中央頂点スケール
+		//中心顶点比例
 		private float _middleVertexRatio = 0.37f;
-		//下部頂点スケール
+		//底部顶点比例
 		private float _bottomVertexRatio = 0.19f;
-
 		public Pentagon() { }
 		public Pentagon(Bitmap bitmap, Panel panel,float scale) : base(bitmap, panel, scale){}
 
@@ -219,30 +218,30 @@ namespace DrawKit.Shapes
 		}
 
 		/// <summary>
-		/// 五角形頂点の計算
+		/// 计算五边形顶点
 		/// </summary>
 		private void CalculatePentagonPoints()
 		{
 			_vertexs.Clear();
-			//上部頂点
+			//顶部顶点
 			var point = new Point(SelectionRect.X+SelectionRect.Width/2,SelectionRect.Y);
 			_vertexs.Add(point);
 
-			//右上の頂点
+			//右上顶点
 			int middleVertexDistance = (int)(SelectionRect.Height * _middleVertexRatio);
 			point = new Point(SelectionRect.Right,SelectionRect.Top+ middleVertexDistance);
 			_vertexs.Add(point);
 
-			//右下の頂点
+			//右下顶点
 			int bottomVertexDistance = (int)(SelectionRect.Width * _bottomVertexRatio);
 			point = new Point(SelectionRect.Right- bottomVertexDistance, SelectionRect.Bottom);
 			_vertexs.Add(point);
 
-			//左下の頂点
+			//左下顶点
 			point = new Point(SelectionRect.Left+ bottomVertexDistance, SelectionRect.Bottom);
 			_vertexs.Add(point);
 
-			//左上の頂点
+			//左上顶点
 			point = new Point(SelectionRect.Left, SelectionRect.Top + middleVertexDistance);
 			_vertexs.Add(point);
 		}
@@ -362,25 +361,25 @@ namespace DrawKit.Shapes
 				case 0:
 					if (IsFlippedVertically == false && IsFlippedHorizontally == false)
 					{
-						//上部頂点
+						//上方顶点
 						point = new Point(SelectionRect.X + SelectionRect.Width / 2, SelectionRect.Y);
 						_vertexs.Add(point);
 
-						//右上の頂点
+						//右上顶点
 						middleVertexDistance = (int)(SelectionRect.Height * _middleVertexRatio);
 						point = new Point(SelectionRect.Right, SelectionRect.Top + middleVertexDistance);
 						_vertexs.Add(point);
 
-						//右下の頂点
+						//右下顶点
 						bottomVertexDistance = (int)(SelectionRect.Width * _bottomVertexRatio);
 						point = new Point(SelectionRect.Right - bottomVertexDistance, SelectionRect.Bottom);
 						_vertexs.Add(point);
 
-						//左下の頂点
+						//左下顶点
 						point = new Point(SelectionRect.Left + bottomVertexDistance, SelectionRect.Bottom);
 						_vertexs.Add(point);
 
-						//左上の頂点
+						//左上顶点
 						point = new Point(SelectionRect.Left, SelectionRect.Top + middleVertexDistance);
 						_vertexs.Add(point);
 					}
@@ -390,45 +389,45 @@ namespace DrawKit.Shapes
 						point = new Point(SelectionRect.Left + SelectionRect.Width / 2, SelectionRect.Bottom);
 						_vertexs.Add(point);
 
-						//頂点左
+						//左顶点
 						middleVertexDistance = (int)(SelectionRect.Height * _middleVertexRatio);
 						point = new Point(SelectionRect.Left, SelectionRect.Bottom - middleVertexDistance);
 						_vertexs.Add(point);
 
-						//頂点左上
+						//左上顶点
 						bottomVertexDistance = (int)(SelectionRect.Width * _bottomVertexRatio);
 						point = new Point(SelectionRect.Left + bottomVertexDistance, SelectionRect.Top);
 						_vertexs.Add(point);
 
-						//頂点右上
+						//右上顶点
 						point = new Point(SelectionRect.Right - bottomVertexDistance, SelectionRect.Top);
 						_vertexs.Add(point);
 
-						//頂点右
+						//右顶点
 						point = new Point(SelectionRect.Right, SelectionRect.Bottom - middleVertexDistance);
 						_vertexs.Add(point);
 					}
 					else if (IsFlippedVertically == false && IsFlippedHorizontally == true)
 					{
-						//上部頂点
+						//上部顶点
 						point = new Point(SelectionRect.X + SelectionRect.Width / 2, SelectionRect.Y);
 						_vertexs.Add(point);
 
-						//右上の頂点
+						//右上顶点
 						middleVertexDistance = (int)(SelectionRect.Height * _middleVertexRatio);
 						point = new Point(SelectionRect.Right, SelectionRect.Top + middleVertexDistance);
 						_vertexs.Add(point);
 
-						//右下の頂点
+						//右下顶点
 						bottomVertexDistance = (int)(SelectionRect.Width * _bottomVertexRatio);
 						point = new Point(SelectionRect.Right - bottomVertexDistance, SelectionRect.Bottom);
 						_vertexs.Add(point);
 
-						//左下の頂点
+						//左下顶点
 						point = new Point(SelectionRect.Left + bottomVertexDistance, SelectionRect.Bottom);
 						_vertexs.Add(point);
 
-						//左上の頂点
+						//左上顶点
 						point = new Point(SelectionRect.Left, SelectionRect.Top + middleVertexDistance);
 						_vertexs.Add(point);
 					}
@@ -438,21 +437,21 @@ namespace DrawKit.Shapes
 						point = new Point(SelectionRect.Left + SelectionRect.Width / 2, SelectionRect.Bottom);
 						_vertexs.Add(point);
 
-						//頂点左
+						//左顶点
 						middleVertexDistance = (int)(SelectionRect.Height * _middleVertexRatio);
 						point = new Point(SelectionRect.Left, SelectionRect.Bottom - middleVertexDistance);
 						_vertexs.Add(point);
 
-						//頂点左上
+						//左上顶点
 						bottomVertexDistance = (int)(SelectionRect.Width * _bottomVertexRatio);
 						point = new Point(SelectionRect.Left + bottomVertexDistance, SelectionRect.Top);
 						_vertexs.Add(point);
 
-						//頂点右上
+						//右上顶点
 						point = new Point(SelectionRect.Right - bottomVertexDistance, SelectionRect.Top);
 						_vertexs.Add(point);
 
-						//頂点右
+						//右顶点
 						point = new Point(SelectionRect.Right, SelectionRect.Bottom - middleVertexDistance);
 						_vertexs.Add(point);
 					}
@@ -464,21 +463,21 @@ namespace DrawKit.Shapes
 						point = new Point(SelectionRect.Right, SelectionRect.Top + SelectionRect.Height / 2);
 						_vertexs.Add(point);
 
-						//頂点下
+						//下顶点
 						middleVertexDistance = (int)(SelectionRect.Width * _middleVertexRatio);
 						point = new Point(SelectionRect.Right - middleVertexDistance, SelectionRect.Bottom);
 						_vertexs.Add(point);
 
-						//頂点左下
+						//左下顶点
 						bottomVertexDistance = (int)(SelectionRect.Height * _bottomVertexRatio);
 						point = new Point(SelectionRect.Left, SelectionRect.Bottom - bottomVertexDistance);
 						_vertexs.Add(point);
 
-						//頂点左上
+						//左上顶点
 						point = new Point(SelectionRect.Left, SelectionRect.Top + bottomVertexDistance);
 						_vertexs.Add(point);
 
-						//頂点上
+						//上顶点
 						point = new Point(SelectionRect.Right - middleVertexDistance, SelectionRect.Top);
 						_vertexs.Add(point);
 					}
@@ -488,69 +487,69 @@ namespace DrawKit.Shapes
 						point = new Point(SelectionRect.Right, SelectionRect.Top + SelectionRect.Height / 2);
 						_vertexs.Add(point);
 
-						//頂点下
+						//下顶点
 						middleVertexDistance = (int)(SelectionRect.Width * _middleVertexRatio);
 						point = new Point(SelectionRect.Right - middleVertexDistance, SelectionRect.Bottom);
 						_vertexs.Add(point);
 
-						//頂点左下
+						//左下顶点
 						bottomVertexDistance = (int)(SelectionRect.Height * _bottomVertexRatio);
 						point = new Point(SelectionRect.Left, SelectionRect.Bottom - bottomVertexDistance);
 						_vertexs.Add(point);
 
-						//頂点左上
+						//左上顶点
 						point = new Point(SelectionRect.Left, SelectionRect.Top + bottomVertexDistance);
 						_vertexs.Add(point);
 
-						//頂点上
+						//上顶点
 						point = new Point(SelectionRect.Right - middleVertexDistance, SelectionRect.Top);
 						_vertexs.Add(point);
 					}
 					else if (IsFlippedVertically == false && IsFlippedHorizontally == true)
 					{
-						//頂点左中
+						//左中顶点
 						point = new Point(SelectionRect.Left, SelectionRect.Top + SelectionRect.Height / 2);
 						_vertexs.Add(point);
 
-						//頂点上
+						//上顶点
 						middleVertexDistance = (int)(SelectionRect.Width * _middleVertexRatio);
 						point = new Point(SelectionRect.Left + middleVertexDistance, SelectionRect.Top);
 						_vertexs.Add(point);
 
-						//頂点右上
+						//右上顶点
 						bottomVertexDistance = (int)(SelectionRect.Height * _bottomVertexRatio);
 						point = new Point(SelectionRect.Right, SelectionRect.Top + bottomVertexDistance);
 						_vertexs.Add(point);
 
-						//頂点右下
+						//右下顶点
 						point = new Point(SelectionRect.Right, SelectionRect.Bottom - bottomVertexDistance);
 						_vertexs.Add(point);
 
-						//頂点下
+						//下顶点
 						point = new Point(SelectionRect.Left + middleVertexDistance, SelectionRect.Bottom);
 						_vertexs.Add(point);
 					}
 					else if (IsFlippedVertically == true && IsFlippedHorizontally == true)
 					{
-						//頂点左中
+						//左中顶点
 						point = new Point(SelectionRect.Left, SelectionRect.Top + SelectionRect.Height / 2);
 						_vertexs.Add(point);
 
-						//頂点上
+						//上顶点
 						middleVertexDistance = (int)(SelectionRect.Width * _middleVertexRatio);
 						point = new Point(SelectionRect.Left + middleVertexDistance, SelectionRect.Top);
 						_vertexs.Add(point);
 
-						//頂点右上
+						//右上顶点
 						bottomVertexDistance = (int)(SelectionRect.Height * _bottomVertexRatio);
 						point = new Point(SelectionRect.Right, SelectionRect.Top + bottomVertexDistance);
 						_vertexs.Add(point);
 
-						//頂点右下
+						//右下顶点
 						point = new Point(SelectionRect.Right, SelectionRect.Bottom - bottomVertexDistance);
 						_vertexs.Add(point);
 
-						//頂点下
+						//下顶点
 						point = new Point(SelectionRect.Left + middleVertexDistance, SelectionRect.Bottom);
 						_vertexs.Add(point);
 					}
@@ -562,45 +561,45 @@ namespace DrawKit.Shapes
 						point = new Point(SelectionRect.Left + SelectionRect.Width / 2, SelectionRect.Bottom);
 						_vertexs.Add(point);
 
-						//頂点左
+						//左顶点
 						middleVertexDistance = (int)(SelectionRect.Height * _middleVertexRatio);
 						point = new Point(SelectionRect.Left, SelectionRect.Bottom - middleVertexDistance);
 						_vertexs.Add(point);
 
-						//頂点左上
+						//左上顶点
 						bottomVertexDistance = (int)(SelectionRect.Width * _bottomVertexRatio);
 						point = new Point(SelectionRect.Left + bottomVertexDistance, SelectionRect.Top);
 						_vertexs.Add(point);
 
-						//頂点右上
+						//右上顶点
 						point = new Point(SelectionRect.Right - bottomVertexDistance, SelectionRect.Top);
 						_vertexs.Add(point);
 
-						//頂点右
+						//右顶点
 						point = new Point(SelectionRect.Right, SelectionRect.Bottom - middleVertexDistance);
 						_vertexs.Add(point);
 					}
 					else if (IsFlippedVertically == true && IsFlippedHorizontally == false)
 					{
-						//上部頂点
+						//上部顶点
 						point = new Point(SelectionRect.X + SelectionRect.Width / 2, SelectionRect.Y);
 						_vertexs.Add(point);
 
-						//右上の頂点
+						//右上顶点
 						middleVertexDistance = (int)(SelectionRect.Height * _middleVertexRatio);
 						point = new Point(SelectionRect.Right, SelectionRect.Top + middleVertexDistance);
 						_vertexs.Add(point);
 
-						//右下の頂点
+						//右下顶点
 						bottomVertexDistance = (int)(SelectionRect.Width * _bottomVertexRatio);
 						point = new Point(SelectionRect.Right - bottomVertexDistance, SelectionRect.Bottom);
 						_vertexs.Add(point);
 
-						//左下の頂点
+						//左下顶点
 						point = new Point(SelectionRect.Left + bottomVertexDistance, SelectionRect.Bottom);
 						_vertexs.Add(point);
 
-						//左上の頂点
+						//左上顶点
 						point = new Point(SelectionRect.Left, SelectionRect.Top + middleVertexDistance);
 						_vertexs.Add(point);
 					}
@@ -610,45 +609,45 @@ namespace DrawKit.Shapes
 						point = new Point(SelectionRect.Left + SelectionRect.Width / 2, SelectionRect.Bottom);
 						_vertexs.Add(point);
 
-						//頂点左
+						//左顶点
 						middleVertexDistance = (int)(SelectionRect.Height * _middleVertexRatio);
 						point = new Point(SelectionRect.Left, SelectionRect.Bottom - middleVertexDistance);
 						_vertexs.Add(point);
 
-						//頂点左上
+						//左上顶点
 						bottomVertexDistance = (int)(SelectionRect.Width * _bottomVertexRatio);
 						point = new Point(SelectionRect.Left + bottomVertexDistance, SelectionRect.Top);
 						_vertexs.Add(point);
 
-						//頂点右上
+						//右上顶点
 						point = new Point(SelectionRect.Right - bottomVertexDistance, SelectionRect.Top);
 						_vertexs.Add(point);
 
-						//頂点右
+						//右顶点
 						point = new Point(SelectionRect.Right, SelectionRect.Bottom - middleVertexDistance);
 						_vertexs.Add(point);
 					}
 					else if (IsFlippedVertically == true && IsFlippedHorizontally == true)
 					{
-						//上部頂点
+						//上部顶点
 						point = new Point(SelectionRect.X + SelectionRect.Width / 2, SelectionRect.Y);
 						_vertexs.Add(point);
 
-						//右上の頂点
+						//右上顶点
 						middleVertexDistance = (int)(SelectionRect.Height * _middleVertexRatio);
 						point = new Point(SelectionRect.Right, SelectionRect.Top + middleVertexDistance);
 						_vertexs.Add(point);
 
-						//右下の頂点
+						//右下顶点
 						bottomVertexDistance = (int)(SelectionRect.Width * _bottomVertexRatio);
 						point = new Point(SelectionRect.Right - bottomVertexDistance, SelectionRect.Bottom);
 						_vertexs.Add(point);
 
-						//左下の頂点
+						//左下顶点
 						point = new Point(SelectionRect.Left + bottomVertexDistance, SelectionRect.Bottom);
 						_vertexs.Add(point);
 
-						//左上の頂点
+						//左上顶点
 						point = new Point(SelectionRect.Left, SelectionRect.Top + middleVertexDistance);
 						_vertexs.Add(point);
 					}
@@ -657,49 +656,49 @@ namespace DrawKit.Shapes
 				case 3:
 					if (IsFlippedVertically == false && IsFlippedHorizontally == false)
 					{
-						//頂点左中
+						//左中顶点
 						point = new Point(SelectionRect.Left, SelectionRect.Top + SelectionRect.Height / 2);
 						_vertexs.Add(point);
 
-						//頂点上
+						//上顶点
 						middleVertexDistance = (int)(SelectionRect.Width * _middleVertexRatio);
 						point = new Point(SelectionRect.Left + middleVertexDistance, SelectionRect.Top);
 						_vertexs.Add(point);
 
-						//頂点右上
+						//右上顶点
 						bottomVertexDistance = (int)(SelectionRect.Height * _bottomVertexRatio);
 						point = new Point(SelectionRect.Right, SelectionRect.Top + bottomVertexDistance);
 						_vertexs.Add(point);
 
-						//頂点右下
+						//右下顶点
 						point = new Point(SelectionRect.Right, SelectionRect.Bottom - bottomVertexDistance);
 						_vertexs.Add(point);
 
-						//頂点下
+						//下顶点
 						point = new Point(SelectionRect.Left + middleVertexDistance, SelectionRect.Bottom);
 						_vertexs.Add(point);
 					}
 					else if (IsFlippedVertically == true && IsFlippedHorizontally == false)
 					{
-						//頂点左中
+						//左中顶点
 						point = new Point(SelectionRect.Left, SelectionRect.Top + SelectionRect.Height / 2);
 						_vertexs.Add(point);
 
-						//頂点上
+						//上顶点
 						middleVertexDistance = (int)(SelectionRect.Width * _middleVertexRatio);
 						point = new Point(SelectionRect.Left + middleVertexDistance, SelectionRect.Top);
 						_vertexs.Add(point);
 
-						//頂点右上
+						//右上顶点
 						bottomVertexDistance = (int)(SelectionRect.Height * _bottomVertexRatio);
 						point = new Point(SelectionRect.Right, SelectionRect.Top + bottomVertexDistance);
 						_vertexs.Add(point);
 
-						//頂点右下
+						//右下顶点
 						point = new Point(SelectionRect.Right, SelectionRect.Bottom - bottomVertexDistance);
 						_vertexs.Add(point);
 
-						//頂点下
+						//下顶点
 						point = new Point(SelectionRect.Left + middleVertexDistance, SelectionRect.Bottom);
 						_vertexs.Add(point);
 					}
@@ -709,21 +708,21 @@ namespace DrawKit.Shapes
 						point = new Point(SelectionRect.Right, SelectionRect.Top + SelectionRect.Height / 2);
 						_vertexs.Add(point);
 
-						//頂点下
+						//下顶点
 						middleVertexDistance = (int)(SelectionRect.Width * _middleVertexRatio);
 						point = new Point(SelectionRect.Right - middleVertexDistance, SelectionRect.Bottom);
 						_vertexs.Add(point);
 
-						//頂点左下
+						//左下顶点
 						bottomVertexDistance = (int)(SelectionRect.Height * _bottomVertexRatio);
 						point = new Point(SelectionRect.Left, SelectionRect.Bottom - bottomVertexDistance);
 						_vertexs.Add(point);
 
-						//頂点左上
+						//左上顶点
 						point = new Point(SelectionRect.Left, SelectionRect.Top + bottomVertexDistance);
 						_vertexs.Add(point);
 
-						//頂点上
+						//上顶点
 						point = new Point(SelectionRect.Right - middleVertexDistance, SelectionRect.Top);
 						_vertexs.Add(point);
 					}
@@ -733,21 +732,21 @@ namespace DrawKit.Shapes
 						point = new Point(SelectionRect.Right, SelectionRect.Top + SelectionRect.Height / 2);
 						_vertexs.Add(point);
 
-						//頂点下
+						//下顶点
 						middleVertexDistance = (int)(SelectionRect.Width * _middleVertexRatio);
 						point = new Point(SelectionRect.Right - middleVertexDistance, SelectionRect.Bottom);
 						_vertexs.Add(point);
 
-						//頂点左下
+						//左下顶点
 						bottomVertexDistance = (int)(SelectionRect.Height * _bottomVertexRatio);
 						point = new Point(SelectionRect.Left, SelectionRect.Bottom - bottomVertexDistance);
 						_vertexs.Add(point);
 
-						//頂点左上
+						//左上顶点
 						point = new Point(SelectionRect.Left, SelectionRect.Top + bottomVertexDistance);
 						_vertexs.Add(point);
 
-						//頂点上
+						//上顶点
 						point = new Point(SelectionRect.Right - middleVertexDistance, SelectionRect.Top);
 						_vertexs.Add(point);
 					}

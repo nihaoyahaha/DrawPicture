@@ -24,10 +24,6 @@ namespace DrawKit.History
 			OnOperationCompleted?.Invoke();
 		}
 
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="shape"></param>
 		public static void PushRevokeStack(Bitmap canvas)
 		{
 			if (canvas == null) return;
@@ -62,7 +58,7 @@ namespace DrawKit.History
 		}
 
 		/// <summary>
-		/// 元に戻す
+		/// 撤销
 		/// </summary>
 		public static Bitmap Revoke(Bitmap canvas)
 		{
@@ -72,7 +68,7 @@ namespace DrawKit.History
 		}
 
 		/// <summary>
-		/// やり直し 
+		/// 重做
 		/// </summary>
 		public static Bitmap Redo(Bitmap canvas)
 		{
