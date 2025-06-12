@@ -32,7 +32,7 @@ namespace DrawKit.Screenshot
 		public CaptureForm()
 		{
 			InitializeComponent();
-			//TopMost = true;
+			TopMost = true;
 			this.FormBorderStyle = FormBorderStyle.None;
 			this.Bounds = Screen.PrimaryScreen.Bounds;
 			this.DoubleBuffered = true;
