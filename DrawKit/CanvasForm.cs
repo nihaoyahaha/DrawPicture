@@ -10,7 +10,6 @@ using System.IO;
 using System.Windows.Forms;
 using DrawKit.Screenshot;
 using System.Runtime.InteropServices;
-using System.Linq;
 
 namespace DrawKit
 {
@@ -31,8 +30,7 @@ namespace DrawKit
 		private float[] _scales = { 0.125f, 0.25f, 0.5f, 0.75f, 1, 2, 3, 4, 5, 6, 7, 8 };
 		private float _scaleDelta = 0.1f;
 		private CaptureForm _captureForm;
-		private MouseMessageFilter messageFilter;
-		private string _cmbScaleLastText = "";
+
 		public CanvasForm()
 		{
 			InitializeComponent();
@@ -44,8 +42,6 @@ namespace DrawKit
 			InitializeCanvas();
 			LoadInstalledFonts();
 			_shape = new Pencil(_canvas, this.panel_main, GetCmbscaleSelectedItemKey());
-			messageFilter = new MouseMessageFilter(cmb_scales, this);
-			Application.AddMessageFilter(messageFilter);
 		}
 
 		private void InitBackColor()
@@ -703,7 +699,19 @@ namespace DrawKit
 		{
 			SetCanvasScale(trackBar_scale.Value / 100f);
 		}
-		
+		private void SetCanvasScale(float scale)
+		{
+			if (_shape.SelectionRect.Width != 0 && _shape.SelectionRect.Height != 0)
+			{
+				_shape.drawStatus = DrawStatus.CanAdjusted;
+			}
+			_shape.Scale = scale;
+			cmb_scales.Text = $"{scale * 100}%";
+			toolTip1.SetToolTip(trackBar_scale, $"{scale * 100}");
+			panel_main.Invalidate();
+			var rect = _shape.GetCanvasRegion();
+			panel_main.AutoScrollMinSize = new Size(rect.Width, rect.Height);
+		}
 
 		private void panel_main_Scroll(object sender, ScrollEventArgs e)
 		{
@@ -875,21 +883,18 @@ namespace DrawKit
 
 		private void cmb_scales_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			//if (_shape is null) return;
-			//var selectedKeyValuePair = (KeyValuePair<float, string>)cmb_scales.SelectedItem;
-			//if (_shape.SelectionRect.Width != 0 && _shape.SelectionRect.Height != 0)
-			//{
-			//	_shape.drawStatus = DrawStatus.CanAdjusted;
-			//}
-			//trackBar_scale.Value = (int)Math.Round(selectedKeyValuePair.Key * 100);
-			//_shape.Scale = selectedKeyValuePair.Key;
-			//SetScaleDelta(selectedKeyValuePair.Key);
-			//panel_main.Invalidate();
-			//var rect = _shape.GetCanvasRegion();
-			//panel_main.AutoScrollMinSize = new Size(rect.Width, rect.Height);
-
+			if (_shape is null) return;
 			var selectedKeyValuePair = (KeyValuePair<float, string>)cmb_scales.SelectedItem;
-			RefreshCanvasScale(selectedKeyValuePair.Key, (int)Math.Round(selectedKeyValuePair.Key * 100));
+			if (_shape.SelectionRect.Width != 0 && _shape.SelectionRect.Height != 0)
+			{
+				_shape.drawStatus = DrawStatus.CanAdjusted;
+			}
+			trackBar_scale.Value = (int)Math.Round(selectedKeyValuePair.Key * 100);
+			_shape.Scale = selectedKeyValuePair.Key;
+			SetScaleDelta(selectedKeyValuePair.Key);
+			panel_main.Invalidate();
+			var rect = _shape.GetCanvasRegion();
+			panel_main.AutoScrollMinSize = new Size(rect.Width, rect.Height);
 		}
 
 		private void SetScaleDelta(float scale)
@@ -956,6 +961,16 @@ namespace DrawKit
 
 			trackBar_scale.Value = (int)(scale * 100);
 			SetCanvasScale(scale);
+		}
+
+		private void cmb_scales_KeyPress(object sender, KeyPressEventArgs e)
+		{
+			e.Handled = true;
+		}
+
+		private void cmb_scales_KeyDown(object sender, KeyEventArgs e)
+		{
+			e.SuppressKeyPress = true;
 		}
 
 		private void btn_Pencil_Click(object sender, EventArgs e)
@@ -1026,213 +1041,10 @@ namespace DrawKit
 				_captureForm.ShowDialog();
 			}
 			else
-			{ 
+			{
 				_captureForm.Focus();
 			}
 		}
-	
-		private void SetCanvasScale(float scale)
-		{
-			if (_shape.SelectionRect.Width != 0 && _shape.SelectionRect.Height != 0)
-			{
-				_shape.drawStatus = DrawStatus.CanAdjusted;
-			}
-			_shape.Scale = scale;
-			cmb_scales.Text = $"{scale * 100}%";
-			toolTip1.SetToolTip(trackBar_scale, $"{scale * 100}");
-			panel_main.Invalidate();
-			var rect = _shape.GetCanvasRegion();
-			panel_main.AutoScrollMinSize = new Size(rect.Width, rect.Height);
-		}
 
-		private void cmb_scales_MouseDown(object sender, MouseEventArgs e)
-		{
-			_cmbScaleLastText = cmb_scales.Text;
-		}
-
-		private void cmb_scales_KeyDown(object sender, KeyEventArgs e)
-		{
-			if (e.KeyCode == Keys.Enter)
-			{
-				e.SuppressKeyPress = true;
-				PerformValidation(cmb_scales);
-				panel_main.Focus();
-			}
-		}
-
-		private void cmb_scales_Validating(object sender, System.ComponentModel.CancelEventArgs e)
-		{
-			PerformValidation(cmb_scales);
-		}
-
-		private void cmb_scales_Leave(object sender, EventArgs e)
-		{
-			PerformValidation(cmb_scales);
-		}
-
-		private bool IsValidDecimal(string text)
-		{
-			if (string.IsNullOrWhiteSpace(text))
-				return false;
-
-			text = text.Trim();
-
-			if (text.Contains('.'))
-			{
-				string[] parts = text.Split('.');
-				if (parts.Length != 2)
-					return false;
-
-				string integerPart = parts[0];
-				string decimalPart = parts[1];
-
-				if (string.IsNullOrEmpty(integerPart) || string.IsNullOrEmpty(decimalPart))
-					return false;
-
-				if (decimalPart.Length > 1)
-					return false;
-
-				foreach (char c in integerPart)
-				{
-					if (!char.IsDigit(c))
-						return false;
-				}
-
-				foreach (char c in decimalPart)
-				{
-					if (!char.IsDigit(c))
-						return false;
-				}
-			}
-			else
-			{
-				foreach (char c in text)
-				{
-					if (!char.IsDigit(c))
-						return false;
-				}
-			}
-
-			return true;
-		}
-
-		private bool ValidateInput(string input, out float resultValue)
-		{
-			resultValue = 0f;
-
-			if (string.IsNullOrWhiteSpace(input))
-				return false;
-
-			input = input.Trim();
-
-			bool endsWithPercent = input.EndsWith("%");
-			string numberPart = endsWithPercent ? input.Substring(0, input.Length - 1) : input;
-
-			if (!IsValidDecimal(numberPart))
-				return false;
-
-			if (!float.TryParse(numberPart, out float numericValue))
-				return false;
-
-			if (numericValue < 10 || numericValue > 800)
-				return false;
-
-			// 应用自定义舍入规则
-			resultValue = CustomRound(numericValue);
-			return true;
-		}
-
-		private float CustomRound(float value)
-		{
-			//int integerPart = (int)value;
-			//float decimalPart = value - integerPart;
-
-			int integerPart = (int)value;
-			float decimalPart = value - integerPart;
-			decimalPart = (float)Math.Round(decimalPart, 1); // 四舍五入到 1 位小数
-
-			if (decimalPart <= 0.2f)
-			{
-				return integerPart; // 舍去小数
-			}
-			else if (decimalPart >= 0.8f)
-			{
-				return integerPart + 1; // 向上取整
-			}
-			else
-			{
-				return integerPart + 0.5f; // 变成 .5
-			}
-		}
-
-		private void PerformValidation(ComboBox comboBox)
-		{
-			string input = comboBox.Text;
-
-			if (ValidateInput(input, out float validValue))
-			{
-				comboBox.Text = validValue.ToString() + "%";
-				float trackBarScaleValue = (float)Math.Ceiling(validValue);
-				this.trackBar_scale.ValueChanged -= new System.EventHandler(this.trackBar_scale_ValueChanged);
-				RefreshCanvasScale(validValue / 100f, (int)trackBarScaleValue);
-				toolTip1.SetToolTip(trackBar_scale, $"{trackBarScaleValue}");
-				this.trackBar_scale.ValueChanged += new System.EventHandler(this.trackBar_scale_ValueChanged);
-			}
-			else
-			{
-				comboBox.Text = _cmbScaleLastText;
-			}
-		}
-
-		private void RefreshCanvasScale(float scale, int trackBarScaleValue)
-		{
-			if (_shape is null) return;
-			if (_shape.SelectionRect.Width != 0 && _shape.SelectionRect.Height != 0)
-			{
-				_shape.drawStatus = DrawStatus.CanAdjusted;
-			}
-			trackBar_scale.Value = trackBarScaleValue;
-			_shape.Scale = scale;
-			SetScaleDelta(scale);
-			panel_main.Invalidate();
-			var rect = _shape.GetCanvasRegion();
-			panel_main.AutoScrollMinSize = new Size(rect.Width, rect.Height);
-		}
-
-
-	}
-
-	public class MouseMessageFilter : IMessageFilter
-	{
-		private readonly ComboBox _comboBox;
-		private readonly Form _form;
-
-		public MouseMessageFilter(ComboBox comboBox, Form form)
-		{
-			_comboBox = comboBox;
-			_form = form;
-		}
-
-		public bool PreFilterMessage(ref Message m)
-		{
-			const int WM_LBUTTONDOWN = 0x0201;
-
-			if (m.Msg == WM_LBUTTONDOWN)
-			{
-				// 获取鼠标当前屏幕坐标
-				Point cursorPos = Cursor.Position;
-
-				// 获取 ComboBox 的屏幕区域
-				Rectangle comboBoxRect = _comboBox.RectangleToScreen(_comboBox.ClientRectangle);
-
-				// 如果点击不在 ComboBox 区域内，则让它失去焦点
-				if (!comboBoxRect.Contains(cursorPos))
-				{
-					_form.ActiveControl = null; // 清除焦点
-				}
-			}
-
-			return false; // 返回 false 表示继续传递消息
-		}
 	}
 }

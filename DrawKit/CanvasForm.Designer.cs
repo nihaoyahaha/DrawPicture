@@ -86,12 +86,12 @@
 			this.pic_FitToWindow = new System.Windows.Forms.PictureBox();
 			this.pic_reduce = new System.Windows.Forms.PictureBox();
 			this.panel_main = new System.Windows.Forms.Panel();
-			this.rtb_Text = new DrawKit.UserControl.TransparentRichTextBox();
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.pictureBox2 = new System.Windows.Forms.PictureBox();
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
 			this.pictureBox3 = new System.Windows.Forms.PictureBox();
 			this.colorDialog = new System.Windows.Forms.ColorDialog();
+			this.rtb_Text = new DrawKit.UserControl.TransparentRichTextBox();
 			this.toolStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.trackBar_scale)).BeginInit();
 			this.panel_TextStyle.SuspendLayout();
@@ -160,10 +160,10 @@
 			this.cmb_size.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cmb_size.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.cmb_size.Items.AddRange(new object[] {
-            "1px",
-            "3px",
-            "5px",
-            "8px"});
+			"1px",
+			"3px",
+			"5px",
+			"8px"});
 			this.cmb_size.Name = "cmb_size";
 			this.cmb_size.Size = new System.Drawing.Size(75, 44);
 			this.cmb_size.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
@@ -196,36 +196,36 @@
 			this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
 			this.toolStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
 			this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.btn_select,
-            this.toolStripSeparator1,
-            this.btn_rotate,
-            this.toolStripSeparator2,
-            this.btn_Pencil,
-            this.btn_Erase,
-            this.btn_Fill,
-            this.cmb_size,
-            this.toolStripSeparator6,
-            this.btn_Text,
-            this.toolStripSeparator4,
-            this.btn_Line,
-            this.btn_circle,
-            this.btn_rectangle,
-            this.btn_roundedRectangle,
-            this.btn_triangle,
-            this.btn_RightTriangle,
-            this.btn_rhombus,
-            this.btn_pentagon,
-            this.btn_hexagon,
-            this.toolStripSeparator3,
-            this.btn_Color,
-            this.toolStripSeparator5,
-            this.btn_save,
-            this.btn_open,
-            this.btn_ClearAll,
-            this.btn_revoke,
-            this.btn_redo,
-            this.btn_MakeTransparent,
-            this.btn_screenShot});
+			this.btn_select,
+			this.toolStripSeparator1,
+			this.btn_rotate,
+			this.toolStripSeparator2,
+			this.btn_Pencil,
+			this.btn_Erase,
+			this.btn_Fill,
+			this.cmb_size,
+			this.toolStripSeparator6,
+			this.btn_Text,
+			this.toolStripSeparator4,
+			this.btn_Line,
+			this.btn_circle,
+			this.btn_rectangle,
+			this.btn_roundedRectangle,
+			this.btn_triangle,
+			this.btn_RightTriangle,
+			this.btn_rhombus,
+			this.btn_pentagon,
+			this.btn_hexagon,
+			this.toolStripSeparator3,
+			this.btn_Color,
+			this.toolStripSeparator5,
+			this.btn_save,
+			this.btn_open,
+			this.btn_ClearAll,
+			this.btn_revoke,
+			this.btn_redo,
+			this.btn_MakeTransparent,
+			this.btn_screenShot});
 			this.toolStrip1.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip1.Margin = new System.Windows.Forms.Padding(0, 10, 0, 0);
 			this.toolStrip1.Name = "toolStrip1";
@@ -251,11 +251,11 @@
 			// btn_rotate
 			// 
 			this.btn_rotate.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.btn_RightRotate90,
-            this.btn_LeftRotate90,
-            this.btn_Rotate180,
-            this.btn_FlipVertical,
-            this.btn_FlipHorizontal});
+			this.btn_RightRotate90,
+			this.btn_LeftRotate90,
+			this.btn_Rotate180,
+			this.btn_FlipVertical,
+			this.btn_FlipHorizontal});
 			this.btn_rotate.Image = global::DrawKit.Properties.Resources.RotateRight;
 			this.btn_rotate.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
 			this.btn_rotate.Name = "btn_rotate";
@@ -648,22 +648,22 @@
 			this.cmb_TextSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cmb_TextSize.FormattingEnabled = true;
 			this.cmb_TextSize.Items.AddRange(new object[] {
-            "8",
-            "9",
-            "10",
-            "11",
-            "12",
-            "14",
-            "16",
-            "18",
-            "20",
-            "22",
-            "24",
-            "26",
-            "28",
-            "36",
-            "48",
-            "72"});
+			"8",
+			"9",
+			"10",
+			"11",
+			"12",
+			"14",
+			"16",
+			"18",
+			"20",
+			"22",
+			"24",
+			"26",
+			"28",
+			"36",
+			"48",
+			"72"});
 			this.cmb_TextSize.Location = new System.Drawing.Point(167, 6);
 			this.cmb_TextSize.Name = "cmb_TextSize";
 			this.cmb_TextSize.Size = new System.Drawing.Size(74, 20);
@@ -692,9 +692,7 @@
 			this.toolTip1.SetToolTip(this.cmb_scales, "缩放级别");
 			this.cmb_scales.SelectedIndexChanged += new System.EventHandler(this.cmb_scales_SelectedIndexChanged);
 			this.cmb_scales.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cmb_scales_KeyDown);
-			this.cmb_scales.Leave += new System.EventHandler(this.cmb_scales_Leave);
-			this.cmb_scales.MouseDown += new System.Windows.Forms.MouseEventHandler(this.cmb_scales_MouseDown);
-			this.cmb_scales.Validating += new System.ComponentModel.CancelEventHandler(this.cmb_scales_Validating);
+			this.cmb_scales.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.cmb_scales_KeyPress);
 			// 
 			// pic_amplify
 			// 
@@ -737,9 +735,9 @@
 			// 
 			// panel_main
 			// 
-			this.panel_main.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			this.panel_main.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+			| System.Windows.Forms.AnchorStyles.Left)
+			| System.Windows.Forms.AnchorStyles.Right)));
 			this.panel_main.AutoScroll = true;
 			this.panel_main.AutoScrollMinSize = new System.Drawing.Size(750, 320);
 			this.panel_main.BackColor = System.Drawing.Color.White;
@@ -755,20 +753,10 @@
 			this.panel_main.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel_main_MouseMove);
 			this.panel_main.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panel_main_MouseUp);
 			// 
-			// rtb_Text
-			// 
-			this.rtb_Text.BorderStyle = System.Windows.Forms.BorderStyle.None;
-			this.rtb_Text.EmptyTextTip = null;
-			this.rtb_Text.Location = new System.Drawing.Point(55, 181);
-			this.rtb_Text.Name = "rtb_Text";
-			this.rtb_Text.Size = new System.Drawing.Size(100, 96);
-			this.rtb_Text.TabIndex = 0;
-			this.rtb_Text.Text = "";
-			// 
 			// panel1
 			// 
-			this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+			| System.Windows.Forms.AnchorStyles.Right)));
 			this.panel1.BackColor = System.Drawing.Color.WhiteSmoke;
 			this.panel1.Controls.Add(this.pic_amplify);
 			this.panel1.Controls.Add(this.cmb_scales);
@@ -818,6 +806,16 @@
 			this.pictureBox3.Size = new System.Drawing.Size(26, 26);
 			this.pictureBox3.TabIndex = 0;
 			this.pictureBox3.TabStop = false;
+			// 
+			// rtb_Text
+			// 
+			this.rtb_Text.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.rtb_Text.EmptyTextTip = null;
+			this.rtb_Text.Location = new System.Drawing.Point(55, 181);
+			this.rtb_Text.Name = "rtb_Text";
+			this.rtb_Text.Size = new System.Drawing.Size(100, 96);
+			this.rtb_Text.TabIndex = 0;
+			this.rtb_Text.Text = "";
 			// 
 			// CanvasForm
 			// 
