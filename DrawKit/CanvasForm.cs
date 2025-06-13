@@ -80,7 +80,8 @@ namespace DrawKit
 			if (_shape.IsValidLocation(point))
 			{
 				var canvaslocation = _shape.GetCanvasRegion();
-				lb_Penposition.Text = $"{(int)(point.X / GetCmbscaleSelectedItemKey()) - (int)(canvaslocation.X / GetCmbscaleSelectedItemKey())}, {(int)(point.Y / GetCmbscaleSelectedItemKey()) - (int)(canvaslocation.Y / GetCmbscaleSelectedItemKey())}像素";
+				//lb_Penposition.Text = $"{(int)(point.X / GetCmbscaleSelectedItemKey()) - (int)(canvaslocation.X / GetCmbscaleSelectedItemKey())}, {(int)(point.Y / GetCmbscaleSelectedItemKey()) - (int)(canvaslocation.Y / GetCmbscaleSelectedItemKey())}像素";
+				lb_Penposition.Text = $"{(int)(point.X / _shape.Scale) - (int)(canvaslocation.X / _shape.Scale)}, {(int)(point.Y / _shape.Scale) - (int)(canvaslocation.Y / _shape.Scale)}像素";
 			}
 			else
 			{
