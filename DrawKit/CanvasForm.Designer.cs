@@ -86,12 +86,12 @@
 			this.pic_FitToWindow = new System.Windows.Forms.PictureBox();
 			this.pic_reduce = new System.Windows.Forms.PictureBox();
 			this.panel_main = new System.Windows.Forms.Panel();
+			this.rtb_Text = new DrawKit.UserControl.TransparentRichTextBox();
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.pictureBox2 = new System.Windows.Forms.PictureBox();
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
 			this.pictureBox3 = new System.Windows.Forms.PictureBox();
 			this.colorDialog = new System.Windows.Forms.ColorDialog();
-			this.rtb_Text = new DrawKit.UserControl.TransparentRichTextBox();
 			this.toolStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.trackBar_scale)).BeginInit();
 			this.panel_TextStyle.SuspendLayout();
@@ -692,7 +692,9 @@
 			this.toolTip1.SetToolTip(this.cmb_scales, "缩放级别");
 			this.cmb_scales.SelectedIndexChanged += new System.EventHandler(this.cmb_scales_SelectedIndexChanged);
 			this.cmb_scales.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cmb_scales_KeyDown);
-			this.cmb_scales.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.cmb_scales_KeyPress);
+			this.cmb_scales.Leave += new System.EventHandler(this.cmb_scales_Leave);
+			this.cmb_scales.MouseDown += new System.Windows.Forms.MouseEventHandler(this.cmb_scales_MouseDown);
+			this.cmb_scales.Validating += new System.ComponentModel.CancelEventHandler(this.cmb_scales_Validating);
 			// 
 			// pic_amplify
 			// 
@@ -753,6 +755,16 @@
 			this.panel_main.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel_main_MouseMove);
 			this.panel_main.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panel_main_MouseUp);
 			// 
+			// rtb_Text
+			// 
+			this.rtb_Text.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.rtb_Text.EmptyTextTip = null;
+			this.rtb_Text.Location = new System.Drawing.Point(55, 181);
+			this.rtb_Text.Name = "rtb_Text";
+			this.rtb_Text.Size = new System.Drawing.Size(100, 96);
+			this.rtb_Text.TabIndex = 0;
+			this.rtb_Text.Text = "";
+			// 
 			// panel1
 			// 
 			this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
@@ -806,16 +818,6 @@
 			this.pictureBox3.Size = new System.Drawing.Size(26, 26);
 			this.pictureBox3.TabIndex = 0;
 			this.pictureBox3.TabStop = false;
-			// 
-			// rtb_Text
-			// 
-			this.rtb_Text.BorderStyle = System.Windows.Forms.BorderStyle.None;
-			this.rtb_Text.EmptyTextTip = null;
-			this.rtb_Text.Location = new System.Drawing.Point(55, 181);
-			this.rtb_Text.Name = "rtb_Text";
-			this.rtb_Text.Size = new System.Drawing.Size(100, 96);
-			this.rtb_Text.TabIndex = 0;
-			this.rtb_Text.Text = "";
 			// 
 			// CanvasForm
 			// 
