@@ -55,6 +55,7 @@ namespace DrawKit.Shapes
 		{
 			if (drawStatus == DrawStatus.CannotMovedOrAdjusted)
 			{
+				if (!IsValidLocation(e.Location) && SelectionRect == Rectangle.Empty) return;
 				BitmapDrawCircle();
 				StartPoint = e.Location;
 				drawStatus = DrawStatus.Creating;

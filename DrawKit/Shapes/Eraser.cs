@@ -25,6 +25,7 @@ namespace DrawKit.Shapes
 		public Eraser(Bitmap canvas, Panel panel, float scale) : base(canvas, panel, scale) { }
 		public override void MouseDown(MouseEventArgs e)
 		{
+			if (!IsValidLocation(e.Location)) return;
 			if (e.Button == MouseButtons.Left)
 			{
 				MouseLeftButtonDownHandle(e);

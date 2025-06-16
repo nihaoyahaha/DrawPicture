@@ -33,6 +33,7 @@ namespace DrawKit.Shapes
 		{
 			if (drawStatus == DrawStatus.CanvasAdjustable)
 			{
+				if (!IsValidLocation(e.Location)) return;
 				AdjustingCanvasRect = GetCanvasRegion();
 				Offset = e.Location;
 				drawStatus = DrawStatus.CanvasAdjusting;
