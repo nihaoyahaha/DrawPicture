@@ -104,7 +104,7 @@ namespace DrawKit
 
 		private void Panel_MouseWheel(object sender, MouseEventArgs e)
 		{
-			if (_shape is RectangularSelection rectSelection) rectSelection.Cancel();
+			//if (_shape is RectangularSelection rectSelection) rectSelection.Cancel();
 			if (ModifierKeys == Keys.Control)
 			{
 				if (e.Delta > 0)
@@ -675,6 +675,7 @@ namespace DrawKit
 		/// </summary>
 		private void pic_reduce_Click(object sender, EventArgs e)
 		{
+			_shape.CommitCurrentShape();
 			if (trackBar_scale.Value - _scaleDelta * 100 >= trackBar_scale.Minimum)
 			{
 				trackBar_scale.Value = trackBar_scale.Value - (int)(_scaleDelta * 100);
@@ -688,6 +689,7 @@ namespace DrawKit
 		/// </summary>
 		private void pic_amplify_Click(object sender, EventArgs e)
 		{
+			_shape.CommitCurrentShape();
 			if (trackBar_scale.Value + _scaleDelta * 100 <= trackBar_scale.Maximum)
 			{
 				trackBar_scale.Value = trackBar_scale.Value + (int)(_scaleDelta * 100);
@@ -698,6 +700,7 @@ namespace DrawKit
 
 		private void trackBar_scale_ValueChanged(object sender, EventArgs e)
 		{
+			_shape.CommitCurrentShape();
 			SetCanvasScale(trackBar_scale.Value / 100f);
 		}
 		private void SetCanvasScale(float scale)
@@ -941,6 +944,7 @@ namespace DrawKit
 		//适应窗口大小
 		private void pic_FitToWindow_Click(object sender, EventArgs e)
 		{
+			_shape.CommitCurrentShape();
 			AdjustCanvasToFit();
 		}
 		private void AdjustCanvasToFit()
