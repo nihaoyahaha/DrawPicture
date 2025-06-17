@@ -23,6 +23,8 @@ namespace DrawKit.Shapes
 			Scale = scale;
 		}
 
+		private const int _canvasLeftMargin = 20;
+		private const int _canvasTopMargin = 20;
 		//画布尺寸调整点集合
 		private List<(Rectangle rect, RectangleShapeFocusType focusType)> _canvasEditPoints = new List<(Rectangle rect, RectangleShapeFocusType focusType)>();
 
@@ -123,11 +125,11 @@ namespace DrawKit.Shapes
 
 			if (offsetX <= 0 && panel.AutoScrollPosition.X == 0)
 			{
-				offsetX = 10;
+				offsetX = _canvasLeftMargin;
 			}
 			if (offsetY <= 0 && panel.AutoScrollPosition.Y == 0)
 			{
-				offsetY = 10;
+				offsetY = _canvasTopMargin;
 			}
 			return (offsetX, offsetY);
 		}
