@@ -719,7 +719,8 @@ namespace DrawKit
 
 		private void panel_main_Scroll(object sender, ScrollEventArgs e)
 		{
-			if (_shape is RectangularSelection rectSelection) rectSelection.Cancel();
+			//if (_shape is RectangularSelection rectSelection) rectSelection.Cancel();
+			_shape.CommitCurrentShape();
 			CreateNewBitmap();
 		}
 
