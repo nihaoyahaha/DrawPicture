@@ -21,6 +21,8 @@ namespace DrawKit
 		[DllImport("user32.dll")]
 		private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
 		private const int HOTKEY_ID = 1;
+		private const int _canvasRightMargin = 20;
+		private const int _canvasBottomMargin = 20;
 
 		public string FilePath;
 		public event Action OnConfirm;
@@ -210,7 +212,7 @@ namespace DrawKit
 			SetRichTextBoxLocation();
 			_shape.drawStatus = DrawStatus.CanAdjusted;
 			var rect = _shape.GetCanvasRegion();
-			panel_main.AutoScrollMinSize = new Size(rect.Width, rect.Height);
+			SetPanelAutoScrollMinSize(rect.Width,rect.Height);
 			panel_main.Invalidate();
 			lb_CanvasSize.Text = $"{_canvas.Width},{_canvas.Height}像素";
 		}
@@ -236,10 +238,9 @@ namespace DrawKit
 				_canvas = newCanvas;
 				_shape.canvas = _canvas;
 			}
-			//panel_main.AutoScrollMinSize = new Size(_canvas.Width, _canvas.Height);
 			panel_main.Invalidate();
 			var rect = _shape.GetCanvasRegion();
-			panel_main.AutoScrollMinSize = new Size(rect.Width, rect.Height);
+			SetPanelAutoScrollMinSize(rect.Width,rect.Height);
 		}
 
 		private void panel_main_Paint(object sender, PaintEventArgs e)
@@ -445,7 +446,7 @@ namespace DrawKit
 			new object[] { true });
 			lb_SelectionSize.Text = "";
 			lb_CanvasSize.Text = $"{(int)(_canvas.Width / GetCmbscaleSelectedItemKey())},{(int)(_canvas.Height / GetCmbscaleSelectedItemKey())}像素";
-			panel_main.AutoScrollMinSize = new Size(_canvas.Width, _canvas.Height);
+			SetPanelAutoScrollMinSize(_canvas.Width,_canvas.Height);
 		}
 
 		private void SavePng()
@@ -714,7 +715,7 @@ namespace DrawKit
 			toolTip1.SetToolTip(trackBar_scale, $"{scale * 100}");
 			panel_main.Invalidate();
 			var rect = _shape.GetCanvasRegion();
-			panel_main.AutoScrollMinSize = new Size(rect.Width, rect.Height);
+			SetPanelAutoScrollMinSize(rect.Width,rect.Height);
 		}
 
 		private void panel_main_Scroll(object sender, ScrollEventArgs e)
@@ -899,7 +900,15 @@ namespace DrawKit
 			SetScaleDelta(selectedKeyValuePair.Key);
 			panel_main.Invalidate();
 			var rect = _shape.GetCanvasRegion();
-			panel_main.AutoScrollMinSize = new Size(rect.Width, rect.Height);
+			SetPanelAutoScrollMinSize(rect.Width,rect.Height);
+		}
+
+		private void SetPanelAutoScrollMinSize(int width, int height)
+		{
+			int horizontalMargin = (width - panel_main.Width) / 2;
+			int verticalMargin = (height - panel_main.Height) / 2;
+
+			panel_main.AutoScrollMinSize = new Size(width - horizontalMargin + _canvasRightMargin, height - verticalMargin + _canvasBottomMargin);
 		}
 
 		private void SetScaleDelta(float scale)
