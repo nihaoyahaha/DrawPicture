@@ -31,6 +31,7 @@ WinForm 简易画图工具
 示例代码
 
 CanvasForm canvasForm = new CanvasForm();
+
 canvasForm.ShowDialog();
 
 
