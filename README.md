@@ -21,7 +21,17 @@ WinForm 简易画图工具
 
 ![image](https://github.com/user-attachments/assets/d4190762-d97f-4a73-81aa-032881e72d72)
 
-有需要的朋友可以下载学习使用!
+使用方式
+
+1. 下载附件中的 ZIP 文件并解压
+2. 将 `DrawKit.dll` 添加为项目引用
+3. 在代码中引入命名空间：`using DrawKit;`
+4. 按照示例调用方法
+
+示例代码
+
+CanvasForm canvasForm = new CanvasForm();
+canvasForm.ShowDialog();
 
 
 
