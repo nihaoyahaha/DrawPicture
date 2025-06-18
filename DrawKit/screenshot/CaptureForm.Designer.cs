@@ -102,6 +102,7 @@
 			this.Controls.Add(this.panel_operation);
 			this.Name = "CaptureForm";
 			this.Text = "CaptureForm";
+			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CaptureForm_KeyDown);
 			this.panel_operation.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.pic_Save)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pic_cancel)).EndInit();

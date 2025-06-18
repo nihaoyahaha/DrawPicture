@@ -41,7 +41,7 @@
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-			this.btn_select = new System.Windows.Forms.ToolStripDropDownButton();
+			this.btn_select = new System.Windows.Forms.ToolStripButton();
 			this.btn_rotate = new System.Windows.Forms.ToolStripDropDownButton();
 			this.btn_RightRotate90 = new System.Windows.Forms.ToolStripMenuItem();
 			this.btn_LeftRotate90 = new System.Windows.Forms.ToolStripMenuItem();
@@ -86,12 +86,12 @@
 			this.pic_FitToWindow = new System.Windows.Forms.PictureBox();
 			this.pic_reduce = new System.Windows.Forms.PictureBox();
 			this.panel_main = new System.Windows.Forms.Panel();
-			this.rtb_Text = new DrawKit.UserControl.TransparentRichTextBox();
-			this.panel1 = new System.Windows.Forms.Panel();
+			this.panel_Bottom = new System.Windows.Forms.Panel();
 			this.pictureBox2 = new System.Windows.Forms.PictureBox();
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
 			this.pictureBox3 = new System.Windows.Forms.PictureBox();
 			this.colorDialog = new System.Windows.Forms.ColorDialog();
+			this.rtb_Text = new DrawKit.UserControl.TransparentRichTextBox();
 			this.toolStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.trackBar_scale)).BeginInit();
 			this.panel_TextStyle.SuspendLayout();
@@ -106,7 +106,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.pic_FitToWindow)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pic_reduce)).BeginInit();
 			this.panel_main.SuspendLayout();
-			this.panel1.SuspendLayout();
+			this.panel_Bottom.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
@@ -241,7 +241,6 @@
 			this.btn_select.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.btn_select.Name = "btn_select";
 			this.btn_select.RightToLeftAutoMirrorImage = true;
-			this.btn_select.ShowDropDownArrow = false;
 			this.btn_select.Size = new System.Drawing.Size(36, 41);
 			this.btn_select.Text = "选择";
 			this.btn_select.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
@@ -557,6 +556,7 @@
 			this.panel_TextStyle.Name = "panel_TextStyle";
 			this.panel_TextStyle.Size = new System.Drawing.Size(513, 34);
 			this.panel_TextStyle.TabIndex = 7;
+			this.panel_TextStyle.Visible = false;
 			// 
 			// pic_right
 			// 
@@ -692,7 +692,9 @@
 			this.toolTip1.SetToolTip(this.cmb_scales, "缩放级别");
 			this.cmb_scales.SelectedIndexChanged += new System.EventHandler(this.cmb_scales_SelectedIndexChanged);
 			this.cmb_scales.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cmb_scales_KeyDown);
-			this.cmb_scales.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.cmb_scales_KeyPress);
+			this.cmb_scales.Leave += new System.EventHandler(this.cmb_scales_Leave);
+			this.cmb_scales.MouseDown += new System.Windows.Forms.MouseEventHandler(this.cmb_scales_MouseDown);
+			this.cmb_scales.Validating += new System.ComponentModel.CancelEventHandler(this.cmb_scales_Validating);
 			// 
 			// pic_amplify
 			// 
@@ -749,40 +751,32 @@
 			this.panel_main.TabStop = true;
 			this.panel_main.Scroll += new System.Windows.Forms.ScrollEventHandler(this.panel_main_Scroll);
 			this.panel_main.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_main_Paint);
+			this.panel_main.MouseClick += new System.Windows.Forms.MouseEventHandler(this.panel_main_MouseClick);
 			this.panel_main.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel_main_MouseDown);
 			this.panel_main.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel_main_MouseMove);
 			this.panel_main.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panel_main_MouseUp);
 			// 
-			// rtb_Text
+			// panel_Bottom
 			// 
-			this.rtb_Text.BorderStyle = System.Windows.Forms.BorderStyle.None;
-			this.rtb_Text.EmptyTextTip = null;
-			this.rtb_Text.Location = new System.Drawing.Point(55, 181);
-			this.rtb_Text.Name = "rtb_Text";
-			this.rtb_Text.Size = new System.Drawing.Size(100, 96);
-			this.rtb_Text.TabIndex = 0;
-			this.rtb_Text.Text = "";
-			// 
-			// panel1
-			// 
-			this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+			this.panel_Bottom.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.panel1.BackColor = System.Drawing.Color.WhiteSmoke;
-			this.panel1.Controls.Add(this.pic_amplify);
-			this.panel1.Controls.Add(this.cmb_scales);
-			this.panel1.Controls.Add(this.lb_Penposition);
-			this.panel1.Controls.Add(this.trackBar_scale);
-			this.panel1.Controls.Add(this.lb_CanvasSize);
-			this.panel1.Controls.Add(this.lb_SelectionSize);
-			this.panel1.Controls.Add(this.pictureBox2);
-			this.panel1.Controls.Add(this.pictureBox1);
-			this.panel1.Controls.Add(this.pic_FitToWindow);
-			this.panel1.Controls.Add(this.pic_reduce);
-			this.panel1.Controls.Add(this.pictureBox3);
-			this.panel1.Location = new System.Drawing.Point(0, 649);
-			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(1177, 53);
-			this.panel1.TabIndex = 5;
+			this.panel_Bottom.BackColor = System.Drawing.Color.WhiteSmoke;
+			this.panel_Bottom.Controls.Add(this.pic_amplify);
+			this.panel_Bottom.Controls.Add(this.cmb_scales);
+			this.panel_Bottom.Controls.Add(this.lb_Penposition);
+			this.panel_Bottom.Controls.Add(this.trackBar_scale);
+			this.panel_Bottom.Controls.Add(this.lb_CanvasSize);
+			this.panel_Bottom.Controls.Add(this.lb_SelectionSize);
+			this.panel_Bottom.Controls.Add(this.pictureBox2);
+			this.panel_Bottom.Controls.Add(this.pictureBox1);
+			this.panel_Bottom.Controls.Add(this.pic_FitToWindow);
+			this.panel_Bottom.Controls.Add(this.pic_reduce);
+			this.panel_Bottom.Controls.Add(this.pictureBox3);
+			this.panel_Bottom.Location = new System.Drawing.Point(0, 649);
+			this.panel_Bottom.Name = "panel_Bottom";
+			this.panel_Bottom.Size = new System.Drawing.Size(1177, 53);
+			this.panel_Bottom.TabIndex = 5;
+			this.panel_Bottom.MouseClick += new System.Windows.Forms.MouseEventHandler(this.panel_Bottom_MouseClick);
 			// 
 			// pictureBox2
 			// 
@@ -817,6 +811,17 @@
 			this.pictureBox3.TabIndex = 0;
 			this.pictureBox3.TabStop = false;
 			// 
+			// rtb_Text
+			// 
+			this.rtb_Text.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.rtb_Text.EmptyTextTip = null;
+			this.rtb_Text.Location = new System.Drawing.Point(55, 181);
+			this.rtb_Text.Name = "rtb_Text";
+			this.rtb_Text.Size = new System.Drawing.Size(100, 96);
+			this.rtb_Text.TabIndex = 0;
+			this.rtb_Text.Text = "";
+			this.rtb_Text.Visible = false;
+			// 
 			// CanvasForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -825,17 +830,17 @@
 			this.ClientSize = new System.Drawing.Size(1177, 702);
 			this.Controls.Add(this.panel_main);
 			this.Controls.Add(this.panel_TextStyle);
-			this.Controls.Add(this.panel1);
+			this.Controls.Add(this.panel_Bottom);
 			this.Controls.Add(this.toolStrip1);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.KeyPreview = true;
 			this.MinimumSize = new System.Drawing.Size(699, 498);
 			this.Name = "CanvasForm";
 			this.Text = "画图";
-			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
-			this.Load += new System.EventHandler(this.Form1_Load);
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CanvasForm_FormClosing);
+			this.Load += new System.EventHandler(this.CanvasForm_Load);
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CanvasForm_KeyDown);
-			this.Resize += new System.EventHandler(this.Form1_Resize);
+			this.Resize += new System.EventHandler(this.CanvasForm_Resize);
 			this.toolStrip1.ResumeLayout(false);
 			this.toolStrip1.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.trackBar_scale)).EndInit();
@@ -851,8 +856,8 @@
 			((System.ComponentModel.ISupportInitialize)(this.pic_FitToWindow)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pic_reduce)).EndInit();
 			this.panel_main.ResumeLayout(false);
-			this.panel1.ResumeLayout(false);
-			this.panel1.PerformLayout();
+			this.panel_Bottom.ResumeLayout(false);
+			this.panel_Bottom.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
@@ -870,7 +875,6 @@
 		private System.Windows.Forms.Label lb_SelectionSize;
 		private System.Windows.Forms.PictureBox pictureBox3;
 		private UserControl.TransparentRichTextBox rtb_Text;
-		private System.Windows.Forms.ToolStripDropDownButton btn_select;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripDropDownButton btn_rotate;
 		private System.Windows.Forms.ToolStripMenuItem btn_RightRotate90;
@@ -919,11 +923,12 @@
 		private System.Windows.Forms.ComboBox cmb_scales;
 		private System.Windows.Forms.ToolTip toolTip1;
 		private System.Windows.Forms.PictureBox pic_FitToWindow;
-		private System.Windows.Forms.Panel panel1;
+		private System.Windows.Forms.Panel panel_Bottom;
 		private System.Windows.Forms.ToolStripButton btn_Pencil;
 		private System.Windows.Forms.ToolStripButton btn_Color;
 		private System.Windows.Forms.ColorDialog colorDialog;
 		private System.Windows.Forms.ToolStripButton btn_screenShot;
+		private System.Windows.Forms.ToolStripButton btn_select;
 	}
 }
 

@@ -498,5 +498,12 @@ namespace DrawKit.Screenshot
 			}
 		}
 
+		private void CaptureForm_KeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.KeyCode == Keys.Escape)
+			{
+				CloseForm();
+			}
+		}
 	}
 }

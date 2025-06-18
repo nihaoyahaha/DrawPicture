@@ -11,7 +11,7 @@ namespace DrawKit.History
 	{
 		public static event Action OnOperationCompleted;
 
-		private const int _MaxOperationSteps = 100;
+		private const int _MaxOperationSteps = 30;
 
 		private static Stack<Bitmap> _revokeStack = new Stack<Bitmap>();
 
