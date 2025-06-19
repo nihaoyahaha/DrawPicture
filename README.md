@@ -1,5 +1,5 @@
 WinForm 简易画图工具
-这是一个基于 .NET Framework 4.7 开发的轻量级 WinForms 图形绘制应用程序，灵感来源于 Windows 10/11 自带的“画图”工具。本项目旨在通过原生 WinForm 技术实现一个基础但功能完整的绘图软件，适合初学者学习图形界面开发、GDI+ 绘图技术以及事件驱动编程思想,无任何第三方库依赖。
+这是一个基于 .NET Framework 4.7.2 开发的轻量级 WinForms 图形绘制应用程序，灵感来源于 Windows 10/11 自带的“画图”工具。本项目旨在通过原生 WinForm 技术实现一个基础但功能完整的绘图软件，适合初学者学习图形界面开发、GDI+ 绘图技术以及事件驱动编程思想,无任何第三方库依赖。
 
 主要功能包括：
 
@@ -21,7 +21,18 @@ WinForm 简易画图工具
 
 ![image](https://github.com/user-attachments/assets/d4190762-d97f-4a73-81aa-032881e72d72)
 
-有需要的朋友可以下载学习使用!
+使用方式
+
+1. 下载附件中的 ZIP 文件并解压
+2. 将 `DrawKit.dll` 添加为项目引用
+3. 在代码中引入命名空间：`using DrawKit;`
+4. 按照示例调用方法
+
+示例代码
+
+CanvasForm canvasForm = new CanvasForm();
+
+canvasForm.ShowDialog();
 
 
 
