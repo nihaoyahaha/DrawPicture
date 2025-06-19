@@ -29,6 +29,7 @@ namespace DrawKit
 		private float _scaleDelta = 0.1f;
 		private CaptureForm _captureForm;
 		private string _cmbScaleLastText = "";
+		private Point? _scrollPosition = null;
 
 		public CanvasForm()
 		{
@@ -77,7 +78,7 @@ namespace DrawKit
 		//画布初始化
 		private void InitializeCanvas()
 		{
-			_canvas = new Bitmap(860, 450);
+			_canvas = new Bitmap(320, 192);
 			using (Graphics g = Graphics.FromImage(_canvas))
 			{
 				g.Clear(_canvasBackgroundColor); // 初始化背景色
@@ -192,9 +193,25 @@ namespace DrawKit
 
 		private void panel_main_Scroll(object sender, ScrollEventArgs e)
 		{
-			//if (_shape is RectangularSelection rectSelection) rectSelection.Cancel();
 			_shape.CommitCurrentShape();
-			CreateNewBitmap();
+			CanvasScroll();
+
+		}
+
+		private void CanvasScroll()
+		{
+			if (_canvas == null) return;
+			Bitmap newCanvas = new Bitmap(_canvas.Width, _canvas.Height);
+			using (Graphics g = Graphics.FromImage(newCanvas))
+			{
+				g.Clear(_canvasBackgroundColor);
+				g.DrawImage(_canvas, Point.Empty);
+			}
+			_canvas.Dispose();
+			_canvas = newCanvas;
+			_shape.canvas = _canvas;
+			panel_main.Invalidate();
+			_scrollPosition = panel_main.AutoScrollPosition;
 		}
 
 		private void panel_main_MouseWheel(object sender, MouseEventArgs e)
@@ -210,13 +227,16 @@ namespace DrawKit
 					pic_reduce_Click(null, null);
 				}
 			}
-			if (panel_main.DisplayRectangle.Width > panel_main.ClientSize.Width)
+			else
 			{
-				CreateNewBitmap();
-			}
-			if (panel_main.DisplayRectangle.Height > panel_main.ClientSize.Height)
-			{
-				CreateNewBitmap();
+				if (panel_main.DisplayRectangle.Width > panel_main.ClientSize.Width)
+				{
+					CanvasScroll();
+				}
+				if (panel_main.DisplayRectangle.Height > panel_main.ClientSize.Height)
+				{
+					CanvasScroll();
+				}
 			}
 		}
 
@@ -640,19 +660,6 @@ namespace DrawKit
 
 		private void cmb_scales_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			//if (_shape is null) return;
-			//var selectedKeyValuePair = (KeyValuePair<float, string>)cmb_scales.SelectedItem;
-			//if (_shape.SelectionRect.Width != 0 && _shape.SelectionRect.Height != 0)
-			//{
-			//	_shape.drawStatus = DrawStatus.CanAdjusted;
-			//}
-			//trackBar_scale.Value = (int)Math.Round(selectedKeyValuePair.Key * 100);
-			//_shape.Scale = selectedKeyValuePair.Key;
-			//SetScaleDelta(selectedKeyValuePair.Key);
-			//panel_main.Invalidate();
-			//var rect = _shape.GetCanvasRegion();
-			//SetPanelAutoScrollMinSize(rect.Width, rect.Height);
-
 			var selectedKeyValuePair = (KeyValuePair<float, string>)cmb_scales.SelectedItem;
 			RefreshCanvasScale(selectedKeyValuePair.Key, (int)Math.Round(selectedKeyValuePair.Key * 100));
 		}
@@ -699,7 +706,13 @@ namespace DrawKit
 					}
 					_shape.canvas = _canvas;
 					lb_CanvasSize.Text = $"{_canvas.Width},{_canvas.Height}像素";
+
+					this.cmb_scales.SelectedIndexChanged -= new System.EventHandler(this.cmb_scales_SelectedIndexChanged);
+					cmb_scales.SelectedIndex = 4;
+					this.cmb_scales.SelectedIndexChanged += new System.EventHandler(this.cmb_scales_SelectedIndexChanged);
+					RefreshCanvasScale(1, 100);
 					panel_main.Invalidate();
+					
 				}
 				catch (Exception ex)
 				{
@@ -726,7 +739,9 @@ namespace DrawKit
 			_shape.CommitCurrentShape();
 			if (trackBar_scale.Value - _scaleDelta * 100 >= trackBar_scale.Minimum)
 			{
+				this.trackBar_scale.ValueChanged -= new System.EventHandler(this.trackBar_scale_ValueChanged);
 				trackBar_scale.Value = trackBar_scale.Value - (int)(_scaleDelta * 100);
+				this.trackBar_scale.ValueChanged += new System.EventHandler(this.trackBar_scale_ValueChanged);
 				float scale = trackBar_scale.Value / 100f;
 				SetCanvasScale(scale);
 			}
@@ -738,7 +753,9 @@ namespace DrawKit
 			_shape.CommitCurrentShape();
 			if (trackBar_scale.Value + _scaleDelta * 100 <= trackBar_scale.Maximum)
 			{
+				this.trackBar_scale.ValueChanged -= new System.EventHandler(this.trackBar_scale_ValueChanged);
 				trackBar_scale.Value = trackBar_scale.Value + (int)(_scaleDelta * 100);
+				this.trackBar_scale.ValueChanged += new System.EventHandler(this.trackBar_scale_ValueChanged);
 				float scale = trackBar_scale.Value / 100f;
 				SetCanvasScale(scale);
 			}
@@ -751,7 +768,7 @@ namespace DrawKit
 			SetCanvasScale(trackBar_scale.Value / 100f);
 		}
 
-	    //设置画布缩放比例
+		//设置画布缩放比例
 		private void SetCanvasScale(float scale)
 		{
 			if (_shape.SelectionRect.Width != 0 && _shape.SelectionRect.Height != 0)
@@ -887,7 +904,7 @@ namespace DrawKit
 			pic_Blod.BorderStyle = pic_Blod.BorderStyle == BorderStyle.None ? BorderStyle.FixedSingle : BorderStyle.None;
 			SetTextFont();
 		}
-		
+
 		//斜体
 		private void pic_Italic_Click(object sender, EventArgs e)
 		{
@@ -942,7 +959,12 @@ namespace DrawKit
 			int horizontalMargin = (width - panel_main.Width) / 2;
 			int verticalMargin = (height - panel_main.Height) / 2;
 
-			panel_main.AutoScrollMinSize = new Size(width - horizontalMargin + _canvasRightMargin, height - verticalMargin + _canvasBottomMargin);
+			if (horizontalMargin < 0 && verticalMargin < 0) _scrollPosition = null;
+
+			panel_main.AutoScrollMinSize = new Size(width + _canvasRightMargin, height + _canvasBottomMargin);
+
+			Point pt = _scrollPosition == null ? new Point(horizontalMargin, verticalMargin) : new Point(Math.Abs(_scrollPosition.Value.X), Math.Abs(_scrollPosition.Value.Y));
+			panel_main.AutoScrollPosition = pt;
 		}
 
 		//根据缩放比例设置缩放步长
@@ -972,6 +994,7 @@ namespace DrawKit
 		//画布自适应窗体尺寸
 		private void AdjustCanvasToFit()
 		{
+			_scrollPosition = null;
 			int clientWidth = panel_main.Width;
 			int clientHeight = panel_main.Height;
 
@@ -986,8 +1009,9 @@ namespace DrawKit
 
 			if (scale > 8f) scale = 8f;
 			if (scale < 0.125f) scale = 0.125f;
-
+			this.trackBar_scale.ValueChanged -= new System.EventHandler(this.trackBar_scale_ValueChanged);
 			trackBar_scale.Value = (int)(scale * 100);
+			this.trackBar_scale.ValueChanged += new System.EventHandler(this.trackBar_scale_ValueChanged);
 			SetCanvasScale(scale);
 		}
 
@@ -1162,7 +1186,9 @@ namespace DrawKit
 			{
 				_shape.drawStatus = DrawStatus.CanAdjusted;
 			}
+			this.trackBar_scale.ValueChanged -= new System.EventHandler(this.trackBar_scale_ValueChanged);
 			trackBar_scale.Value = trackBarScaleValue;
+			this.trackBar_scale.ValueChanged += new System.EventHandler(this.trackBar_scale_ValueChanged);
 			_shape.Scale = scale;
 			SetScaleDelta(scale);
 			panel_main.Invalidate();

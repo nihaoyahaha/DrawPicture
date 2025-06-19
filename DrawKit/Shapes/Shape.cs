@@ -23,8 +23,8 @@ namespace DrawKit.Shapes
 			Scale = scale;
 		}
 
-		private const int _canvasLeftMargin = 20;
-		private const int _canvasTopMargin = 20;
+		private const int _canvasLeftMargin = 40;
+		private const int _canvasTopMargin = 40;
 		//画布尺寸调整点集合
 		private List<(Rectangle rect, RectangleShapeFocusType focusType)> _canvasEditPoints = new List<(Rectangle rect, RectangleShapeFocusType focusType)>();
 
@@ -120,18 +120,13 @@ namespace DrawKit.Shapes
 			int offsetX = (panel.Width - (int)(canvas.Width * Scale)) / 2;
 			int offsetY = (panel.Height - (int)(canvas.Height * Scale)) / 2;
 
-			offsetX += panel.AutoScrollPosition.X;
-			offsetY += panel.AutoScrollPosition.Y;
+			int canvasWidth = (int)(canvas.Width * Scale);
+			int canvasHeight = (int)(canvas.Height * Scale);
 
-			if (offsetX <= 0 && panel.AutoScrollPosition.X == 0)
-			{
-				offsetX = _canvasLeftMargin;
-			}
-			if (offsetY <= 0 && panel.AutoScrollPosition.Y == 0)
-			{
-				offsetY = _canvasTopMargin;
-			}
-			return (offsetX, offsetY);
+			int canvasX = canvasWidth+_canvasLeftMargin/2 < panel.Width ? offsetX : (panel.AutoScrollPosition.X == 0 ? _canvasLeftMargin : panel.AutoScrollPosition.X);
+			int canvasY = canvasHeight +_canvasTopMargin/2< panel.Height ? offsetY : (panel.AutoScrollPosition.Y == 0 ? _canvasTopMargin : panel.AutoScrollPosition.Y);
+
+			return (canvasX,canvasY);
 		}
 
 		private void DrawCanvasEditPoint(Graphics graphics)

@@ -86,12 +86,12 @@
 			this.pic_FitToWindow = new System.Windows.Forms.PictureBox();
 			this.pic_reduce = new System.Windows.Forms.PictureBox();
 			this.panel_main = new System.Windows.Forms.Panel();
+			this.rtb_Text = new DrawKit.UserControl.TransparentRichTextBox();
 			this.panel_Bottom = new System.Windows.Forms.Panel();
 			this.pictureBox2 = new System.Windows.Forms.PictureBox();
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
 			this.pictureBox3 = new System.Windows.Forms.PictureBox();
 			this.colorDialog = new System.Windows.Forms.ColorDialog();
-			this.rtb_Text = new DrawKit.UserControl.TransparentRichTextBox();
 			this.toolStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.trackBar_scale)).BeginInit();
 			this.panel_TextStyle.SuspendLayout();
@@ -740,8 +740,7 @@
 			this.panel_main.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.panel_main.AutoScroll = true;
-			this.panel_main.AutoScrollMinSize = new System.Drawing.Size(750, 320);
+			this.panel_main.AutoScrollMargin = new System.Drawing.Size(10, 10);
 			this.panel_main.BackColor = System.Drawing.Color.White;
 			this.panel_main.Controls.Add(this.rtb_Text);
 			this.panel_main.Location = new System.Drawing.Point(0, 45);
@@ -755,6 +754,17 @@
 			this.panel_main.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel_main_MouseDown);
 			this.panel_main.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel_main_MouseMove);
 			this.panel_main.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panel_main_MouseUp);
+			// 
+			// rtb_Text
+			// 
+			this.rtb_Text.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.rtb_Text.EmptyTextTip = null;
+			this.rtb_Text.Location = new System.Drawing.Point(55, 181);
+			this.rtb_Text.Name = "rtb_Text";
+			this.rtb_Text.Size = new System.Drawing.Size(100, 96);
+			this.rtb_Text.TabIndex = 0;
+			this.rtb_Text.Text = "";
+			this.rtb_Text.Visible = false;
 			// 
 			// panel_Bottom
 			// 
@@ -810,17 +820,6 @@
 			this.pictureBox3.Size = new System.Drawing.Size(26, 26);
 			this.pictureBox3.TabIndex = 0;
 			this.pictureBox3.TabStop = false;
-			// 
-			// rtb_Text
-			// 
-			this.rtb_Text.BorderStyle = System.Windows.Forms.BorderStyle.None;
-			this.rtb_Text.EmptyTextTip = null;
-			this.rtb_Text.Location = new System.Drawing.Point(55, 181);
-			this.rtb_Text.Name = "rtb_Text";
-			this.rtb_Text.Size = new System.Drawing.Size(100, 96);
-			this.rtb_Text.TabIndex = 0;
-			this.rtb_Text.Text = "";
-			this.rtb_Text.Visible = false;
 			// 
 			// CanvasForm
 			// 
