@@ -155,6 +155,7 @@ namespace DrawKit
 
 		private void CanvasForm_Resize(object sender, EventArgs e)
 		{
+			_shape.CommitCurrentShape();
 			CreateNewBitmap();
 			SetPanelTextStyle();
 		}
