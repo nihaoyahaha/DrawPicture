@@ -38,6 +38,7 @@ namespace DrawKit.Shapes
 			DrawTempCanvasOnMain();
 
 			drawStatus = DrawStatus.CannotMovedOrAdjusted;
+			_selectedBitmap?.Dispose();
 			_selectedBitmap = null;
 			SelectionRect = Rectangle.Empty;
 			_fillRect = Rectangle.Empty;
@@ -57,7 +58,7 @@ namespace DrawKit.Shapes
 
 		public void DelSelectedBitmap()
 		{
-			tempCanvas = (Bitmap)canvas.Clone();
+			tempCanvas = GetTempCanvas();
 			using (Graphics g = Graphics.FromImage(tempCanvas))
 			{
 				g.FillRectangle(new SolidBrush(_FillRectColor), ConvertSelectionRectToCanvasRect(_fillRect));
@@ -88,7 +89,9 @@ namespace DrawKit.Shapes
 		protected override void CancelDrawing()
 		{
 			drawStatus = DrawStatus.CannotMovedOrAdjusted;
+			tempCanvas?.Dispose();
 			tempCanvas = null;
+			_selectedBitmap?.Dispose();
 			_selectedBitmap = null;
 			SelectionRect = Rectangle.Empty;
 			_fillRect = Rectangle.Empty;
@@ -193,6 +196,8 @@ namespace DrawKit.Shapes
 				drawStatus = DrawStatus.CanAdjusted;
 				if (SelectionRect.Width > 0 && SelectionRect.Height > 0)
 				{
+					_selectedBitmap?.Dispose();
+					_selectedBitmap = null;
 					_selectedBitmap = new Bitmap(SelectionRect.Width, SelectionRect.Height);
 					using (Graphics g = Graphics.FromImage(_selectedBitmap))
 					{
@@ -288,13 +293,7 @@ namespace DrawKit.Shapes
 		private void DrawCanMoveOrAdjusted(Graphics graphics)
 		{
 			if (_selectedBitmap == null) return;
-			//Rectangle bitmapArea = GetCanvasRegion();
-			//graphics.SetClip(bitmapArea);
-			//graphics.FillRectangle(new SolidBrush(_FillRectColor), _fillRect);
-			//graphics.DrawImage(_selectedBitmap, SelectionRect);
-			//graphics.ResetClip();
-
-			tempCanvas = (Bitmap)canvas.Clone();
+			tempCanvas = GetTempCanvas();
 			using (Graphics g = Graphics.FromImage(tempCanvas))
 			{
 				g.CompositingQuality = CompositingQuality.HighQuality;
@@ -322,13 +321,7 @@ namespace DrawKit.Shapes
 
 		private void DrawAdjusting(Graphics graphics)
 		{
-			//Rectangle bitmapArea = GetCanvasRegion();
-			//graphics.SetClip(bitmapArea);
-			//graphics.FillRectangle(new SolidBrush(_FillRectColor), _fillRect);
-			//graphics.DrawImage(_selectedBitmap, _rectBeforeAdjust);
-			//graphics.ResetClip();
-
-			tempCanvas = (Bitmap)canvas.Clone();
+			tempCanvas = GetTempCanvas();
 			using (Graphics g = Graphics.FromImage(tempCanvas))
 			{
 				g.CompositingQuality = CompositingQuality.HighQuality;
@@ -360,13 +353,7 @@ namespace DrawKit.Shapes
 
 		private void DrawAdjustComplate(Graphics graphics)
 		{
-			//Rectangle bitmapArea = GetCanvasRegion();
-			//graphics.SetClip(bitmapArea);
-			//graphics.FillRectangle(new SolidBrush(_FillRectColor), _fillRect);
-			//graphics.DrawImage(_selectedBitmap, SelectionRect);
-			//graphics.ResetClip();
-
-			tempCanvas = (Bitmap)canvas.Clone();
+			tempCanvas = GetTempCanvas();
 			using (Graphics g = Graphics.FromImage(tempCanvas))
 			{
 				g.CompositingQuality = CompositingQuality.HighQuality;

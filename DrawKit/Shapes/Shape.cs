@@ -58,7 +58,6 @@ namespace DrawKit.Shapes
 		protected bool IsFlippedVertically = false;
 
 		public Bitmap canvas;
-
 		public Bitmap tempCanvas;
 
 		//缩放比例
@@ -453,6 +452,7 @@ namespace DrawKit.Shapes
 			{
 				g.Clear(color);
 			}
+			tempCanvas?.Dispose();
 			tempCanvas = null;
 			SelectionRect = Rectangle.Empty;
 			drawStatus = DrawStatus.CannotMovedOrAdjusted;
@@ -467,6 +467,7 @@ namespace DrawKit.Shapes
 		/// </summary>
 		protected virtual void CancelDrawing()
 		{
+			tempCanvas?.Dispose();
 			tempCanvas = null;
 			drawStatus = DrawStatus.CannotMovedOrAdjusted;
 			SelectionRect = Rectangle.Empty;
@@ -532,6 +533,7 @@ namespace DrawKit.Shapes
 				{
 					g.DrawImage(tempCanvas, new Point(0, 0));
 				}
+				tempCanvas?.Dispose();
 				tempCanvas = null;
 			}
 		}
@@ -684,5 +686,14 @@ namespace DrawKit.Shapes
 			};
 			return t;
 		}
+
+		public Bitmap GetTempCanvas()
+		{
+			tempCanvas?.Dispose();
+			tempCanvas = null;
+			if (canvas == null) return null;
+			return (Bitmap)canvas.Clone();
+		}
+	
 	}
 }

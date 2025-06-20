@@ -139,7 +139,8 @@ namespace DrawKit
 		//释放 Bitmap 资源
 		private void CanvasForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			_canvas.Dispose();
+			_canvas?.Dispose();
+			_canvas = null;
 			OperationStep.OnOperationCompleted -= RevokeAndRedoAction;
 		}
 
@@ -207,8 +208,11 @@ namespace DrawKit
 				g.Clear(_canvasBackgroundColor);
 				g.DrawImage(_canvas, Point.Empty);
 			}
-			_canvas.Dispose();
+			_canvas?.Dispose();
+			_canvas = null;
 			_canvas = newCanvas;
+			_shape.canvas?.Dispose();
+			_shape.canvas = null;
 			_shape.canvas = _canvas;
 			panel_main.Invalidate();
 			_scrollPosition = panel_main.AutoScrollPosition;
@@ -330,8 +334,11 @@ namespace DrawKit
 				g.Clear(_canvasBackgroundColor);
 				g.DrawImage(_canvas, Point.Empty);
 			}
-			_canvas.Dispose();
+			_canvas?.Dispose();
+			_canvas = null;
 			_canvas = newCanvas;
+			_shape.canvas?.Dispose();
+			_shape.canvas = null;
 			_shape.canvas = _canvas;
 
 			SetRichTextBoxLocation();
@@ -359,8 +366,11 @@ namespace DrawKit
 					Point point = new Point((int)(offsetPoint.X / _shape.Scale), (int)(offsetPoint.Y / _shape.Scale));
 					g.DrawImage(_canvas, point);
 				}
-				_canvas.Dispose();
+				_canvas?.Dispose();
+				_canvas = null;
 				_canvas = newCanvas;
+				_shape.canvas?.Dispose();
+				_shape.canvas = null;
 				_shape.canvas = _canvas;
 			}
 			panel_main.Invalidate();
@@ -702,8 +712,12 @@ namespace DrawKit
 				{
 					using (Bitmap tempBitmap = new Bitmap(openFileDialog.FileName))
 					{
+						_canvas?.Dispose();
+						_canvas = null;
 						_canvas = new Bitmap(tempBitmap);
 					}
+					_shape.canvas?.Dispose();
+					_shape.canvas = null;
 					_shape.canvas = _canvas;
 					lb_CanvasSize.Text = $"{_canvas.Width},{_canvas.Height}像素";
 
@@ -795,8 +809,11 @@ namespace DrawKit
 					g.Clear(_canvasBackgroundColor);
 					g.DrawImage(bitmap, Point.Empty);
 				}
-				_canvas.Dispose();
+				_canvas?.Dispose();
+				_canvas = null;
 				_canvas = newCanvas;
+				_shape.canvas?.Dispose();
+				_shape.canvas = null;
 				_shape.canvas = _canvas;
 			}
 			RevokeAndRedoAction();

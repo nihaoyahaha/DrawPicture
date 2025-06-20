@@ -24,6 +24,7 @@ namespace DrawKit.Shapes
 		{  
 			if (e.Button == MouseButtons.Right)
 			{
+				_tempCanvas?.Dispose();
 				_tempCanvas = null;
 				CancelDrawing();
 			}
@@ -45,6 +46,8 @@ namespace DrawKit.Shapes
 			else
 			{
 				if (isFilling) return;
+				_tempCanvas?.Dispose();
+				_tempCanvas = null;
 				_tempCanvas = (Bitmap)canvas.Clone();
 				StartPoint = e.Location;
 				Point pointIncanvas = ConvertPoint(e.Location);
@@ -111,6 +114,7 @@ namespace DrawKit.Shapes
 					{
 						g.DrawImage(_tempCanvas, new Point(0, 0));
 					}
+					_tempCanvas?.Dispose();
 					_tempCanvas = null;
 				}
 				panel.Invalidate();

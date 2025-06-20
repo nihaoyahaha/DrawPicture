@@ -40,7 +40,7 @@ namespace DrawKit.Shapes
 			}
 			else
 			{
-				tempCanvas = (Bitmap)canvas.Clone();
+				tempCanvas = GetTempCanvas();
 				EndPoint = e.Location;
 				DrawPath(ConvertPoint(EndPoint), ConvertPoint(e.Location));
 				drawStatus = DrawStatus.Creating;
@@ -53,7 +53,9 @@ namespace DrawKit.Shapes
 				drawStatus == DrawStatus.CanvasAdjusting)
 			{
 				drawStatus = DrawStatus.CannotMovedOrAdjusted;
+				tempCanvas?.Dispose();
 				tempCanvas = null;
+				_eraserBitmap?.Dispose();
 				_eraserBitmap = null;
 				panel.Invalidate();
 				return;

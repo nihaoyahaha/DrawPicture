@@ -45,7 +45,7 @@ namespace DrawKit.Shapes
 			}
 			else
 			{
-				tempCanvas = (Bitmap)canvas.Clone();
+				tempCanvas = GetTempCanvas();
 				EndPoint = e.Location;
 				DrawEraserPath(ConvertPoint(EndPoint), ConvertPoint(e.Location));
 				drawStatus = DrawStatus.Creating;
@@ -58,6 +58,7 @@ namespace DrawKit.Shapes
 				drawStatus == DrawStatus.CanvasAdjusting)
 			{
 				drawStatus = DrawStatus.CannotMovedOrAdjusted;
+				tempCanvas?.Dispose();
 				tempCanvas = null;
 				_eraserBitmap = null;
 				panel.Invalidate();
@@ -143,7 +144,8 @@ namespace DrawKit.Shapes
 		private void DrawCursor(Graphics graphics)
 		{
 			var point = ConvertPoint(_cursorLocation);
-
+			_eraserBitmap?.Dispose();
+			_eraserBitmap = null;
 			_eraserBitmap = tempCanvas == null ? (Bitmap)canvas.Clone() : (Bitmap)tempCanvas.Clone();
 			using (Graphics g = Graphics.FromImage(_eraserBitmap))
 			{

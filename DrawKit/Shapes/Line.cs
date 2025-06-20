@@ -252,15 +252,7 @@ namespace DrawKit.Shapes
 
 		private void DrawCreating(Graphics graphics)
 		{
-			//using (Pen pen = new Pen(ForeColor, Size * Scale) { DashStyle = DashStyle.Solid, StartCap = LineCap.Round, EndCap = LineCap.Round })
-			//{
-			//	Rectangle bitmapArea = GetCanvasRegion();
-			//	graphics.SetClip(bitmapArea);
-			//	graphics.DrawLine(pen, StartPoint, EndPoint);
-			//	graphics.ResetClip();
-			//}
-
-			tempCanvas = (Bitmap)canvas.Clone();
+			tempCanvas = GetTempCanvas();
 			using (Graphics g = Graphics.FromImage(tempCanvas))
 			{
 				using (Pen pen = new Pen(ForeColor, Size))
@@ -272,15 +264,7 @@ namespace DrawKit.Shapes
 
 		private void DrawMoveOrAdjusted(Graphics graphics)
 		{
-			//using (Pen pen = new Pen(ForeColor, Size * Scale) { DashStyle = DashStyle.Solid, StartCap = LineCap.Round, EndCap = LineCap.Round })
-			//{
-			//	Rectangle bitmapArea = GetCanvasRegion();
-			//	graphics.SetClip(bitmapArea);
-			//	graphics.DrawLine(pen, StartPoint, EndPoint);
-			//	graphics.ResetClip();
-			//}
-
-			tempCanvas = (Bitmap)canvas.Clone();
+			tempCanvas = GetTempCanvas();
 			using (Graphics g = Graphics.FromImage(tempCanvas))
 			{
 				using (Pen pen = new Pen(ForeColor, Size))

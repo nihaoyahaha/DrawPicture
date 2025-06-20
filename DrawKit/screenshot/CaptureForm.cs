@@ -199,6 +199,7 @@ namespace DrawKit.Screenshot
 		{
 			using (Pen pen = new Pen(Color.FromArgb(255, 7, 193, 96), 1))
 			{
+				_selectedArea?.Dispose();
 				_selectedArea = new Bitmap(_selectionRect.Width, _selectionRect.Height);
 				using (Graphics g = Graphics.FromImage(_selectedArea))
 				{
@@ -248,6 +249,7 @@ namespace DrawKit.Screenshot
 				width = _selectionRect.Width;
 				height = _selectionRect.Height;
 			}
+			_selectedArea?.Dispose();
 			_selectedArea = new Bitmap(width, height);
 			var rect = new Rectangle(x, y, width, height);
 			using (Graphics g = Graphics.FromImage(_selectedArea))

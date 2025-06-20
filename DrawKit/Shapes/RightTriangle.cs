@@ -235,15 +235,7 @@ namespace DrawKit.Shapes
 		}
 		private void DrawCreating(Graphics graphics)
 		{
-			//using (Pen selectionPen = new Pen(ForeColor, Size * Scale))
-			//{
-			//	selectionPen.DashStyle = DashStyle.Solid;
-			//	Rectangle bitmapArea = GetCanvasRegion();
-			//	graphics.SetClip(bitmapArea);
-			//	graphics.DrawPolygon(selectionPen, _vertexs.ToArray());
-			//	graphics.ResetClip();
-			//}
-			tempCanvas = (Bitmap)canvas.Clone();
+			tempCanvas = GetTempCanvas();
 			using (Graphics g = Graphics.FromImage(tempCanvas))
 			{
 				using (Pen selectionPen = new Pen(ForeColor, Size))
@@ -254,16 +246,7 @@ namespace DrawKit.Shapes
 		}
 		private void DrawCanMoveOrAdjusted(Graphics graphics)
 		{
-			//using (Pen selectionPen = new Pen(ForeColor, Size * Scale))
-			//{
-			//	selectionPen.DashStyle = DashStyle.Solid;
-			//	Rectangle bitmapArea = GetCanvasRegion();
-			//	graphics.SetClip(bitmapArea);
-			//	graphics.DrawPolygon(selectionPen, _vertexs.ToArray());
-			//	graphics.ResetClip();
-			//}
-
-			tempCanvas = (Bitmap)canvas.Clone();
+			tempCanvas = GetTempCanvas();
 			using (Graphics g = Graphics.FromImage(tempCanvas))
 			{
 				using (Pen selectionPen = new Pen(ForeColor, Size))

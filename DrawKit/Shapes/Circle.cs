@@ -211,20 +211,7 @@ namespace DrawKit.Shapes
 		}
 		private void DrawCreating(Graphics graphics)
 		{
-			//using (Pen selectionPen = new Pen(ForeColor, Size * Scale))
-			//{
-			//	graphics.CompositingQuality = CompositingQuality.HighQuality;
-			//	graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
-			//	graphics.SmoothingMode = SmoothingMode.None;
-			//	selectionPen.DashStyle = DashStyle.Solid;
-			//	Rectangle bitmapArea = GetCanvasRegion();
-			//	graphics.SetClip(bitmapArea);
-			//	graphics.DrawEllipse(selectionPen, SelectionRect);
-
-			//	graphics.ResetClip();
-			//}
-
-			tempCanvas = (Bitmap)canvas.Clone();
+			tempCanvas = GetTempCanvas();
 			using (Graphics g = Graphics.FromImage(tempCanvas))
 			{
 				using (Pen selectionPen = new Pen(ForeColor, Size))
@@ -236,19 +223,7 @@ namespace DrawKit.Shapes
 
 		private void DrawCanMoveOrAdjusted(Graphics graphics)
 		{
-			//using (Pen selectionPen = new Pen(ForeColor, Size))
-			//{
-			//	graphics.CompositingQuality = CompositingQuality.HighQuality;
-			//	graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
-			//	graphics.SmoothingMode = SmoothingMode.None;
-			//	selectionPen.DashStyle = DashStyle.Solid;
-			//	Rectangle bitmapArea = GetCanvasRegion();
-			//	graphics.SetClip(bitmapArea);
-			//	graphics.DrawEllipse(selectionPen, SelectionRect);
-			//	graphics.ResetClip();
-			//}
-
-			tempCanvas = (Bitmap)canvas.Clone();
+			tempCanvas = GetTempCanvas();
 			using (Graphics g = Graphics.FromImage(tempCanvas))
 			{
 				using (Pen selectionPen = new Pen(ForeColor, Size))
