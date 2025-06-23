@@ -225,5 +225,8 @@ namespace DrawKit.Shapes
 
 		public override void FlipVertical() { }
 
+		public override void KeyDown(KeyEventArgs e)
+		{
+		}
 	}
 }

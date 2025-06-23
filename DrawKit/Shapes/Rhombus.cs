@@ -358,5 +358,9 @@ namespace DrawKit.Shapes
 			
 		}
 
+		public override void KeyDown(KeyEventArgs e)
+		{
+
+		}
 	}
 }

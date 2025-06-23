@@ -293,5 +293,8 @@ namespace DrawKit.Shapes
 			drawStatus = DrawStatus.CanAdjusted;
 		}
 
+		public override void KeyDown(KeyEventArgs e)
+		{
+		}
 	}
 }

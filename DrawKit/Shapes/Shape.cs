@@ -84,6 +84,7 @@ namespace DrawKit.Shapes
 		public abstract void MouseMove(MouseEventArgs e);
 		public abstract void MouseDown(MouseEventArgs e);
 		public abstract void MouseUp(MouseEventArgs e);
+		public abstract void KeyDown(KeyEventArgs e);
 
 		//正在绘制
 		public abstract void InPainting(Graphics graphics);

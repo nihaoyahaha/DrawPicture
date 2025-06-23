@@ -34,6 +34,7 @@ namespace DrawKit
 		public CanvasForm()
 		{
 			InitializeComponent();
+			this.WindowState = FormWindowState.Maximized;
 			InitControls();
 			panel_main.MouseWheel += panel_main_MouseWheel;
 			OperationStep.OnOperationCompleted += RevokeAndRedoAction;
@@ -78,7 +79,7 @@ namespace DrawKit
 		//画布初始化
 		private void InitializeCanvas()
 		{
-			_canvas = new Bitmap(320, 192);
+			_canvas = new Bitmap(1500, 700);
 			using (Graphics g = Graphics.FromImage(_canvas))
 			{
 				g.Clear(_canvasBackgroundColor); // 初始化背景色
@@ -146,10 +147,9 @@ namespace DrawKit
 
 		private void CanvasForm_KeyDown(object sender, KeyEventArgs e)
 		{
-			if (e.KeyCode == Keys.Delete && _shape is RectangularSelection)
+			if (_shape is RectangularSelection) 
 			{
-				var rectSelection = _shape as RectangularSelection;
-				rectSelection.DelSelectedBitmap();
+				_shape.KeyDown(e);
 			}
 		}
 
@@ -1067,7 +1067,7 @@ namespace DrawKit
 			if (_captureForm == null || _captureForm.IsDisposed)
 			{
 				_captureForm = new CaptureForm();
-				_captureForm.ShowDialog();
+				_captureForm.Show(this);
 			}
 			else
 			{
@@ -1200,10 +1200,6 @@ namespace DrawKit
 		private void RefreshCanvasScale(float scale, int trackBarScaleValue)
 		{
 			if (_shape is null) return;
-			if (_shape.SelectionRect.Width != 0 && _shape.SelectionRect.Height != 0)
-			{
-				_shape.drawStatus = DrawStatus.CanAdjusted;
-			}
 			this.trackBar_scale.ValueChanged -= new System.EventHandler(this.trackBar_scale_ValueChanged);
 			trackBar_scale.Value = trackBarScaleValue;
 			this.trackBar_scale.ValueChanged += new System.EventHandler(this.trackBar_scale_ValueChanged);

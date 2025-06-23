@@ -384,5 +384,9 @@ namespace DrawKit.Shapes
 				centerY + rotatedDeltaY / 2);
 		}
 
+		public override void KeyDown(KeyEventArgs e)
+		{
+			
+		}
 	}
 }

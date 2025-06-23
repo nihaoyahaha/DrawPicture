@@ -322,5 +322,9 @@ namespace DrawKit.Shapes
 			drawStatus = DrawStatus.CanAdjusted;
 			GetRoundedRectanglePath();
 		}
+
+		public override void KeyDown(KeyEventArgs e)
+		{
+		}
 	}
 }

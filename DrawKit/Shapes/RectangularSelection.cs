@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +17,7 @@ namespace DrawKit.Shapes
 	public class RectangularSelection : Shape
 	{
 		private Bitmap _selectedBitmap;
+		private Bitmap _copySelectedBitmap;
 		private Rectangle _rectBeforeAdjust;
 		private Rectangle _fillRect = Rectangle.Empty;
 		private Color _FillRectColor;
@@ -26,17 +28,7 @@ namespace DrawKit.Shapes
 		{
 			if (_selectedBitmap == null) return;
 			if (SelectionRect == Rectangle.Empty) return;
-			//using (Graphics g = Graphics.FromImage(canvas))
-			//{
-			//	g.FillRectangle(new SolidBrush(_FillRectColor), ConvertSelectionRectToCanvasRect(_fillRect));
-			//	g.CompositingQuality = CompositingQuality.HighQuality;
-			//	g.InterpolationMode = InterpolationMode.NearestNeighbor;
-			//	g.SmoothingMode = SmoothingMode.None;
-			//	g.DrawImage(_selectedBitmap, ConvertSelectionRectToCanvasRect(SelectionRect));
-			//}
-
 			DrawTempCanvasOnMain();
-
 			drawStatus = DrawStatus.CannotMovedOrAdjusted;
 			_selectedBitmap?.Dispose();
 			_selectedBitmap = null;
@@ -110,6 +102,16 @@ namespace DrawKit.Shapes
 			}
 			else if (drawStatus == DrawStatus.CanMove)
 			{
+				if ((Control.ModifierKeys & Keys.Control) == Keys.Control)
+				{
+					var rect = SelectionRect;
+					_copySelectedBitmap?.Dispose();
+					_copySelectedBitmap = null;
+					_copySelectedBitmap = (Bitmap)_selectedBitmap.Clone();
+					CommitCurrentShape();
+					_selectedBitmap = (Bitmap)_copySelectedBitmap.Clone();
+					SelectionRect = rect;
+				}
 				Offset = e.Location;
 				drawStatus = DrawStatus.Moving;
 				_rectBeforeAdjust = new Rectangle(SelectionRect.X, SelectionRect.Y, SelectionRect.Width, SelectionRect.Height);
@@ -138,8 +140,6 @@ namespace DrawKit.Shapes
 			{
 				drawStatus = DrawStatus.CannotMovedOrAdjusted;
 				panel.Cursor = Cursors.Default;
-				//if (StartPoint.X == 0 && StartPoint.Y == 0) return;
-				//if (EndPoint.X == 0 && EndPoint.Y == 0) return;
 				MouseOverResizeHandle(e.Location);
 			}
 		}
@@ -201,13 +201,21 @@ namespace DrawKit.Shapes
 					_selectedBitmap = new Bitmap(SelectionRect.Width, SelectionRect.Height);
 					using (Graphics g = Graphics.FromImage(_selectedBitmap))
 					{
+						ImageAttributes imageAttr = new ImageAttributes();
+						imageAttr.SetColorKey(Color.White, Color.White);
 						g.CompositingQuality = CompositingQuality.HighQuality;
 						g.InterpolationMode = InterpolationMode.NearestNeighbor;
 						g.SmoothingMode = SmoothingMode.None;
+						var rect = ConvertSelectionRectToCanvasRect(SelectionRect);
 						g.DrawImage(canvas,
 									new Rectangle(0, 0, SelectionRect.Width, SelectionRect.Height),
-									ConvertSelectionRectToCanvasRect(SelectionRect),
-									GraphicsUnit.Pixel);
+									rect.X,
+									rect.Y,
+									rect.Width,
+									rect.Height,
+									GraphicsUnit.Pixel,
+									imageAttr);
+
 					}
 					_fillRect = new Rectangle(SelectionRect.X, SelectionRect.Y, SelectionRect.Width, SelectionRect.Height);
 				}
@@ -256,7 +264,6 @@ namespace DrawKit.Shapes
 			else if (drawStatus == DrawStatus.CompleteAdjustment)
 			{
 				DrawAdjustComplate(graphics);
-				//BitmapDrawShape(tempCanvas, graphics);
 			}
 			else if (drawStatus == DrawStatus.CanvasAdjusting)
 			{
@@ -419,6 +426,79 @@ namespace DrawKit.Shapes
 		{
 			drawStatus = DrawStatus.CanAdjusted;
 			_selectedBitmap.RotateFlip(RotateFlipType.RotateNoneFlipY);
+		}
+
+		public override void KeyDown(KeyEventArgs e)
+		{
+			if (e.KeyCode == Keys.Delete)
+			{
+				DelSelectedBitmap();
+			}
+			else if ((e.Control) && (e.KeyCode == Keys.C))
+			{
+				CopySelectionRectToClipboard();
+			}
+			else if ((e.Control) && (e.KeyCode == Keys.V))
+			{
+				PasteBitmapFromClipboard();
+			}
+		}
+
+		private void CopySelectionRectToClipboard()
+		{
+			if (SelectionRect == Rectangle.Empty) return;
+			if (_selectedBitmap == null) return;
+			var bitmap = RestoreBitmap(_selectedBitmap, Scale);
+			Clipboard.SetImage(bitmap);
+			bitmap?.Dispose();
+			_copySelectedBitmap?.Dispose();
+			_copySelectedBitmap = null;
+			_copySelectedBitmap = (Bitmap)_selectedBitmap.Clone();
+		}
+
+		private Bitmap RestoreBitmap(Bitmap scaledBitmap, float scale)
+		{
+			int originalWidth = (int)(scaledBitmap.Width / scale);
+			int originalHeight = (int)(scaledBitmap.Height / scale);
+
+			Bitmap result = new Bitmap(originalWidth, originalHeight);
+			using (Graphics g = Graphics.FromImage(result))
+			{
+				g.Clear(Color.White);
+				g.CompositingQuality = CompositingQuality.HighQuality;
+				g.InterpolationMode = InterpolationMode.NearestNeighbor;
+				g.SmoothingMode = SmoothingMode.None;
+				g.DrawImage(scaledBitmap, new Rectangle(0, 0, originalWidth, originalHeight));
+			}
+			return result;
+		}
+		private Bitmap EnlargeBitmap(Bitmap originalBitmap,float scale)
+		{
+			int newWidth = (int)(originalBitmap.Width * scale);
+			int newHeight = (int)(originalBitmap.Height * scale);
+
+			Bitmap enlargedBitmap = new Bitmap(newWidth, newHeight);
+			using (Graphics g = Graphics.FromImage(enlargedBitmap))
+			{
+				g.CompositingQuality = CompositingQuality.HighQuality;
+				g.InterpolationMode = InterpolationMode.NearestNeighbor;
+				g.SmoothingMode = SmoothingMode.None;
+				g.DrawImage(originalBitmap, new Rectangle(0, 0, newWidth, newHeight));
+			}
+			return enlargedBitmap;
+		}
+		private void PasteBitmapFromClipboard()
+		{
+			var bitmap = (Bitmap)Clipboard.GetImage();
+			if (bitmap == null)	return;
+			CommitCurrentShape();
+			_selectedBitmap = EnlargeBitmap(bitmap,Scale);
+			var scrollPos = new Point(Math.Abs(panel.AutoScrollPosition.X), Math.Abs(panel.AutoScrollPosition.Y));
+			var rect = GetCanvasRegion();
+			SelectionRect = new Rectangle(rect.X + scrollPos.X, rect.Y + scrollPos.Y, _selectedBitmap.Width, _selectedBitmap.Height);
+			drawStatus = DrawStatus.CanAdjusted;
+			panel.Refresh();
+			panel.Refresh();
 		}
 
 	}
