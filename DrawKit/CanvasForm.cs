@@ -147,10 +147,12 @@ namespace DrawKit
 
 		private void CanvasForm_KeyDown(object sender, KeyEventArgs e)
 		{
-			if (_shape is RectangularSelection) 
+			if (_shape is TextBoxArea && _shape.SelectionRect != Rectangle.Empty) return;
+			if (!(_shape is RectangularSelection) && (e.Control) && (e.KeyCode == Keys.V))
 			{
-				_shape.KeyDown(e);
+				SwitchToShapeTool<RectangularSelection>(btn_select, nameof(RectangularSelection), false);
 			}
+			_shape.KeyDown(e);
 		}
 
 		private void CanvasForm_Resize(object sender, EventArgs e)
@@ -727,7 +729,7 @@ namespace DrawKit
 					this.cmb_scales.SelectedIndexChanged += new System.EventHandler(this.cmb_scales_SelectedIndexChanged);
 					RefreshCanvasScale(1, 100);
 					panel_main.Invalidate();
-					
+
 				}
 				catch (Exception ex)
 				{
@@ -1210,5 +1212,20 @@ namespace DrawKit
 			SetPanelAutoScrollMinSize(rect.Width, rect.Height);
 		}
 
+		private void rtb_Text_KeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.Control && e.KeyCode == Keys.V)
+			{
+				e.SuppressKeyPress = true;
+
+				// 获取剪贴板中的纯文本
+				if (Clipboard.ContainsText())
+				{
+					string text = Clipboard.GetText();
+					int selectionStart = rtb_Text.SelectionStart;
+					rtb_Text.SelectedText = text; // 将纯文本插入到当前位置
+				}
+			}
+		}
 	}
 }

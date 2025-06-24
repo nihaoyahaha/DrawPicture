@@ -443,6 +443,11 @@ namespace DrawKit.Shapes
 
 		public override void KeyDown(KeyEventArgs e)
 		{
+			if (e.KeyCode == Keys.Delete)
+			{
+				if (drawStatus == DrawStatus.CanvasAdjusting) return;
+				CancelDrawing();
+			}
 		}
 	}
 }

@@ -765,6 +765,7 @@
 			this.rtb_Text.TabIndex = 0;
 			this.rtb_Text.Text = "";
 			this.rtb_Text.Visible = false;
+			this.rtb_Text.KeyDown += new System.Windows.Forms.KeyEventHandler(this.rtb_Text_KeyDown);
 			// 
 			// panel_Bottom
 			// 
