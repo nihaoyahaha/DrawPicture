@@ -622,6 +622,7 @@ namespace DrawKit
 		{
 			OperationStep.PushRevokeStack(_canvas);
 			_shape.canvas.MakeTransparent();
+			_canvasBackgroundColor = Color.Transparent;
 			_shape.drawStatus = DrawStatus.AdjustTheStyle;
 			panel_main.Refresh();
 			panel_main.Refresh();

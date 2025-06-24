@@ -134,6 +134,8 @@ namespace DrawKit.Shapes
 			int resizerSize = 8;
 			Rectangle rect;
 			_canvasEditPoints = new List<(Rectangle rect, RectangleShapeFocusType focusType)>();
+			graphics.SmoothingMode = SmoothingMode.AntiAlias;
+			graphics.CompositingQuality = CompositingQuality.HighQuality;
 			foreach (var item in GetResizerPoints(GetCanvasRegion()))
 			{
 				var point = item.editPoint;
