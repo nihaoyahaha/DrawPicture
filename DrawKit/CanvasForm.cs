@@ -1025,7 +1025,7 @@ namespace DrawKit
 			float scaleY = (float)clientHeight / canvasHeight;
 
 			float minValue = Math.Min(scaleX, scaleY);
-			float scale = (float)Math.Round(minValue, 1);
+			float scale = (float)Math.Round(minValue, 2);
 
 			if (scale > 8f) scale = 8f;
 			if (scale < 0.125f) scale = 0.125f;
