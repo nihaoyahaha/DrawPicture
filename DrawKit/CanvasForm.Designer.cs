@@ -691,7 +691,6 @@
 			this.cmb_scales.TabIndex = 8;
 			this.toolTip1.SetToolTip(this.cmb_scales, "缩放级别");
 			this.cmb_scales.SelectedIndexChanged += new System.EventHandler(this.cmb_scales_SelectedIndexChanged);
-			this.cmb_scales.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cmb_scales_KeyDown);
 			this.cmb_scales.Leave += new System.EventHandler(this.cmb_scales_Leave);
 			this.cmb_scales.MouseDown += new System.Windows.Forms.MouseEventHandler(this.cmb_scales_MouseDown);
 			this.cmb_scales.Validating += new System.ComponentModel.CancelEventHandler(this.cmb_scales_Validating);

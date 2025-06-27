@@ -147,12 +147,24 @@ namespace DrawKit
 
 		private void CanvasForm_KeyDown(object sender, KeyEventArgs e)
 		{
-			if (_shape is TextBoxArea && _shape.SelectionRect != Rectangle.Empty) return;
-			if (!(_shape is RectangularSelection) && (e.Control) && (e.KeyCode == Keys.V))
+			if (cmb_scales.Focused)
 			{
-				SwitchToShapeTool<RectangularSelection>(btn_select, nameof(RectangularSelection), false);
+				if (e.KeyCode == Keys.Enter)
+				{
+					e.SuppressKeyPress = true;
+					PerformValidation(cmb_scales);
+					panel_main.Focus();
+				}
 			}
-			_shape.KeyDown(e);
+			else
+			{
+				if (_shape is TextBoxArea && _shape.SelectionRect != Rectangle.Empty) return;
+				if (!(_shape is RectangularSelection) && (e.Control) && (e.KeyCode == Keys.V))
+				{
+					SwitchToShapeTool<RectangularSelection>(btn_select, nameof(RectangularSelection), false);
+				}
+				_shape.KeyDown(e);
+			}
 		}
 
 		private void CanvasForm_Resize(object sender, EventArgs e)
@@ -646,16 +658,6 @@ namespace DrawKit
 			panel_main.Focus();
 		}
 
-		private void cmb_scales_KeyDown(object sender, KeyEventArgs e)
-		{
-			if (e.KeyCode == Keys.Enter)
-			{
-				e.SuppressKeyPress = true;
-				PerformValidation(cmb_scales);
-				panel_main.Focus();
-			}
-		}
-
 		private void cmb_scales_Leave(object sender, EventArgs e)
 		{
 			PerformValidation(cmb_scales);
@@ -676,6 +678,7 @@ namespace DrawKit
 		{
 			var selectedKeyValuePair = (KeyValuePair<float, string>)cmb_scales.SelectedItem;
 			RefreshCanvasScale(selectedKeyValuePair.Key, (int)Math.Round(selectedKeyValuePair.Key * 100));
+			panel_main.Focus();
 		}
 
 		//保存图片
@@ -1184,7 +1187,6 @@ namespace DrawKit
 		private void PerformValidation(ComboBox comboBox)
 		{
 			string input = comboBox.Text;
-
 			if (ValidateInput(input, out float validValue))
 			{
 				comboBox.Text = validValue.ToString() + "%";
@@ -1196,7 +1198,7 @@ namespace DrawKit
 			}
 			else
 			{
-				comboBox.Text = _cmbScaleLastText;
+				comboBox.Text = string.IsNullOrEmpty(_cmbScaleLastText) ? "100":_cmbScaleLastText;
 			}
 		}
 
