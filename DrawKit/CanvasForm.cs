@@ -1074,6 +1074,7 @@ namespace DrawKit
 			{
 				_captureForm = new CaptureForm();
 				_captureForm.Show(this);
+				_captureForm.Activate();
 			}
 			else
 			{
