@@ -230,7 +230,6 @@ namespace DrawKit.Shapes
 		private void DrawCanMoveOrAdjusted(Graphics graphics)
 		{
 			tempCanvas = GetTempCanvas();
-			tempCanvas = (Bitmap)canvas.Clone();
 			using (Graphics g = Graphics.FromImage(tempCanvas))
 			{
 				using (Pen selectionPen = new Pen(ForeColor, Size))

@@ -109,8 +109,11 @@ namespace DrawKit.Shapes
 					_copySelectedBitmap = null;
 					_copySelectedBitmap = (Bitmap)_selectedBitmap.Clone();
 					CommitCurrentShape();
+					_selectedBitmap?.Dispose();
+					_selectedBitmap = null;
 					_selectedBitmap = (Bitmap)_copySelectedBitmap.Clone();
 					SelectionRect = rect;
+					GC.Collect();
 				}
 				Offset = e.Location;
 				drawStatus = DrawStatus.Moving;
@@ -451,6 +454,7 @@ namespace DrawKit.Shapes
 			var bitmap = RestoreBitmap(_selectedBitmap, Scale);
 			Clipboard.SetImage(bitmap);
 			bitmap?.Dispose();
+			bitmap = null;
 			_copySelectedBitmap?.Dispose();
 			_copySelectedBitmap = null;
 			_copySelectedBitmap = (Bitmap)_selectedBitmap.Clone();
@@ -472,6 +476,7 @@ namespace DrawKit.Shapes
 			}
 			return result;
 		}
+
 		private Bitmap EnlargeBitmap(Bitmap originalBitmap,float scale)
 		{
 			int newWidth = (int)(originalBitmap.Width * scale);
@@ -480,10 +485,17 @@ namespace DrawKit.Shapes
 			Bitmap enlargedBitmap = new Bitmap(newWidth, newHeight);
 			using (Graphics g = Graphics.FromImage(enlargedBitmap))
 			{
+				ImageAttributes imageAttr = new ImageAttributes();
+				imageAttr.SetColorKey(Color.White, Color.White);
 				g.CompositingQuality = CompositingQuality.HighQuality;
 				g.InterpolationMode = InterpolationMode.NearestNeighbor;
 				g.SmoothingMode = SmoothingMode.None;
-				g.DrawImage(originalBitmap, new Rectangle(0, 0, newWidth, newHeight));
+				//g.DrawImage(originalBitmap, new Rectangle(0, 0, newWidth, newHeight));
+				g.DrawImage(originalBitmap,
+					new Rectangle(0, 0, newWidth, newHeight),
+					0, 0, originalBitmap.Width, originalBitmap.Height,
+					GraphicsUnit.Pixel,
+					imageAttr);
 			}
 			return enlargedBitmap;
 		}
@@ -492,6 +504,8 @@ namespace DrawKit.Shapes
 			var bitmap = (Bitmap)Clipboard.GetImage();
 			if (bitmap == null)	return;
 			CommitCurrentShape();
+			_selectedBitmap?.Dispose();
+			_selectedBitmap = null;
 			_selectedBitmap = EnlargeBitmap(bitmap,Scale);
 			var scrollPos = new Point(Math.Abs(panel.AutoScrollPosition.X), Math.Abs(panel.AutoScrollPosition.Y));
 			var rect = GetCanvasRegion();
