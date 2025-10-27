@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -16,6 +17,10 @@ namespace DrawKit.Shapes
 	/// </summary>
 	public class RectangularSelection : Shape
 	{
+		[DllImport("user32.dll")]
+		private static extern short GetAsyncKeyState(Keys vKey);
+
+		private int _moveStep = 2;
 		private Bitmap _selectedBitmap;
 		private Bitmap _copySelectedBitmap;
 		private Rectangle _rectBeforeAdjust;
@@ -445,6 +450,27 @@ namespace DrawKit.Shapes
 			{
 				PasteBitmapFromClipboard();
 			}
+			else
+			{
+				bool isUp = (GetAsyncKeyState(Keys.Up) & 0x8000) != 0;
+				bool isDown = (GetAsyncKeyState(Keys.Down) & 0x8000) != 0;
+				bool isLeft = (GetAsyncKeyState(Keys.Left) & 0x8000) != 0;
+				bool isRight = (GetAsyncKeyState(Keys.Right) & 0x8000) != 0;
+
+				int dx = 0, dy = 0;
+
+				if (isLeft && !isRight) dx = -_moveStep;
+				else if (isRight && !isLeft) dx = _moveStep;
+
+				if (isUp && !isDown) dy = -_moveStep;
+				else if (isDown && !isUp) dy = _moveStep;
+
+				if (dx != 0 || dy != 0)
+				{
+					MoveSelectedArea(dx, dy);
+				}
+			}
+
 		}
 
 		private void CopySelectionRectToClipboard()
@@ -513,6 +539,15 @@ namespace DrawKit.Shapes
 			drawStatus = DrawStatus.CanAdjusted;
 			panel.Refresh();
 			panel.Refresh();
+		}
+
+		private void MoveSelectedArea(int deltaX,int deltaY)
+		{
+			if (SelectionRect == Rectangle.Empty) return;
+			if (_selectedBitmap == null) return;
+			drawStatus = DrawStatus.CanMove;
+			SelectionRect.Offset(deltaX, deltaY);
+			panel.Invalidate();
 		}
 
 	}
