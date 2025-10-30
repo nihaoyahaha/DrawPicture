@@ -104,6 +104,7 @@ namespace DrawKit.Shapes
 
 				if (distance < 1)
 				{
+					if (EnableAntiAlias) g.SmoothingMode = SmoothingMode.AntiAlias;
 					g.FillRectangle(new SolidBrush(ForeColor),
 						start.X - eraserSize / 2,
 						start.Y - eraserSize / 2,
@@ -116,7 +117,7 @@ namespace DrawKit.Shapes
 				{
 					int x = (int)(start.X + t * (end.X - start.X));
 					int y = (int)(start.Y + t * (end.Y - start.Y));
-
+					if (EnableAntiAlias) g.SmoothingMode = SmoothingMode.AntiAlias;
 					g.FillRectangle(new SolidBrush(ForeColor),
 						x - eraserSize / 2,
 						y - eraserSize / 2,

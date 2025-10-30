@@ -257,6 +257,7 @@ namespace DrawKit.Shapes
 			{
 				using (Pen pen = new Pen(ForeColor, Size))
 				{
+					if (EnableAntiAlias) g.SmoothingMode = SmoothingMode.AntiAlias;
 					g.DrawLine(pen, ConvertPoint(StartPoint), ConvertPoint(EndPoint));
 				}
 			}
@@ -269,6 +270,7 @@ namespace DrawKit.Shapes
 			{
 				using (Pen pen = new Pen(ForeColor, Size))
 				{
+					if (EnableAntiAlias) g.SmoothingMode = SmoothingMode.AntiAlias;
 					g.DrawLine(pen, ConvertPoint(StartPoint), ConvertPoint(EndPoint));
 				}
 			}

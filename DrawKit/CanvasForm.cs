@@ -85,6 +85,7 @@ namespace DrawKit
 				g.Clear(_canvasBackgroundColor); // 初始化背景色
 				g.SmoothingMode = SmoothingMode.HighQuality; //高质量
 				g.PixelOffsetMode = PixelOffsetMode.HighQuality; //高像素偏移质量
+
 			}
 			// 启用双缓冲
 			typeof(Panel).InvokeMember(
@@ -126,6 +127,7 @@ namespace DrawKit
 
 		private void CanvasForm_Load(object sender, EventArgs e)
 		{
+			cmb_SmoothMode.SelectedIndex = 0;
 			cmb_size.SelectedIndex = 0;
 			cmb_TextSize.SelectedIndex = 0;
 			cmb_FontFamily.SelectedIndex = 0;
@@ -1199,7 +1201,7 @@ namespace DrawKit
 			}
 			else
 			{
-				comboBox.Text = string.IsNullOrEmpty(_cmbScaleLastText) ? "100":_cmbScaleLastText;
+				comboBox.Text = string.IsNullOrEmpty(_cmbScaleLastText) ? "100" : _cmbScaleLastText;
 			}
 		}
 
@@ -1230,6 +1232,15 @@ namespace DrawKit
 					rtb_Text.SelectedText = text; // 将纯文本插入到当前位置
 				}
 			}
+		}
+
+		private void cmb_SmoothMode_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			_shape.EnableAntiAlias = cmb_SmoothMode.SelectedIndex == 0 ? false : true;
+			_shape.drawStatus = DrawStatus.AdjustTheStyle;
+			if (_shape is RectangularSelection) return;
+			panel_main.Refresh();
+			panel_main.Refresh();
 		}
 	}
 }

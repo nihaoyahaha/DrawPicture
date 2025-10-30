@@ -240,6 +240,7 @@ namespace DrawKit.Shapes
 			{
 				using (Pen pen = new Pen(ForeColor, Size))
 				{
+					if (EnableAntiAlias) g.SmoothingMode = SmoothingMode.AntiAlias;
 					g.DrawPolygon(pen, ConvertVertexs(_vertexs));
 				}
 			}
@@ -251,6 +252,7 @@ namespace DrawKit.Shapes
 			{
 				using (Pen pen = new Pen(ForeColor, Size))
 				{
+					if (EnableAntiAlias) g.SmoothingMode = SmoothingMode.AntiAlias;
 					g.DrawPolygon(pen, ConvertVertexs(_vertexs));
 				}
 			}

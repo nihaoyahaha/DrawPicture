@@ -51,8 +51,8 @@ namespace DrawKit.Shapes
 					selectionPen.DashStyle = DashStyle.Solid;
 					g.CompositingQuality = CompositingQuality.HighQuality;
 					g.InterpolationMode = InterpolationMode.NearestNeighbor;
-					g.SmoothingMode = SmoothingMode.None;
-					g.TextRenderingHint = TextRenderingHint.SingleBitPerPixel;
+					g.SmoothingMode = SmoothingMode.AntiAlias;//None;
+					g.TextRenderingHint = EnableAntiAlias ?  TextRenderingHint.AntiAlias : TextRenderingHint.SingleBitPerPixel;
 					Font font = new Font(richTextBox.Font.FontFamily, FontSize, richTextBox.Font.Style);
 					g.DrawString(richTextBox.Text, font, new SolidBrush(ForeColor), ConvertSelectionRectToCanvasRect(SelectionRect) /*ConvertPoint(richTextBox.Location)*/, format);
 				}

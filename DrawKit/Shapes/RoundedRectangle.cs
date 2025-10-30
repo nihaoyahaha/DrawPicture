@@ -251,6 +251,7 @@ namespace DrawKit.Shapes
 			{
 				using (Pen selectionPen = new Pen(ForeColor, Size))
 				{
+					if (EnableAntiAlias) g.SmoothingMode = SmoothingMode.AntiAlias;
 					g.DrawPath(selectionPen, _pathInBitmap);
 				}
 			}
@@ -262,6 +263,7 @@ namespace DrawKit.Shapes
 			{
 				using (Pen selectionPen = new Pen(ForeColor, Size))
 				{
+					if (EnableAntiAlias) g.SmoothingMode = SmoothingMode.AntiAlias;
 					g.DrawPath(selectionPen, _pathInBitmap);
 				}
 			}

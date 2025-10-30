@@ -78,6 +78,9 @@ namespace DrawKit.Shapes
 		//绘图状态
 		public DrawStatus drawStatus { get; set; } = DrawStatus.CannotMovedOrAdjusted;
 
+		//启用抗锯齿
+		public bool EnableAntiAlias { get; set; } = false;
+
 		//位图拉伸偏移点
 		public Point BitmapStretchOffsetPoint = Point.Empty;
 
@@ -685,7 +688,8 @@ namespace DrawKit.Shapes
 				panel = panel,
 				Scale = Scale,
 				ForeColor = ForeColor,
-				Size = Size
+				Size = Size,
+				EnableAntiAlias = EnableAntiAlias
 			};
 			return t;
 		}

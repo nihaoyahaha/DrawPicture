@@ -216,6 +216,7 @@ namespace DrawKit.Shapes
 			{
 				using (Pen selectionPen = new Pen(ForeColor, Size))
 				{
+					if(EnableAntiAlias) g.SmoothingMode = SmoothingMode.AntiAlias;
 					g.DrawEllipse(selectionPen, ConvertSelectionRectToCanvasRect(SelectionRect));
 				}
 			}
@@ -228,6 +229,7 @@ namespace DrawKit.Shapes
 			{
 				using (Pen selectionPen = new Pen(ForeColor, Size))
 				{
+					if (EnableAntiAlias) g.SmoothingMode = SmoothingMode.AntiAlias;
 					g.DrawEllipse(selectionPen, ConvertSelectionRectToCanvasRect(SelectionRect));
 				}
 			}

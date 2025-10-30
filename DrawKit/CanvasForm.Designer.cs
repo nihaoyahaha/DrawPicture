@@ -86,12 +86,14 @@
 			this.pic_FitToWindow = new System.Windows.Forms.PictureBox();
 			this.pic_reduce = new System.Windows.Forms.PictureBox();
 			this.panel_main = new System.Windows.Forms.Panel();
-			this.rtb_Text = new DrawKit.UserControl.TransparentRichTextBox();
 			this.panel_Bottom = new System.Windows.Forms.Panel();
 			this.pictureBox2 = new System.Windows.Forms.PictureBox();
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
 			this.pictureBox3 = new System.Windows.Forms.PictureBox();
 			this.colorDialog = new System.Windows.Forms.ColorDialog();
+			this.rtb_Text = new DrawKit.UserControl.TransparentRichTextBox();
+			this.toolStripComboBox1 = new System.Windows.Forms.ToolStripComboBox();
+			this.cmb_SmoothMode = new System.Windows.Forms.ToolStripComboBox();
 			this.toolStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.trackBar_scale)).BeginInit();
 			this.panel_TextStyle.SuspendLayout();
@@ -196,6 +198,7 @@
 			this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
 			this.toolStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
 			this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cmb_SmoothMode,
             this.btn_select,
             this.toolStripSeparator1,
             this.btn_rotate,
@@ -230,7 +233,7 @@
 			this.toolStrip1.Margin = new System.Windows.Forms.Padding(0, 10, 0, 0);
 			this.toolStrip1.Name = "toolStrip1";
 			this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-			this.toolStrip1.Size = new System.Drawing.Size(1177, 44);
+			this.toolStrip1.Size = new System.Drawing.Size(1419, 44);
 			this.toolStrip1.TabIndex = 0;
 			this.toolStrip1.Text = "toolStrip1";
 			// 
@@ -265,35 +268,35 @@
 			// btn_RightRotate90
 			// 
 			this.btn_RightRotate90.Name = "btn_RightRotate90";
-			this.btn_RightRotate90.Size = new System.Drawing.Size(150, 22);
+			this.btn_RightRotate90.Size = new System.Drawing.Size(180, 22);
 			this.btn_RightRotate90.Text = "向右旋转90度";
 			this.btn_RightRotate90.Click += new System.EventHandler(this.btn_RightRotate90_Click);
 			// 
 			// btn_LeftRotate90
 			// 
 			this.btn_LeftRotate90.Name = "btn_LeftRotate90";
-			this.btn_LeftRotate90.Size = new System.Drawing.Size(150, 22);
+			this.btn_LeftRotate90.Size = new System.Drawing.Size(180, 22);
 			this.btn_LeftRotate90.Text = "向左旋转90度";
 			this.btn_LeftRotate90.Click += new System.EventHandler(this.btn_LeftRotate90_Click);
 			// 
 			// btn_Rotate180
 			// 
 			this.btn_Rotate180.Name = "btn_Rotate180";
-			this.btn_Rotate180.Size = new System.Drawing.Size(150, 22);
+			this.btn_Rotate180.Size = new System.Drawing.Size(180, 22);
 			this.btn_Rotate180.Text = "旋转180度";
 			this.btn_Rotate180.Click += new System.EventHandler(this.btn_Rotate180_Click);
 			// 
 			// btn_FlipVertical
 			// 
 			this.btn_FlipVertical.Name = "btn_FlipVertical";
-			this.btn_FlipVertical.Size = new System.Drawing.Size(150, 22);
+			this.btn_FlipVertical.Size = new System.Drawing.Size(180, 22);
 			this.btn_FlipVertical.Text = "垂直翻转";
 			this.btn_FlipVertical.Click += new System.EventHandler(this.btn_FlipVertical_Click);
 			// 
 			// btn_FlipHorizontal
 			// 
 			this.btn_FlipHorizontal.Name = "btn_FlipHorizontal";
-			this.btn_FlipHorizontal.Size = new System.Drawing.Size(150, 22);
+			this.btn_FlipHorizontal.Size = new System.Drawing.Size(180, 22);
 			this.btn_FlipHorizontal.Text = "水平翻转";
 			this.btn_FlipHorizontal.Click += new System.EventHandler(this.btn_FlipHorizontal_Click);
 			// 
@@ -528,7 +531,7 @@
 			// 
 			this.trackBar_scale.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.trackBar_scale.AutoSize = false;
-			this.trackBar_scale.Location = new System.Drawing.Point(1044, 14);
+			this.trackBar_scale.Location = new System.Drawing.Point(1286, 14);
 			this.trackBar_scale.Maximum = 800;
 			this.trackBar_scale.Minimum = 10;
 			this.trackBar_scale.Name = "trackBar_scale";
@@ -685,7 +688,7 @@
 			this.cmb_scales.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.cmb_scales.FormattingEnabled = true;
 			this.cmb_scales.ImeMode = System.Windows.Forms.ImeMode.Disable;
-			this.cmb_scales.Location = new System.Drawing.Point(933, 16);
+			this.cmb_scales.Location = new System.Drawing.Point(1175, 16);
 			this.cmb_scales.Name = "cmb_scales";
 			this.cmb_scales.Size = new System.Drawing.Size(64, 20);
 			this.cmb_scales.TabIndex = 8;
@@ -700,7 +703,7 @@
 			this.pic_amplify.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.pic_amplify.BackgroundImage = global::DrawKit.Properties.Resources.ZoomIn;
 			this.pic_amplify.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-			this.pic_amplify.Location = new System.Drawing.Point(1128, 14);
+			this.pic_amplify.Location = new System.Drawing.Point(1370, 14);
 			this.pic_amplify.Name = "pic_amplify";
 			this.pic_amplify.Size = new System.Drawing.Size(26, 26);
 			this.pic_amplify.TabIndex = 0;
@@ -713,7 +716,7 @@
 			this.pic_FitToWindow.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.pic_FitToWindow.BackgroundImage = global::DrawKit.Properties.Resources.shiying;
 			this.pic_FitToWindow.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-			this.pic_FitToWindow.Location = new System.Drawing.Point(902, 14);
+			this.pic_FitToWindow.Location = new System.Drawing.Point(1144, 14);
 			this.pic_FitToWindow.Name = "pic_FitToWindow";
 			this.pic_FitToWindow.Size = new System.Drawing.Size(25, 25);
 			this.pic_FitToWindow.TabIndex = 0;
@@ -726,7 +729,7 @@
 			this.pic_reduce.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.pic_reduce.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pic_reduce.BackgroundImage")));
 			this.pic_reduce.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-			this.pic_reduce.Location = new System.Drawing.Point(1018, 14);
+			this.pic_reduce.Location = new System.Drawing.Point(1260, 14);
 			this.pic_reduce.Name = "pic_reduce";
 			this.pic_reduce.Size = new System.Drawing.Size(26, 26);
 			this.pic_reduce.TabIndex = 0;
@@ -744,7 +747,7 @@
 			this.panel_main.Controls.Add(this.rtb_Text);
 			this.panel_main.Location = new System.Drawing.Point(0, 45);
 			this.panel_main.Name = "panel_main";
-			this.panel_main.Size = new System.Drawing.Size(1177, 598);
+			this.panel_main.Size = new System.Drawing.Size(1419, 598);
 			this.panel_main.TabIndex = 1;
 			this.panel_main.TabStop = true;
 			this.panel_main.Scroll += new System.Windows.Forms.ScrollEventHandler(this.panel_main_Scroll);
@@ -753,18 +756,6 @@
 			this.panel_main.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel_main_MouseDown);
 			this.panel_main.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel_main_MouseMove);
 			this.panel_main.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panel_main_MouseUp);
-			// 
-			// rtb_Text
-			// 
-			this.rtb_Text.BorderStyle = System.Windows.Forms.BorderStyle.None;
-			this.rtb_Text.EmptyTextTip = null;
-			this.rtb_Text.Location = new System.Drawing.Point(55, 181);
-			this.rtb_Text.Name = "rtb_Text";
-			this.rtb_Text.Size = new System.Drawing.Size(100, 96);
-			this.rtb_Text.TabIndex = 0;
-			this.rtb_Text.Text = "";
-			this.rtb_Text.Visible = false;
-			this.rtb_Text.KeyDown += new System.Windows.Forms.KeyEventHandler(this.rtb_Text_KeyDown);
 			// 
 			// panel_Bottom
 			// 
@@ -784,7 +775,7 @@
 			this.panel_Bottom.Controls.Add(this.pictureBox3);
 			this.panel_Bottom.Location = new System.Drawing.Point(0, 649);
 			this.panel_Bottom.Name = "panel_Bottom";
-			this.panel_Bottom.Size = new System.Drawing.Size(1177, 53);
+			this.panel_Bottom.Size = new System.Drawing.Size(1419, 53);
 			this.panel_Bottom.TabIndex = 5;
 			this.panel_Bottom.MouseClick += new System.Windows.Forms.MouseEventHandler(this.panel_Bottom_MouseClick);
 			// 
@@ -821,12 +812,46 @@
 			this.pictureBox3.TabIndex = 0;
 			this.pictureBox3.TabStop = false;
 			// 
+			// rtb_Text
+			// 
+			this.rtb_Text.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.rtb_Text.EmptyTextTip = null;
+			this.rtb_Text.Location = new System.Drawing.Point(55, 181);
+			this.rtb_Text.Name = "rtb_Text";
+			this.rtb_Text.Size = new System.Drawing.Size(100, 96);
+			this.rtb_Text.TabIndex = 0;
+			this.rtb_Text.Text = "";
+			this.rtb_Text.Visible = false;
+			this.rtb_Text.KeyDown += new System.Windows.Forms.KeyEventHandler(this.rtb_Text_KeyDown);
+			// 
+			// toolStripComboBox1
+			// 
+			this.toolStripComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.toolStripComboBox1.FlatStyle = System.Windows.Forms.FlatStyle.Standard;
+			this.toolStripComboBox1.Items.AddRange(new object[] {
+            "像素化",
+            "平滑"});
+			this.toolStripComboBox1.Name = "toolStripComboBox1";
+			this.toolStripComboBox1.Size = new System.Drawing.Size(75, 44);
+			// 
+			// cmb_SmoothMode
+			// 
+			this.cmb_SmoothMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cmb_SmoothMode.FlatStyle = System.Windows.Forms.FlatStyle.Standard;
+			this.cmb_SmoothMode.Items.AddRange(new object[] {
+            "像素化",
+            "平滑"});
+			this.cmb_SmoothMode.Name = "cmb_SmoothMode";
+			this.cmb_SmoothMode.Size = new System.Drawing.Size(75, 44);
+			this.cmb_SmoothMode.ToolTipText = "图像的绘制方式";
+			this.cmb_SmoothMode.SelectedIndexChanged += new System.EventHandler(this.cmb_SmoothMode_SelectedIndexChanged);
+			// 
 			// CanvasForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.SystemColors.Control;
-			this.ClientSize = new System.Drawing.Size(1177, 702);
+			this.ClientSize = new System.Drawing.Size(1419, 702);
 			this.Controls.Add(this.panel_main);
 			this.Controls.Add(this.panel_TextStyle);
 			this.Controls.Add(this.panel_Bottom);
@@ -928,6 +953,8 @@
 		private System.Windows.Forms.ColorDialog colorDialog;
 		private System.Windows.Forms.ToolStripButton btn_screenShot;
 		private System.Windows.Forms.ToolStripButton btn_select;
+		private System.Windows.Forms.ToolStripComboBox cmb_SmoothMode;
+		private System.Windows.Forms.ToolStripComboBox toolStripComboBox1;
 	}
 }
 

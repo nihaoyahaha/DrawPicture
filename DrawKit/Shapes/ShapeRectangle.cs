@@ -216,6 +216,7 @@ namespace DrawKit.Shapes
 			{
 				using (Pen selectionPen = new Pen(ForeColor, Size))
 				{
+					if (EnableAntiAlias) g.SmoothingMode = SmoothingMode.AntiAlias;
 					g.DrawRectangle(selectionPen, ConvertSelectionRectToCanvasRect(SelectionRect));
 				}
 			}
@@ -234,6 +235,7 @@ namespace DrawKit.Shapes
 			{
 				using (Pen selectionPen = new Pen(ForeColor, Size))
 				{
+					if (EnableAntiAlias) g.SmoothingMode = SmoothingMode.AntiAlias;
 					g.DrawRectangle(selectionPen, ConvertSelectionRectToCanvasRect(SelectionRect));
 				}
 			}
