@@ -546,8 +546,9 @@ namespace DrawKit.Shapes
 			if (SelectionRect == Rectangle.Empty) return;
 			if (_selectedBitmap == null) return;
 			drawStatus = DrawStatus.CanMove;
-			SelectionRect.Offset(deltaX, deltaY);
-			panel.Invalidate();
+			SelectionRect.Offset(deltaX*(int)Scale, deltaY*(int)Scale);
+			panel.Refresh();
+			panel.Refresh();
 		}
 
 	}
